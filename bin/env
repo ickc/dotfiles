@@ -1,0 +1,86 @@
+# These variables must exist on all systems
+# SCRATCH, HOMEBREW_PREFIX, __CONDA_PREFIX
+# CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
+
+# normalize OSTYPE
+# unset means unknown
+# c.f. https://stackoverflow.com/a/18434831
+case "$OSTYPE" in
+    solaris*) __OSTYPE=solaris ;;
+    darwin*)  __OSTYPE=darwin  ;; 
+    linux*)   __OSTYPE=linux   ;;
+    bsd*)     __OSTYPE=bsd     ;;
+    msys*)    __OSTYPE=msys    ;;
+esac
+
+# assume it is my own computer if it is not in this list
+case "$HOSTNAME" in
+    cori*)        __HOST=cori      ;;
+    *stampede2*)  __HOST=stampede2 ;; 
+    comet*)       __HOST=comet     ;;
+    gordita*)     __HOST=gordita   ;;
+esac
+
+# set HOMEBREW_PREFIX above or detect here
+if [[ -z "$HOMEBREW_PREFIX" ]]; then
+    if [[ "$__OSTYPE" == darwin ]]; then
+        for homebrew_prefix in "$HOME/.homebrew" /usr/local; do
+            command -v "$homebrew_prefix/bin/brew" >/dev/null 2>&1 && HOMEBREW_PREFIX="$homebrew_prefix"
+        done
+    elif [[ "$__OSTYPE" == linux ]]; then
+        homebrew_prefix="$HOME/.linuxbrew"
+        command -v "$homebrew_prefix/bin/brew" >/dev/null 2>&1 && HOMEBREW_PREFIX="$homebrew_prefix"
+    fi
+    unset homebrew_prefix
+fi
+
+case "$__HOST" in
+    cori)
+        # SCRATCH already defined
+        PROJ_ROOT=/project/projectdirs
+        COMMON_ROOT=/global/common/software
+
+        # module load python...
+        # . activate && echo $CONDA_PREFIX
+        __CONDA_PREFIX=/usr/common/software/python/3.7-anaconda-2019.07
+        ;;
+    stampede2)
+        # SCRATCH already defined, purge after 10 days
+        # WORK is like project dir, global, 1TB. Probably install software here as HOME is 10GB only.
+        PROJ_DIR="$WORK"
+
+        __CONDA_PREFIX="$WORK/anaconda3"
+        ;;
+    comet)
+        SCRATCH="/oasis/scratch/comet/$USER/temp_project"
+        PROJ_ROOT=/oasis/projects/nsf
+
+        __CONDA_PREFIX="$HOME/anaconda3"
+        ;;
+    gordita)
+        SCRATCH="/scratch2/$USER"
+
+        __CONDA_PREFIX=/opt/intel/intelpython3
+        ;;
+    *)
+        # macOS catalina doesn't allow /scratch anymore
+        # on macOS, SCRATCH is ~/scratch, else /scratch
+        if [[ "$__OSTYPE" == darwin ]]; then
+            SCRATCH="${SCRATCH:-$HOME/scratch}"
+
+            # assuming I always use homebrew to install anaconda3
+            __CONDA_PREFIX="$HOMEBREW_PREFIX/anaconda3"
+        else
+            SCRATCH="${SCRATCH:-/scratch}"
+
+            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3"; do
+                command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
+            done
+            unset conda_prefix
+        fi
+        ;;
+esac
+
+export SCRATCH
+[[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
+[[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX

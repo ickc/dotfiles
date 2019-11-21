@@ -1,0 +1,149 @@
+# helpers ######################################################################
+
+# keeping the original PATH for cleaning environments
+export __PATH="${__PATH:-$PATH}"
+# reset PATH every time a new interactive shell is started
+# berfore any paths are added to it
+export PATH="$__PATH"
+
+printerr () {
+    printf "%s\\n" "$@" >&2
+}
+
+path_prepend () {
+    if [[ -d "$1" ]]; then
+        case ":$PATH:" in
+            *":$1:"*) :;;
+            *) export PATH="${1}${PATH:+:${PATH}}";;
+        esac
+    fi
+}
+
+path_append () {
+    if [[ -d "$1" ]]; then
+        case ":$PATH:" in
+            *":$1:"*) :;;
+            *) export PATH="${PATH:+${PATH}:}${1}";;
+        esac
+    fi
+}
+
+# Powerlevel10k ################################################################
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block, everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# "module" functions ###########################################################
+
+# these should come in pairs of ml and mu stands for module-load, module-unload
+# mu is not needed if it only manipulate PATH
+
+# ! known limitation: this isn't truly a module unload system
+# ! it probably still has side effects
+
+ml_brew () {
+    if [[ -n "$HOMEBREW_PREFIX" ]]; then
+        # adapted from `brew shellenv`
+        export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+        export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+        export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin${PATH+:$PATH}"
+        export MANPATH="$HOMEBREW_PREFIX/share/man${MANPATH+:$MANPATH}:"
+        export INFOPATH="$HOMEBREW_PREFIX/share/info${INFOPATH+:$INFOPATH}"
+
+        # GNU-ize only needed on macOS
+        [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]] && . "$HOME/.path"
+        # Ruby from homebrew?
+        # export PATH="/usr/local/opt/ruby/bin:$PATH"
+    else
+        printerr 'Cannot load homebrew as HOMEBREW_PREFIX is not defined!'
+    fi
+}
+
+# macports
+ml_port () {
+    path_prepend /opt/local/bin
+    path_prepend /opt/local/libexec/gnubin
+}
+
+# NERSC ========================================================================
+
+if [[ -n "$NERSC_HOST" ]]; then
+
+ml_nersc () {
+    # common polar
+    export PBCOMMON="$COMMON_ROOT/polar"
+    export PATH="$PBCOMMON/local/bin:$PATH"
+    export MANPATH="$PBCOMMON/local/share/man:$MANPATH"
+    # modules
+    module load git
+    module load nano
+    module load parallel
+    module load tmux
+    module load tree
+}
+
+mu_nersc () {
+    module unload git
+    module unload nano
+    module unload parallel
+    module unload tmux
+    module unload tree
+}
+
+ml_toast () {
+    module use /global/common/software/cmb/cori/default/modulefiles
+    module load cmbenv
+    source cmbenv
+    /usr/bin/cp -f ~/.condarc.backup ~/.condarc
+}
+
+ml_toast2 () {
+    module use /global/common/software/polar/toast/modulefiles
+    module load cmbenv
+    source cmbenv
+    /usr/bin/cp -f ~/.condarc.backup ~/.condarc
+}
+
+fi
+
+mu () {
+  export PATH="$__PATH"
+  alias ls="noglob ls"
+  [[ -n "$NERSC_HOST" ]] && mu_nersc
+}
+
+# main #########################################################################
+
+[[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
+[[ "$__OSTYPE" == darwin ]] && ml_port
+[[ -n "$NERSC_HOST" ]] && ml_nersc
+
+# this source the conda functions but not changing the PATH directly
+[[ -n "$__CONDA_PREFIX" ]] && . "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+
+path_append "$HOME/.local/bin"
+
+path_append "$HOME/go/bin"
+
+# even if this doesn't mask the world readability
+# the parent directories should protect it already
+umask 022
+
+# sman
+if [[ -f "$HOME/.sman/sman.rc" ]]; then
+    . "$HOME/.sman/sman.rc"
+    export SMAN_APPEND_HISTORY=false
+    export SMAN_EXEC_CONFIRM=false
+    export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
+fi
+
+# exa: only alias if exist. hash is incorrect on Cori
+type exa >/dev/null 2>&1 && alias ls=exa
+
+neofetch 2>/dev/null
