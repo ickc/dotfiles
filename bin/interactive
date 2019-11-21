@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # helpers ######################################################################
 
 # keeping the original PATH for cleaning environments
@@ -73,7 +75,7 @@ ml_port () {
 
 # NERSC ========================================================================
 
-if [[ -n "$NERSC_HOST" ]]; then
+if [[ "$__HOST" == cori ]]; then
 
 ml_nersc () {
     # common polar
@@ -115,14 +117,14 @@ fi
 mu () {
   export PATH="$__PATH"
   alias ls="noglob ls"
-  [[ -n "$NERSC_HOST" ]] && mu_nersc
+  [[ "$__HOST" == cori ]] && mu_nersc
 }
 
 # main #########################################################################
 
 [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
 [[ "$__OSTYPE" == darwin ]] && ml_port
-[[ -n "$NERSC_HOST" ]] && ml_nersc
+[[ "$__HOST" == cori ]] && ml_nersc
 
 # this source the conda functions but not changing the PATH directly
 [[ -n "$__CONDA_PREFIX" ]] && . "$__CONDA_PREFIX/etc/profile.d/conda.sh"

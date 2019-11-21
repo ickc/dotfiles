@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # These variables must exist on all systems
 # SCRATCH, HOMEBREW_PREFIX, __CONDA_PREFIX
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
@@ -5,6 +7,7 @@
 # normalize OSTYPE
 # unset means unknown
 # c.f. https://stackoverflow.com/a/18434831
+
 case "$OSTYPE" in
     solaris*) __OSTYPE=solaris ;;
     darwin*)  __OSTYPE=darwin  ;; 
@@ -14,7 +17,8 @@ case "$OSTYPE" in
 esac
 
 # assume it is my own computer if it is not in this list
-case "$HOSTNAME" in
+# using hostname instead of HOSTNAME as the env var might not be set at this stage
+case "$(hostname)" in
     cori*)        __HOST=cori      ;;
     *stampede2*)  __HOST=stampede2 ;; 
     comet*)       __HOST=comet     ;;
@@ -84,3 +88,7 @@ esac
 export SCRATCH
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
+
+# this is needed to make sure mosh can see mosh-server not from PATH
+# putting this in "interactive" does not help
+command -v mosh-server || alias mosh-server="$HOMEBREW_PREFIX/bin/mosh-server"
