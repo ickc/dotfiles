@@ -91,4 +91,4 @@ export SCRATCH
 
 # this is needed to make sure mosh can see mosh-server not from PATH
 # putting this in "interactive" does not help
-command -v mosh-server || alias mosh-server="$HOMEBREW_PREFIX/bin/mosh-server"
+command -v mosh-server >/dev/null 2>&1 || alias mosh-server="$HOMEBREW_PREFIX/bin/mosh-server"
