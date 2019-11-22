@@ -77,6 +77,16 @@ ml_port () {
     path_prepend /opt/local/libexec/gnubin
 }
 
+# conda
+ml_conda () {
+    # * this source the conda functions but not changing the PATH directly
+    # it allows you to put the conda function available without letting it
+    # changing your PATH
+    local __PATH__="$PATH"
+    . "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+    export PATH="$__PATH__"
+}
+
 # NERSC ========================================================================
 
 if [[ "$__HOST" == cori ]]; then
@@ -129,9 +139,7 @@ mu () {
 [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
 [[ "$__OSTYPE" == darwin ]] && ml_port
 [[ "$__HOST" == cori ]] && ml_nersc
-
-# this source the conda functions but not changing the PATH directly
-[[ -n "$__CONDA_PREFIX" ]] && . "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+[[ -n "$__CONDA_PREFIX" ]] && ml_conda
 
 path_append "$HOME/.local/bin"
 
