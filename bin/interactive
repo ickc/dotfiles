@@ -87,59 +87,79 @@ ml_conda () {
     export PATH="$__PATH__"
 }
 
-# NERSC ========================================================================
+# hosts ========================================================================
 
-if [[ "$__HOST" == cori ]]; then
+case "$__HOST" in
+    cori)
+        ml_host () {
+            # common polar
+            export PBCOMMON="$COMMON_ROOT/polar"
+            export PATH="$PBCOMMON/local/bin:$PATH"
+            export MANPATH="$PBCOMMON/local/share/man:$MANPATH"
+            # modules
+            module load git
+            module load nano
+            module load parallel
+            module load tmux
+            module load tree
+        }
 
-ml_nersc () {
-    # common polar
-    export PBCOMMON="$COMMON_ROOT/polar"
-    export PATH="$PBCOMMON/local/bin:$PATH"
-    export MANPATH="$PBCOMMON/local/share/man:$MANPATH"
-    # modules
-    module load git
-    module load nano
-    module load parallel
-    module load tmux
-    module load tree
-}
+        mu_host () {
+            module unload git
+            module unload nano
+            module unload parallel
+            module unload tmux
+            module unload tree
+        }
 
-mu_nersc () {
-    module unload git
-    module unload nano
-    module unload parallel
-    module unload tmux
-    module unload tree
-}
+        ml_toast () {
+            module use /global/common/software/cmb/cori/default/modulefiles
+            module load cmbenv
+            source cmbenv
+            /usr/bin/cp -f ~/.condarc.backup ~/.condarc
+        }
 
-ml_toast () {
-    module use /global/common/software/cmb/cori/default/modulefiles
-    module load cmbenv
-    source cmbenv
-    /usr/bin/cp -f ~/.condarc.backup ~/.condarc
-}
+        ml_toast2 () {
+            module use /global/common/software/polar/toast/modulefiles
+            module load cmbenv
+            source cmbenv
+            /usr/bin/cp -f ~/.condarc.backup ~/.condarc
+        }
+        ;;
+    comet)
+        ml_host () {
+            # adapted from from /etc/bashrc
+            for i in /etc/profile.d/*.sh; do
+                [[ -r "$i" ]] || . "$i"
+            done
+        }
 
-ml_toast2 () {
-    module use /global/common/software/polar/toast/modulefiles
-    module load cmbenv
-    source cmbenv
-    /usr/bin/cp -f ~/.condarc.backup ~/.condarc
-}
+        mu_host () {
+            # TODO
+            true
+        }
+        ;;
+esac
 
-fi
+================================================================================
 
 mu () {
-  export PATH="$__PATH"
-  alias ls="noglob ls"
-  [[ "$__HOST" == cori ]] && mu_nersc
+    export PATH="$__PATH"
+    alias ls="noglob ls"
+    case "$__HOST" in
+        cori|comet) mu_host;;
+    esac
 }
 
 # main #########################################################################
 
 [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
 [[ "$__OSTYPE" == darwin ]] && ml_port
-[[ "$__HOST" == cori ]] && ml_nersc
 [[ -n "$__CONDA_PREFIX" ]] && ml_conda
+
+case "$__HOST" in
+    cori|comet) ml_host;;
+esac
 
 path_append "$HOME/.local/bin"
 
