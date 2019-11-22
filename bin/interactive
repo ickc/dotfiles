@@ -130,7 +130,7 @@ case "$__HOST" in
         ml_host () {
             # adapted from from /etc/bashrc
             for i in /etc/profile.d/*.sh; do
-                [[ -r "$i" ]] || . "$i"
+                [[ -r "$i" ]] && . "$i"
             done
         }
 
