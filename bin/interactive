@@ -132,11 +132,13 @@ case "$__HOST" in
             for i in /etc/profile.d/*.sh; do
                 [[ -r "$i" ]] && . "$i"
             done
+            path_prepend /share/apps/compute/gcc-7.2.0/bin
+            path_append /share/apps/compute/parallel/bin
+            path_append /share/apps/compute/zsh/bin
+            path_append /share/apps/compute/tmux/v2.3/bin
         }
 
         mu_host () {
-            # TODO
-            true
         }
         ;;
 esac
