@@ -2,11 +2,16 @@
 
 # helpers ######################################################################
 
+# * any path-like variables should be remember and reset using this machanism
 # keeping the original PATH for cleaning environments
 export __PATH="${__PATH:-$PATH}"
+export __MANPATH="${__MANPATH:-$MANPATH}"
+export __INFOPATH="${__INFOPATH:-$INFOPATH}"
 # reset PATH every time a new interactive shell is started
 # berfore any paths are added to it
 export PATH="$__PATH"
+export MANPATH="$__MANPATH"
+export INFOPATH="$__INFOPATH"
 
 printerr () {
     printf "%s\\n" "$@" >&2
@@ -26,6 +31,50 @@ path_append () {
         case ":$PATH:" in
             *":$1:"*) :;;
             *) export PATH="${PATH:+${PATH}:}${1}";;
+        esac
+    fi
+}
+
+# variants of the above with $1 as the prefix only
+# modifies PATH, MANPATH, INFOPATH
+path_prepend_all () {
+    if [[ -d "$1/bin" ]]; then
+        case ":$PATH:" in
+            *":$1/bin:"*) :;;
+            *) export PATH="${1}/bin${PATH:+:${PATH}}";;
+        esac
+    fi
+    if [[ -d "$1/share/man" ]]; then
+        case ":$MANPATH:" in
+            *":$1/share/man:"*) :;;
+            *) export MANPATH="${1}/share/man${MANPATH:+:${MANPATH}}";;
+        esac
+    fi
+    if [[ -d "$1/share/info" ]]; then
+        case ":$INFOPATH:" in
+            *":$1/share/info:"*) :;;
+            *) export INFOPATH="${1}/share/info${INFOPATH:+:${INFOPATH}}";;
+        esac
+    fi
+}
+
+path_append_all () {
+    if [[ -d "$1/bin" ]]; then
+        case ":$PATH:" in
+            *":$1/bin:"*) :;;
+            *) export PATH="${PATH:+${PATH}:}${1}/bin";;
+        esac
+    fi
+    if [[ -d "$1/share/man" ]]; then
+        case ":$MANPATH:" in
+            *":$1/share/man:"*) :;;
+            *) export MANPATH="${MANPATH:+${MANPATH}:}${1}/share/man";;
+        esac
+    fi
+    if [[ -d "$1/share/info" ]]; then
+        case ":$INFOPATH:" in
+            *":$1/share/info:"*) :;;
+            *) export INFOPATH="${INFOPATH:+${INFOPATH}:}${1}/share/info";;
         esac
     fi
 }
@@ -54,28 +103,30 @@ fi
 # ! it probably still has side effects
 
 ml_brew () {
-    if [[ -n "$HOMEBREW_PREFIX" ]]; then
-        # adapted from `brew shellenv`
-        export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-        export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
-        export MANPATH="$HOMEBREW_PREFIX/share/man${MANPATH+:$MANPATH}:"
-        export INFOPATH="$HOMEBREW_PREFIX/share/info${INFOPATH+:$INFOPATH}"
+    # adapted from `brew shellenv`
+    export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+    export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
 
-        path_prepend "$HOMEBREW_PREFIX/sbin"
-        path_prepend "$HOMEBREW_PREFIX/bin"
+    path_prepend "$HOMEBREW_PREFIX/sbin"
+    path_prepend_all "$HOMEBREW_PREFIX"
 
-        # GNU-ize only needed on macOS
-        [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]] && . "$HOME/.path"
-        # Ruby from homebrew?
-        # export PATH="/usr/local/opt/ruby/bin:$PATH"
-    else
-        printerr 'Cannot load homebrew as HOMEBREW_PREFIX is not defined!'
-    fi
+    # GNU-ize only needed on macOS
+    [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]] && . "$HOME/.path"
+    # Ruby from homebrew?
+    # export PATH="/usr/local/opt/ruby/bin:$PATH"
+}
+
+mu_brew () {
+    unset HOMEBREW_CELLAR
+    unset HOMEBREW_REPOSITORY
+    # from "$HOME/.path"
+    unset HOMEBREW_CC
+    unset HOMEBREW_CXX
 }
 
 # macports
 ml_port () {
-    path_prepend /opt/local/bin
+    path_prepend_all /opt/local
     path_prepend /opt/local/libexec/gnubin
 }
 
@@ -89,6 +140,37 @@ ml_conda () {
     export PATH="$__PATH__"
 }
 
+mu_conda () {
+    # from "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+    unset CONDA_EXE
+    unset CONDA_PYTHON_EXE
+    unset CONDA_SHLVL
+    unset _CE_CONDA
+    unset _CE_M
+}
+
+# sman
+ml_s () {
+    . "$HOME/.sman/sman.rc"
+    export SMAN_APPEND_HISTORY=false
+    export SMAN_EXEC_CONFIRM=false
+    export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
+}
+
+mu_s () {
+    unset SMAN_APPEND_HISTORY
+    unset SMAN_EXEC_CONFIRM
+    unset SMAN_SNIPPET_DIR
+}
+
+ml_exa () {
+    alias ls=exa
+}
+
+mu_exa () {
+    alias ls="noglob ls"
+}
+
 # hosts ========================================================================
 
 case "$__HOST" in
@@ -96,8 +178,7 @@ case "$__HOST" in
         ml_host () {
             # common polar
             export PBCOMMON="$COMMON_ROOT/polar"
-            export PATH="$PBCOMMON/local/bin:$PATH"
-            export MANPATH="$PBCOMMON/local/share/man:$MANPATH"
+            path_append_all "$PBCOMMON/local"
             # modules
             module load git
             module load nano
@@ -107,6 +188,8 @@ case "$__HOST" in
         }
 
         mu_host () {
+            unset PBCOMMON
+
             module unload git
             module unload nano
             module unload parallel
@@ -134,19 +217,41 @@ case "$__HOST" in
             for i in /etc/profile.d/*.sh; do
                 [[ -r "$i" ]] && . "$i"
             done
-            path_prepend /share/apps/compute/gcc-7.2.0/bin
-            path_append /share/apps/compute/parallel/bin
-            path_append /share/apps/compute/zsh/bin
-            path_append /share/apps/compute/tmux/v2.3/bin
+            path_prepend_all /share/apps/compute/gcc-7.2.0
+            path_prepend_all /share/apps/compute/parallel
+            path_prepend_all /share/apps/compute/zsh
+            path_prepend_all /share/apps/compute/tmux/v2.3
         }
         ;;
 esac
 
 #===============================================================================
 
+ml () {
+    path_append_all "$HOME/.local"
+    path_append_all "$HOME/go"
+
+    [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
+    [[ "$__OSTYPE" == darwin ]] && ml_port
+    [[ -n "$__CONDA_PREFIX" ]] && ml_conda
+    [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
+    # exa: only alias if exist. hash is incorrect on Cori
+    type exa >/dev/null 2>&1 && ml_exa
+
+    case "$__HOST" in
+        cori|comet) ml_host;;
+    esac
+}
+
 mu () {
-    export PATH="$__PATH"
-    alias ls="noglob ls"
+    [[ -n "$__PATH" ]] && export PATH="$__PATH" || unset PATH
+    [[ -n "$__MANPATH" ]] && export MANPATH="$__MANPATH" || unset MANPATH
+    [[ -n "$__INFOPATH" ]] && export INFOPATH="$__INFOPATH" || unset INFOPATH
+
+    mu_brew
+    mu_conda
+    mu_s
+    mu_exa
     case "$__HOST" in
         cori) mu_host;;
     esac
@@ -154,31 +259,10 @@ mu () {
 
 # main #########################################################################
 
-[[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
-[[ "$__OSTYPE" == darwin ]] && ml_port
-[[ -n "$__CONDA_PREFIX" ]] && ml_conda
-
-case "$__HOST" in
-    cori|comet) ml_host;;
-esac
-
-path_append "$HOME/.local/bin"
-
-path_append "$HOME/go/bin"
+ml
 
 # even if this doesn't mask the world readability
 # the parent directories should protect it already
 umask 022
-
-# sman
-if [[ -f "$HOME/.sman/sman.rc" ]]; then
-    . "$HOME/.sman/sman.rc"
-    export SMAN_APPEND_HISTORY=false
-    export SMAN_EXEC_CONFIRM=false
-    export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
-fi
-
-# exa: only alias if exist. hash is incorrect on Cori
-type exa >/dev/null 2>&1 && alias ls=exa
 
 neofetch 2>/dev/null
