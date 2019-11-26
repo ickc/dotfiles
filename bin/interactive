@@ -112,8 +112,8 @@ ml_brew () {
 
     # GNU-ize only needed on macOS
     [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]] && . "$HOME/.path"
-    # Ruby from homebrew?
-    # export PATH="/usr/local/opt/ruby/bin:$PATH"
+
+    path_prepend_all "$HOMEBREW_PREFIX/opt/ruby"
 }
 
 mu_brew () {
