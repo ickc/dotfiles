@@ -7,11 +7,15 @@
 export __PATH="${__PATH:-$PATH}"
 export __MANPATH="${__MANPATH:-$MANPATH}"
 export __INFOPATH="${__INFOPATH:-$INFOPATH}"
+export __PYTHONPATH="${__PYTHONPATH:-$PYTHONPATH}"
+export __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-$LD_LIBRARY_PATH}"
 # reset PATH every time a new interactive shell is started
 # berfore any paths are added to it
 export PATH="$__PATH"
 export MANPATH="$__MANPATH"
 export INFOPATH="$__INFOPATH"
+export PYTHONPATH="$__PYTHONPATH"
+export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH"
 
 printerr () {
     printf "%s\\n" "$@" >&2
@@ -223,6 +227,14 @@ case "$__HOST" in
             path_prepend_all /share/apps/compute/tmux/v2.3
         }
         ;;
+    lpc-mini)
+        ml_toast () {
+            conda activate /scratch/local/toast-gnu/conda
+
+            export LD_LIBRARY_PATH="/scratch/local/toast-gnu/compile/lib:$LD_LIBRARY_PATH"
+            export PYTHONPATH="/scratch/local/toast-gnu/compile/lib/python3.7/site-packages:$PYTHONPATH"
+            export PATH="/scratch/local/toast-gnu/compile/bin:/scratch/local/toast-gnu/conda/bin:$PATH"
+        }
 esac
 
 #===============================================================================
@@ -247,6 +259,8 @@ mu () {
     [[ -n "$__PATH" ]] && export PATH="$__PATH" || unset PATH
     [[ -n "$__MANPATH" ]] && export MANPATH="$__MANPATH" || unset MANPATH
     [[ -n "$__INFOPATH" ]] && export INFOPATH="$__INFOPATH" || unset INFOPATH
+    [[ -n "$__PYTHONPATH" ]] && export PYTHONPATH="$__PYTHONPATH" || unset PYTHONPATH
+    [[ -n "$__LD_LIBRARY_PATH" ]] && export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH" || unset LD_LIBRARY_PATH
 
     mu_brew
     mu_conda
