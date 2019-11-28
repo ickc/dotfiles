@@ -23,7 +23,7 @@ case "$(hostname)" in
     *stampede2*)  __HOST=stampede2 ;; 
     comet*)       __HOST=comet     ;;
     gordita*)     __HOST=gordita   ;;
-    lpc-mini)     __HOST=lpc-mini   ;;
+    lpc-mini)     __HOST=lpc-mini  ;;
 esac
 
 # set HOMEBREW_PREFIX above or detect here
@@ -73,6 +73,7 @@ case "$__HOST" in
         SCRATCH=/scratch
 
         __CONDA_PREFIX=/opt/anaconda
+        ;;
     *)
         # macOS catalina doesn't allow /scratch anymore
         # on macOS, SCRATCH is ~/scratch, else /scratch
