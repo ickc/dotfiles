@@ -11,11 +11,11 @@ export __PYTHONPATH="${__PYTHONPATH:-$PYTHONPATH}"
 export __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-$LD_LIBRARY_PATH}"
 # reset PATH every time a new interactive shell is started
 # berfore any paths are added to it
-export PATH="$__PATH"
-export MANPATH="$__MANPATH"
-export INFOPATH="$__INFOPATH"
-export PYTHONPATH="$__PYTHONPATH"
-export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH"
+[[ -n "$__PATH" ]] && export PATH="$__PATH"
+[[ -n "$__MANPATH" ]] && export MANPATH="$__MANPATH"
+[[ -n "$__INFOPATH" ]] && export INFOPATH="$__INFOPATH"
+[[ -n "$__PYTHONPATH" ]] && export PYTHONPATH="$__PYTHONPATH"
+[[ -n "$__LD_LIBRARY_PATH" ]] && export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH"
 
 printerr () {
     printf "%s\\n" "$@" >&2
