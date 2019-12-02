@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
+
 # helpers ######################################################################
 
 # * any path-like variables should be remember and reset using this machanism
@@ -153,6 +155,11 @@ mu_conda () {
     unset _CE_M
 }
 
+# go
+ml_go () {
+    path_append_all "$HOME/go"
+}
+
 # sman
 ml_s () {
     . "$HOME/.sman/sman.rc"
@@ -239,16 +246,23 @@ esac
 
 #===============================================================================
 
-ml () {
+ml_clean () {
+    # * load minimal environment for interactive use
     path_append_all "$HOME/.local"
-    path_append_all "$HOME/go"
 
-    [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
-    [[ "$__OSTYPE" == darwin ]] && ml_port
-    [[ -n "$__CONDA_PREFIX" ]] && ml_conda
     [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on Cori
     type exa >/dev/null 2>&1 && ml_exa
+}
+
+ml () {
+    # * load all installed environments
+    # * includes clean, go, brew, port, conda, host
+    ml_clean
+    ml_go
+    [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
+    [[ "$__OSTYPE" == darwin ]] && ml_port
+    [[ -n "$__CONDA_PREFIX" ]] && ml_conda
 
     case "$__HOST" in
         cori|comet) ml_host;;
@@ -273,7 +287,7 @@ mu () {
 
 # main #########################################################################
 
-ml
+[[ -n "$__CLEAN" ]] && ml_clean || ml
 
 # even if this doesn't mask the world readability
 # the parent directories should protect it already
