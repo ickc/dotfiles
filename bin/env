@@ -97,6 +97,9 @@ export SCRATCH
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
 
+# alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
-# putting this in "interactive" does not help
 command -v mosh-server >/dev/null 2>&1 || alias mosh-server="$HOMEBREW_PREFIX/bin/mosh-server"
+# this is to avoid can't find tmux after `mu`
+# may need to improve this for tmux in other non-standard path such as port
+command -v tmux >/dev/null 2>&1 || alias tmux="$HOMEBREW_PREFIX/bin/tmux"
