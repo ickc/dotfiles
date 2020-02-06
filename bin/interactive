@@ -100,6 +100,7 @@ path_prepend_all () {
     fi
 }
 
+# TODO: fix this on FreeBSD such as bolo
 path_append_all () {
     if [[ -d "$1/bin" ]]; then
         case ":$PATH:" in
@@ -294,7 +295,7 @@ esac
 
 ml_clean () {
     # special case, may generalize something like this to any FreeBSD?
-    [[ "$__HOST" == bolo ]] && path_append_all "$HOME/.freebsd.local/gopath/bin"
+    [[ "$__HOST" == bolo ]] && export PATH="$PATH:$HOME/.freebsd.local/gopath/bin"
 
     # * load minimal environment for interactive use
     path_append_all "$HOME/.local"
