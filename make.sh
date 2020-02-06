@@ -8,6 +8,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
 cat << EOF > "$HOME/.bash_profile$EXT"
+case "\$__HOST" in
+    gordita|bolo) exec zsh;;
+esac
 [[ -s "$HOME/.bashrc$EXT" ]] && . "$HOME/.bashrc$EXT"
 EOF
 
@@ -48,7 +51,11 @@ EOF
 # .zpreztorc
 cat << EOF > "$HOME/.zpreztorc"
 [[ -s "$HOME/.zprezto/runcoms/zpreztorc" ]] && . "$HOME/.zprezto/runcoms/zpreztorc"
-zstyle ':prezto:module:prompt' theme 'powerlevel10k'
+# gordita's zsh is too old for this
+case "\$__HOST" in
+    gordita) :                                                   ;;
+    *)       zstyle ':prezto:module:prompt' theme 'powerlevel10k';;
+esac
 EOF
 
 # powerlevel10k
