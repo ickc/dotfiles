@@ -295,6 +295,9 @@ esac
 #===============================================================================
 
 ml_clean () {
+    # special case, may generalize something like this to any FreeBSD?
+    [[ "$__HOST" == bolo ]] && path_append_all "$HOME/.freebsd.local/gopath/bin"
+
     # * load minimal environment for interactive use
     path_append_all "$HOME/.local"
 
