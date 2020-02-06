@@ -15,7 +15,7 @@ EOF
 cat << EOF > "$HOME/.bashrc$EXT"
 [[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
 case "\$__HOST" in
-    gordita|bolo) exec zsh;;
+    gordita|bolo|comet) exec zsh;;
 esac
 [[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
 [[ -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
