@@ -7,7 +7,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 [[ -n "$NERSC_HOST" ]] && EXT='.ext' || EXT=
 
 # .bash_profile
-cat << EOF > "$HOME/.bash_profile$EXT"
+# c.f. https://github.com/sorin-ionescu/prezto/issues/657#issuecomment-52546927
+case "$__HOST" in
+    gordita|bolo) echo "exec $(which zsh)" > "$HOME/.bash_profile$EXT"                                           ;;
+    comet)        echo "FPATH=$HOME/.linuxbrew/share/zsh/functions exec $(which zsh)" > "$HOME/.bash_profile$EXT";;
+    *)            : > "$HOME/.bash_profile$EXT"                                                                  ;;
+esac
+
+cat << EOF >> "$HOME/.bash_profile$EXT"
 [[ -s "$HOME/.bashrc$EXT" ]] && . "$HOME/.bashrc$EXT"
 EOF
 
@@ -16,9 +23,6 @@ cat << EOF > "$HOME/.bashrc$EXT"
 [[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
 [[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
 [[ -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
-case "\$__HOST" in
-    gordita|bolo|comet) exec zsh;;
-esac
 EOF
 
 # assume zprezto always at ~/.zprezto
