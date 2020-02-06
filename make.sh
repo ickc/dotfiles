@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# since __HOST is used, for those hosts this needed to be run twice
+# first time to setup the env for __HOST
+# log in again to run second time for this script to write correctly
+
 set -e
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
