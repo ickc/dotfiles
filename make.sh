@@ -7,11 +7,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 [[ -n "$NERSC_HOST" ]] && EXT='.ext' || EXT=
 
 # .bash_profile
-# c.f. https://github.com/sorin-ionescu/prezto/issues/657#issuecomment-52546927
 case "$__HOST" in
-    gordita|bolo) echo "exec $(which zsh)" > "$HOME/.bash_profile$EXT"                                           ;;
-    comet)        echo "FPATH=$HOME/.linuxbrew/share/zsh/functions exec $(which zsh)" > "$HOME/.bash_profile$EXT";;
-    *)            : > "$HOME/.bash_profile$EXT"                                                                  ;;
+    gordita|bolo|comet) echo "exec $(which zsh)" > "$HOME/.bash_profile$EXT" ;;
+    *)                  : > "$HOME/.bash_profile$EXT"                        ;;
 esac
 
 cat << EOF >> "$HOME/.bash_profile$EXT"
@@ -29,9 +27,9 @@ EOF
 
 # .zshenv
 cat << EOF > "$HOME/.zshenv$EXT"
-[[ -s "$HOME/.zprezto/runcoms/zshenv" ]] && . "$HOME/.zprezto/runcoms/zshenv"
 [[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
 [[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
+[[ -s "$HOME/.zprezto/runcoms/zshenv" ]] && . "$HOME/.zprezto/runcoms/zshenv"
 EOF
 
 # .zprofile
@@ -40,8 +38,16 @@ cat << EOF > "$HOME/.zprofile$EXT"
 EOF
 # .zshrc
 cat << EOF > "$HOME/.zshrc$EXT"
-[[ -s "$HOME/.zprezto/runcoms/zshrc" ]] && . "$HOME/.zprezto/runcoms/zshrc"
 [[ -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
+EOF
+# only inserted in this order works
+# c.f. https://github.com/sorin-ionescu/prezto/issues/657#issuecomment-52546927
+# c.f. https://github.com/ohmyzsh/ohmyzsh/issues/7246#issuecomment-427674055
+case "$__HOST" in
+    comet) echo "export FPATH=\"$HOME/.linuxbrew/share/zsh/site-functions:$HOME/.linuxbrew/share/zsh/functions:$FPATH\"" >> "$HOME/.zshrc$EXT" ;;
+esac
+cat << EOF >> "$HOME/.zshrc$EXT"
+[[ -s "$HOME/.zprezto/runcoms/zshrc" ]] && . "$HOME/.zprezto/runcoms/zshrc"
 EOF
 # .zlogin
 cat << EOF > "$HOME/.zlogin$EXT"
