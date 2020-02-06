@@ -264,10 +264,10 @@ case "$__HOST" in
             for i in /etc/profile.d/*.sh; do
                 [[ -r "$i" ]] && . "$i"
             done
+            # c.f. https://github.com/ohmyzsh/ohmyzsh/issues/7246#issuecomment-427674055
+            fpath=($HOME/.linuxbrew/share/zsh/functions $fpath)
             path_prepend_all /share/apps/compute/gcc-7.2.0
             path_prepend_all /share/apps/compute/parallel
-            path_prepend_all /share/apps/compute/zsh
-            path_prepend_all /share/apps/compute/tmux/v2.3
         }
         ;;
     lpc-mini)
