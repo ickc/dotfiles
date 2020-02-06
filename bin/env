@@ -19,11 +19,12 @@ esac
 # assume it is my own computer if it is not in this list
 # using hostname instead of HOSTNAME as the env var might not be set at this stage
 case "$(hostname)" in
-    cori*)        __HOST=cori      ;;
-    *stampede2*)  __HOST=stampede2 ;; 
-    comet*)       __HOST=comet     ;;
-    gordita*)     __HOST=gordita   ;;
-    lpc-mini)     __HOST=lpc-mini  ;;
+    cori*)                        __HOST=cori      ;;
+    *stampede2*)                  __HOST=stampede2 ;; 
+    comet*)                       __HOST=comet     ;;
+    gordita.physics.berkeley.edu) __HOST=gordita   ;;
+    bolo.berkeley.edu)            __HOST=bolo      ;;
+    lpc-mini)                     __HOST=lpc-mini  ;;
 esac
 
 # set HOMEBREW_PREFIX above or detect here
@@ -69,6 +70,9 @@ case "$__HOST" in
         ;;
     # same as * case below
     # just define this explicitly
+    bolo)
+        SCRATCH="/tank/scratch/$USER"
+        ;;
     lpc-mini)
         SCRATCH=/scratch
 
