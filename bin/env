@@ -12,7 +12,7 @@ case "$OSTYPE" in
     solaris*) __OSTYPE=solaris ;;
     darwin*)  __OSTYPE=darwin  ;; 
     linux*)   __OSTYPE=linux   ;;
-    bsd*)     __OSTYPE=bsd     ;;
+    *bsd*)    __OSTYPE=bsd     ;;
     msys*)    __OSTYPE=msys    ;;
 esac
 
