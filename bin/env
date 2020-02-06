@@ -100,6 +100,8 @@ esac
 export SCRATCH
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
+[[ -n "$__OSTYPE" ]] && export __OSTYPE
+[[ -n "$__HOST" ]] && export __HOST
 
 # alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
