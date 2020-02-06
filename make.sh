@@ -12,8 +12,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
 case "$__HOST" in
-    gordita|bolo|comet) echo "exec $(which zsh)" > "$HOME/.bash_profile$EXT" ;;
-    *)                  : > "$HOME/.bash_profile$EXT"                        ;;
+    gordita|bolo) echo "exec zsh" > "$HOME/.bash_profile$EXT"          ;;
+    comet)        echo "exec $(which zsh)" > "$HOME/.bash_profile$EXT" ;;
+    *)            : > "$HOME/.bash_profile$EXT"                        ;;
 esac
 
 cat << EOF >> "$HOME/.bash_profile$EXT"
