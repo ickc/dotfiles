@@ -43,7 +43,7 @@ fi
 case "$__HOST" in
     cori)
         # SCRATCH already defined
-        PROJ_ROOT=/global/cfs/cdirs
+        PROJ_ROOT="$CFS"
         COMMON_ROOT=/global/common/software
 
         # module load python...
