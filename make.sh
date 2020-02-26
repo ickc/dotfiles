@@ -16,14 +16,15 @@ case "$__HOST" in
 esac
 
 cat << EOF >> "$HOME/.bash_profile"
-[[ -s "$HOME/.bashrc" ]] && . "$HOME/.bashrc"
+[[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
+[[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
 EOF
 
 # .bashrc
 cat << EOF > "$HOME/.bashrc"
 [[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
 [[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
-[[ -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
+[[ \$- == *i* && -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
 EOF
 
 # assume zprezto always at ~/.zprezto
