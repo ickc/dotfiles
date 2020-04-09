@@ -89,7 +89,7 @@ case "$__HOST" in
         else
             SCRATCH="${SCRATCH:-/scratch}"
 
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3"; do
+            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
             unset conda_prefix
