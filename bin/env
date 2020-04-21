@@ -102,7 +102,7 @@ export SCRATCH
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
 [[ -n "$__OSTYPE" ]] && export __OSTYPE
 [[ -n "$__HOST" ]] && export __HOST
-[[ -d "$HOME/.cargo/bin" ]] && export CARGO_PREFIX="$HOME/.cargo/bin"
+[[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
 # alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
