@@ -219,6 +219,10 @@ mu_exa () {
     alias ls="noglob ls"
 }
 
+ml_cg () {
+    path_append_all "$CARGO_PREFIX"
+}
+
 # hosts ========================================================================
 
 case "$__HOST" in
@@ -313,6 +317,7 @@ ml () {
     [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
     [[ "$__OSTYPE" == darwin ]] && ml_port
     [[ -n "$__CONDA_PREFIX" ]] && ml_conda
+    [[ -n "$CARGO_PREFIX" ]] && ml_cg
 
     case "$__HOST" in
         cori|comet) ml_host;;
