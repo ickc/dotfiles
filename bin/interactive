@@ -236,7 +236,6 @@ case "$__HOST" in
             module load nano
             module load parallel
             module load tmux
-            module load tree
         }
 
         mu_host () {
@@ -246,7 +245,6 @@ case "$__HOST" in
             module unload nano
             module unload parallel
             module unload tmux
-            module unload tree
         }
 
         ml_toast () {
