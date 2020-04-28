@@ -27,6 +27,8 @@ case "$(hostname)" in
     lpc-mini)                     __HOST=lpc-mini  ;;
 esac
 
+[[ "$__HOST" == cori ]] && HOMEBREW_PREFIX=/global/common/software/polar/.linuxbrew
+
 # set HOMEBREW_PREFIX above or detect here
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
     if [[ "$__OSTYPE" == darwin ]]; then
