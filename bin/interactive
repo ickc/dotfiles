@@ -310,12 +310,12 @@ ml_clean () {
 ml () {
     # * load all installed environments
     # * includes clean, go, brew, port, conda, host
-    ml_clean
     ml_go
     [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
     [[ "$__OSTYPE" == darwin ]] && ml_port
     [[ -n "$__CONDA_PREFIX" ]] && ml_conda
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
+    ml_clean
 
     case "$__HOST" in
         cori|comet) ml_host;;
