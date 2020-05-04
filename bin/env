@@ -67,8 +67,11 @@ case "$__HOST" in
         ;;
     gordita)
         SCRATCH="/scratch2/$USER"
+        # pkgsrc
+        export PATH=/usr/pkg/sbin:/usr/pkg/bin:$PATH
+        export MANPATH=/usr/pkg/man:$MANPATH
 
-        __CONDA_PREFIX=/opt/intel/intelpython3
+        # __CONDA_PREFIX=/opt/intel/intelpython3
         ;;
     # same as * case below
     # just define this explicitly
