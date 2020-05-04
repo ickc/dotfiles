@@ -67,6 +67,7 @@ case "$__HOST" in
         ;;
     gordita)
         SCRATCH="/scratch2/$USER"
+        export EDITOR=nano
         # pkgsrc
         export PATH=/usr/pkg/sbin:/usr/pkg/bin:$PATH
         export MANPATH=/usr/pkg/man:$MANPATH
