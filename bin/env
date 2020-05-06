@@ -113,7 +113,14 @@ export SCRATCH
 
 # alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
-command -v mosh-server >/dev/null 2>&1 || alias mosh-server="$HOMEBREW_PREFIX/bin/mosh-server"
 # this is to avoid can't find tmux after `mu`
-# may need to improve this for tmux in other non-standard path such as port
-command -v tmux >/dev/null 2>&1 || alias tmux="$HOMEBREW_PREFIX/bin/tmux"
+for i in mosh-server tmux; do
+    if $(command -v $i >/dev/null 2>&1); then
+        :
+    else
+        # later one will override earlier ones if exists
+        for j in "$HOMEBREW_PREFIX/bin/$i" "/opt/local/bin/$i"; do
+            [[ -f "$j" ]] && alias $i="$j"
+        done
+    fi
+done
