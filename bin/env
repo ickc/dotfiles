@@ -18,9 +18,10 @@ esac
 
 # assume it is my own computer if it is not in this list
 # using hostname instead of HOSTNAME as the env var might not be set at this stage
-case "$(hostname)" in
+[[ -z "$HOSTNAME" ]] && export HOSTNAME="$(hostname)"
+case "$HOSTNAME" in
     cori*)                        __HOST=cori      ;;
-    *stampede2*)                  __HOST=stampede2 ;; 
+    *stampede2*)                  __HOST=stampede2 ;;
     comet*)                       __HOST=comet     ;;
     gordita.physics.berkeley.edu) __HOST=gordita   ;;
     bolo.berkeley.edu)            __HOST=bolo      ;;
