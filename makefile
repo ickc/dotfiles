@@ -19,4 +19,4 @@ uninstall:
 	# from install
 	rm -rf $$HOME/git/fork/sman $$HOME/git/source/sman-snippets $$HOME/.zprezto $$HOME/.sman
 	# from make.sh
-	[[ -n "$$NERSC_HOST" ]] && EXT='.ext' || EXT=; echo $$EXT; rm -f "$$HOME/.bash_profile$$EXT" "$$HOME/.bashrc$$EXT" "$$HOME/.zshenv$$EXT" "$$HOME/.zprofile$$EXT" "$$HOME/.zshrc$$EXT" "$$HOME/.zlogin$$EXT" "$$HOME/.zlogout" "$$HOME/.zpreztorc" "$$HOME/.p10k.zsh"
+	rm -f "$$HOME/.bash_profile" "$$HOME/.bashrc" "$$HOME/.zshenv" "$$HOME/.zprofile" "$$HOME/.zshrc" "$$HOME/.zlogin" "$$HOME/.zlogout" "$$HOME/.zpreztorc" "$$HOME/.p10k.zsh"
