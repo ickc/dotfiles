@@ -153,6 +153,7 @@ ml_brew () {
     path_prepend "$HOMEBREW_PREFIX/sbin"
     path_prepend_all "$HOMEBREW_PREFIX"
 
+    # TODO: remove this when all systems migrated away from GNU-ize
     # GNU-ize only needed on macOS
     [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]] && . "$HOME/.path"
 
@@ -162,6 +163,7 @@ ml_brew () {
 mu_brew () {
     unset HOMEBREW_CELLAR
     unset HOMEBREW_REPOSITORY
+    # TODO: remove this when all systems migrated away from GNU-ize
     # from "$HOME/.path"
     unset HOMEBREW_CC
     unset HOMEBREW_CXX
