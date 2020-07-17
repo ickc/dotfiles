@@ -123,3 +123,5 @@ for i in mosh-server tmux; do
         done
     }
 done
+
+command -v ytop >/dev/null 2>&1 || alias ytop='ytop -p -c solarized-dark'
