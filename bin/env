@@ -125,3 +125,4 @@ for i in mosh-server tmux; do
 done
 
 alias ytop='ytop -p -c solarized-dark'
+alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
