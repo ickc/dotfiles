@@ -112,6 +112,10 @@ export SCRATCH
 [[ -n "$__HOST" ]] && export __HOST
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
+# c.f. https://stackoverflow.com/a/23378780/5769446
+export __NCPU="$([ $(uname) = 'Darwin' ] && sysctl -n hw.physicalcpu_max || lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+export MAKEFLAGS="-j$__NCPU"
+
 # alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
 # this is to avoid can't find tmux after `mu`
