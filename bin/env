@@ -92,13 +92,16 @@ case "$__HOST" in
         if [[ "$__OSTYPE" == darwin ]]; then
             SCRATCH="${SCRATCH:-$HOME/scratch}"
 
-            # assuming I always use homebrew to install anaconda3
-            __CONDA_PREFIX="$HOMEBREW_PREFIX/anaconda3"
+            # TODO: remove those that I'm not using anymore
+            for conda_prefix in "$HOMEBREW_PREFIX/anaconda3" "$HOME/.mambaforge"; do
+                command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
+            done
+            unset conda_prefix
         else
             SCRATCH="${SCRATCH:-/scratch}"
 
             # TODO: remove those that I'm not using anymore
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3" "$HOME/.mambaforge"; do
+            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
             unset conda_prefix
