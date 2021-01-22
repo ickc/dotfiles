@@ -232,21 +232,13 @@ case "$__HOST" in
         ml_host () {
             # common polar
             export PBCOMMON="$COMMON_ROOT/polar"
+            conda activate /global/common/software/polar/.conda/envs/system39-conda-forge
             path_append_all "$PBCOMMON/local"
-            # modules
-            module load git
-            module load nano
-            module load parallel
-            module load tmux
         }
 
         mu_host () {
             unset PBCOMMON
-
-            module unload git
-            module unload nano
-            module unload parallel
-            module unload tmux
+            conda deactivate /global/common/software/polar/.conda/envs/system39-conda-forge
         }
 
         ml_toast () {

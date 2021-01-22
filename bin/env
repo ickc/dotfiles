@@ -28,9 +28,6 @@ case "$HOSTNAME" in
     lpc-mini)                     __HOST=lpc-mini  ;;
 esac
 
-[[ "$__HOST" == cori ]] && HOMEBREW_PREFIX=/global/common/software/polar/.linuxbrew
-
-# set HOMEBREW_PREFIX above or detect here
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
     if [[ "$__OSTYPE" == darwin ]]; then
         for homebrew_prefix in "$HOME/.homebrew" /usr/local; do
@@ -51,7 +48,7 @@ case "$__HOST" in
 
         # module load python...
         # . activate && echo $CONDA_PREFIX
-        __CONDA_PREFIX=/usr/common/software/python/3.7-anaconda-2019.07
+        __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
         ;;
     stampede2)
         # SCRATCH already defined, purge after 10 days
@@ -137,12 +134,14 @@ export MAKEFLAGS="-j$__NCPU"
 # this is needed to make sure mosh can see mosh-server not from PATH
 # this is to avoid can't find tmux after `mu`
 for i in mosh-server tmux; do
-    command -v $i >/dev/null 2>&1 || {
-        # later one will override earlier ones if exists
-        for j in "$HOMEBREW_PREFIX/bin/$i" "/opt/local/bin/$i"; do
-            [[ -f "$j" ]] && alias $i="$j"
-        done
-    }
+    # this defines the alias anyway and allow the one below to override it
+    if command -v $i >/dev/null 2>&1; then
+        alias $i="$(which $i)"
+    fi
+    # later one will override earlier ones if exists
+    for j in "$HOMEBREW_PREFIX/bin/$i" "/opt/local/bin/$i" "/global/common/software/polar/.conda/envs/system39-conda-forge/bin/$i"; do
+        [[ -f "$j" ]] && alias $i="$j"
+    done
 done
 
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
