@@ -98,7 +98,7 @@ case "$__HOST" in
             SCRATCH="${SCRATCH:-/scratch}"
 
             # TODO: remove those that I'm not using anymore
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
+            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3" "$HOME/.mambaforge"; do
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
             unset conda_prefix
