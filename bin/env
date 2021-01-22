@@ -117,7 +117,20 @@ export SCRATCH
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
-export __NCPU="$([ $(uname) = 'Darwin' ] && sysctl -n hw.physicalcpu_max || lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+case "$(uname)" in
+    Darwin)
+        export __NCPU="$(sysctl -n hw.physicalcpu_max)"
+        ;;
+    Linux)
+        export __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+        ;;
+    FreeBSD)
+        export __NCPU="$(sysctl -n hw.ncpu)"
+        ;;
+    *)
+        export __NCPU="$(getconf _NPROCESSORS_ONLN 2>/dev/null || getconf NPROCESSORS_ONLN 2>/dev/null || echo 1)"
+        ;;
+esac
 export MAKEFLAGS="-j$__NCPU"
 
 # alias (putting this in "interactive" does not help)
