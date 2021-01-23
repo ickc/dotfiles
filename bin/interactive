@@ -314,11 +314,12 @@ ml () {
     [[ "$__OSTYPE" == darwin ]] && ml_port
     [[ -n "$__CONDA_PREFIX" ]] && ml_conda
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
-    ml_clean
 
     case "$__HOST" in
         cori|comet) ml_host;;
     esac
+
+    ml_clean
 }
 
 mu () {
