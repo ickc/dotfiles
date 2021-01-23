@@ -113,8 +113,9 @@ export SCRATCH
 [[ -n "$__HOST" ]] && export __HOST
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
+__UNAME=$(uname)
 # c.f. https://stackoverflow.com/a/23378780/5769446
-case "$(uname)" in
+case "$__UNAME" in
     Darwin)
         export __NCPU="$(sysctl -n hw.physicalcpu_max)"
         ;;
@@ -133,15 +134,23 @@ export MAKEFLAGS="-j$__NCPU"
 # alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
 # this is to avoid can't find tmux after `mu`
-for i in mosh-server tmux; do
-    # this defines the alias anyway and allow the one below to override it
-    if command -v $i >/dev/null 2>&1; then
-        alias $i="$(which $i)"
-    fi
-    # later one will override earlier ones if exists
-    for j in "$HOMEBREW_PREFIX/bin/$i" "/opt/local/bin/$i" "/global/common/software/polar/.conda/envs/system39-conda-forge/bin/$i"; do
+if [[ "$__UNAME" == Darwin ]]; then
+    __PREFIX=/opt/local/bin
+else
+    case "$__HOST" in
+        cori)
+            __PREFIX=/global/common/software/polar/.conda/envs/system39-conda-forge/bin
+            ;;
+        gordita)
+            __PREFIX=/opt/system39-conda-forge/bin
+            ;;
+    esac
+fi
+if [[ -n "$__PREFIX" ]]; then
+    for i in mosh-server tmux; do
+        j="$__PREFIX/$i"
         [[ -f "$j" ]] && alias $i="$j"
     done
-done
+fi
 
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
