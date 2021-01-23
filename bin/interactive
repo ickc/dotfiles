@@ -242,17 +242,9 @@ case "$__HOST" in
         }
 
         ml_toast () {
-            module use /global/common/software/cmb/cori/default/modulefiles
+            module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
+            # module use /global/common/software/cmb/cori/default/modulefiles
             module load cmbenv
-            source cmbenv
-            /usr/bin/cp -f ~/.condarc.backup ~/.condarc
-        }
-
-        ml_toast2 () {
-            module use /global/common/software/polar/toast/modulefiles
-            module load cmbenv
-            source cmbenv
-            /usr/bin/cp -f ~/.condarc.backup ~/.condarc
         }
         ;;
     comet)
