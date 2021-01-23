@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
 case "$__HOST" in
-    gordita|bolo) echo "exec zsh" > "$HOME/.bash_profile"          ;;
+    gordita|bolo) echo '[[ "$__HOST" == gordita ]] && exec /opt/mambaforge/bin/zsh || exec zsh' > "$HOME/.bash_profile"          ;;
     comet)        echo "exec $(which zsh)" > "$HOME/.bash_profile" ;;
     *)            : > "$HOME/.bash_profile"                        ;;
 esac
@@ -65,11 +65,7 @@ EOF
 # .zpreztorc
 cat << EOF > "$HOME/.zpreztorc"
 [[ -s "$HOME/.zprezto/runcoms/zpreztorc" ]] && . "$HOME/.zprezto/runcoms/zpreztorc"
-# gordita's zsh is too old for this
-case "\$__HOST" in
-    gordita) :                                                   ;;
-    *)       zstyle ':prezto:module:prompt' theme 'powerlevel10k';;
-esac
+zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 EOF
 
 # powerlevel10k
