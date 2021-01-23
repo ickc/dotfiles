@@ -238,7 +238,7 @@ case "$__HOST" in
 
         mu_host () {
             unset PBCOMMON
-            conda deactivate /global/common/software/polar/.conda/envs/system39-conda-forge
+            conda deactivate
         }
 
         ml_toast () {
@@ -263,6 +263,16 @@ case "$__HOST" in
             done
             path_prepend_all /share/apps/compute/gcc-7.2.0
             path_prepend_all /share/apps/compute/parallel
+        }
+        ;;
+    gordita)
+        ml_host () {
+            # common polar
+            conda activate /opt/system39-conda-forge
+        }
+
+        mu_host () {
+            conda deactivate
         }
         ;;
     lpc-mini)
@@ -316,7 +326,7 @@ ml () {
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
 
     case "$__HOST" in
-        cori|comet) ml_host;;
+        cori|comet|gordita) ml_host;;
     esac
 
     ml_clean
