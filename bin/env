@@ -71,7 +71,7 @@ case "$__HOST" in
         export MANPATH=/usr/pkg/man:/usr/pkg/gcc8/man:$MANPATH
         export LD_LIBRARY_PATH="/usr/pkg/gcc8/lib:/usr/pkg/gcc8/x86_64-redhat-linux/lib64:$LD_LIBRARY_PATH"
 
-        # __CONDA_PREFIX=/opt/intel/intelpython3
+        __CONDA_PREFIX=/opt/mambaforge
         ;;
     # same as * case below
     # just define this explicitly
