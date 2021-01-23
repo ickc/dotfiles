@@ -147,7 +147,7 @@ else
     esac
 fi
 if [[ -n "$__PREFIX" ]]; then
-    for i in mosh-server tmux; do
+    for i in mosh-server tmux exa; do
         j="$__PREFIX/$i"
         [[ -f "$j" ]] && alias $i="$j"
     done
