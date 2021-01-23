@@ -245,6 +245,9 @@ case "$__HOST" in
             module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
             # module use /global/common/software/cmb/cori/default/modulefiles
             module load cmbenv
+            # manually edit /global/common/software/polar/.conda/envs/cmbenv/modulefiles/cmbenv/v1.0.3.dev124
+            # to remove PATH editing, sqs alias, PYTHONSTARTUP, PYTHONUSERBASE
+            conda activate /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python
         }
         ;;
     comet)
