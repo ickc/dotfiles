@@ -28,6 +28,8 @@ case "$HOSTNAME" in
     lpc-mini)                     __HOST=lpc-mini  ;;
 esac
 
+[[ -z "$HOST" ]] && export HOST="$__HOST" || export HOST="${HOST%%.*}"
+
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
     if [[ "$__OSTYPE" == darwin ]]; then
         for homebrew_prefix in "$HOME/.homebrew" /usr/local; do
