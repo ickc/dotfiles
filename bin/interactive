@@ -2,6 +2,9 @@
 
 # * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
 
+# set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
+echo -n "\033]0;${HOST}\007"
+
 # helpers ######################################################################
 
 # * any path-like variables should be remember and reset using this machanism
