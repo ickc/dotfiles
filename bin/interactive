@@ -275,21 +275,16 @@ case "$__HOST" in
             conda deactivate
         }
         ;;
-    lpc-mini)
-        ml_toast () {
+    *)
+        ml_toast_gnu () {
             TOAST_PREFIX="$SCRATCH/local/toast-gnu"
             conda activate "$TOAST_PREFIX/conda"
             ld_library_path_prepend "$TOAST_PREFIX/compile/lib"
-            pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.7/site-packages"
+            [[ $__UNAME == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
+            pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.8/site-packages"
             path_prepend "$TOAST_PREFIX/compile/bin:$TOAST_PREFIX/conda/bin"
         }
 
-        ml_toast_conda () {
-            TOAST_PREFIX="$SCRATCH/local/toast-conda"
-            conda activate "$TOAST_PREFIX"
-        }
-        ;;
-    *)
         ml_toast_conda () {
             TOAST_PREFIX="$SCRATCH/local/toast-conda"
             conda activate "$TOAST_PREFIX"
