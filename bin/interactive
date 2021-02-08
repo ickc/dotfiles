@@ -305,6 +305,7 @@ ml_clean () {
 
     # * load minimal environment for interactive use
     path_append_all "$HOME/.local"
+    [[ -d "$HOME/.basher" ]] && path_append_all "$HOME/.basher"
 
     [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on Cori

@@ -26,6 +26,7 @@ cat << EOF > "$HOME/.bashrc"
 [[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
 [[ \$- == *i* && -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
 EOF
+command -v basher >/dev/null 2>&1 && basher init - bash >> "$HOME/.bashrc"
 
 # assume zprezto always at ~/.zprezto
 
@@ -53,6 +54,7 @@ esac
 cat << EOF >> "$HOME/.zshrc"
 [[ -s "$HOME/.zprezto/runcoms/zshrc" ]] && . "$HOME/.zprezto/runcoms/zshrc"
 EOF
+command -v basher >/dev/null 2>&1 && basher init - zsh >> "$HOME/.zshrc"
 # .zlogin
 cat << EOF > "$HOME/.zlogin"
 [[ -s "$HOME/.zprezto/runcoms/zlogin" ]] && . "$HOME/.zprezto/runcoms/zlogin"
