@@ -254,6 +254,11 @@ case "$__HOST" in
             # to fix zsh error
             . /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
         }
+
+        ml_toast_conda () {
+            TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
+            conda activate "$TOAST_PREFIX"
+        }
         ;;
     comet)
         ml_host () {
