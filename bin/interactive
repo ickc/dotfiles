@@ -305,7 +305,7 @@ ml_clean () {
     export GOBIN="$HOME/go/bin"
 
     # * load minimal environment for interactive use
-    path_append_all "$HOME/.local"
+    path_prepend_all "$HOME/.local"
     [[ -d "$HOME/.basher" ]] && path_append_all "$HOME/.basher"
 
     [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
