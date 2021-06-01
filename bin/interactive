@@ -235,8 +235,7 @@ case "$__HOST" in
         ml_host () {
             # common polar
             export PBCOMMON="$COMMON_ROOT/polar"
-            conda activate /global/common/software/polar/.conda/envs/system39-conda-forge
-            path_append_all "$PBCOMMON/local"
+            path_prepend_all "$PBCOMMON/local"
         }
 
         mu_host () {
