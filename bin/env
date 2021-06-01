@@ -144,7 +144,7 @@ else
             __PREFIX=/global/common/software/polar/.conda/envs/system39-conda-forge/bin
             ;;
         gordita)
-            __PREFIX="$HOME/.conda/envs/system39-conda-forge/bin"
+            __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
             ;;
     esac
 fi
