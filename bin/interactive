@@ -270,7 +270,7 @@ case "$__HOST" in
         ;;
     gordita)
         ml_host () {
-            [[ "$__HOST" == gordita ]] && path_prepend_all /opt/system39-conda-forge-bin/bin
+            [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"
         }
 
         mu_host () {
