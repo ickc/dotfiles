@@ -155,4 +155,8 @@ if [[ -n "$__PREFIX" ]]; then
     done
 fi
 
+if [[ "$__HOST" == gordita ]]; then
+    alias mosh-server=/usr/bin/mosh-server
+fi
+
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
