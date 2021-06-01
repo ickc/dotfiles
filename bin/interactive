@@ -240,7 +240,6 @@ case "$__HOST" in
 
         mu_host () {
             unset PBCOMMON
-            conda deactivate
         }
 
         ml_toast () {
@@ -271,12 +270,10 @@ case "$__HOST" in
         ;;
     gordita)
         ml_host () {
-            # common polar
-            conda activate /opt/system39-conda-forge
+            path_prepend_all /opt/system39-conda-forge-bin/bin
         }
 
         mu_host () {
-            conda deactivate
         }
         ;;
     *)
