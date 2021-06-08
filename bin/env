@@ -51,6 +51,12 @@ case "$__HOST" in
         # module load python...
         # . activate && echo $CONDA_PREFIX
         __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
+
+        # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+        export XDG_CONFIG_HOME="$SCRATCH/.local/config"
+        export XDG_CACHE_HOME="$SCRATCH/.local/cache"
+        export XDG_DATA_HOME="$SCRATCH/.local/share"
+        export XDG_STATE_HOME="$SCRATCH/.local/state"
         ;;
     stampede2)
         # SCRATCH already defined, purge after 10 days
