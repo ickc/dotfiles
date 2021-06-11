@@ -52,6 +52,8 @@ case "$__HOST" in
         # . activate && echo $CONDA_PREFIX
         __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
 
+        # unfortunately on cori SCRATCH is not yet defined in this stage. So let's hard-code it here against the recommended practice in https://docs.nersc.gov/filesystems/cori-scratch/
+        SCRATCH=/global/cscratch1/sd/khcheung
         # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
         export XDG_CONFIG_HOME="$SCRATCH/.local/config"
         export XDG_CACHE_HOME="$SCRATCH/.local/cache"
