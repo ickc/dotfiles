@@ -69,6 +69,13 @@ case "$__HOST" in
         # doesn't work, see https://github.com/conda/conda/issues/10719
         # export CONDA_PKGS_DIRS="$(find /usr/common/software/python -maxdepth 2 -mindepth 2 -type d -name pkgs | sort -r | tr '\n' ':')$XDG_CACHE_HOME/conda/pkgs"
         export CONDA_BLD_PATH="$XDG_CACHE_HOME/conda-bld/"
+
+        # https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
+        export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
+        export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
+        export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME"/mathematica
+        export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
+        export WGETRC="$XDG_CONFIG_HOME/wgetrc"
         ;;
     stampede2)
         # SCRATCH already defined, purge after 10 days
