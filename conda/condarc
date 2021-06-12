@@ -1,0 +1,7 @@
+channels:
+    - conda-forge
+    - defaults
+allow_softlinks: False
+create_default_packages:
+    - mamba
+default_threads: 16
