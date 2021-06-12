@@ -4,6 +4,9 @@
 # SCRATCH, HOMEBREW_PREFIX, __CONDA_PREFIX
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
+# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
+export CONDARC="$HOME/git/source/dotfiles/conda/condarc"
+
 # normalize OSTYPE
 # unset means unknown
 # c.f. https://stackoverflow.com/a/18434831
@@ -59,6 +62,13 @@ case "$__HOST" in
         export XDG_CACHE_HOME="$SCRATCH/.local/cache"
         export XDG_DATA_HOME="$SCRATCH/.local/share"
         export XDG_STATE_HOME="$SCRATCH/.local/state"
+
+        # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
+        export CONDA_ENVS_PATH="$XDG_DATA_HOME/conda/envs:$COMMON_ROOT/polar/.conda/envs"
+        export CONDA_PKGS_DIRS="$XDG_CACHE_HOME/conda/pkgs"
+        # doesn't work, see https://github.com/conda/conda/issues/10719
+        # export CONDA_PKGS_DIRS="$(find /usr/common/software/python -maxdepth 2 -mindepth 2 -type d -name pkgs | sort -r | tr '\n' ':')$XDG_CACHE_HOME/conda/pkgs"
+        export CONDA_BLD_PATH="$XDG_CACHE_HOME/conda-bld/"
         ;;
     stampede2)
         # SCRATCH already defined, purge after 10 days
