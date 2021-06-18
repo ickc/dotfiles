@@ -185,3 +185,15 @@ if [[ "$__HOST" == gordita ]]; then
 fi
 
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
+
+# basher
+if [[ -d "$HOME/.basher" ]]; then
+    export BASHER_ROOT="$HOME/.basher"
+    export BASHER_PREFIX="$HOME/.basher/cellar"
+    export BASHER_PACKAGES_PATH="$HOME/.basher/cellar/packages"
+    if [[ -n "$ZSH_VERSION" ]]; then
+        export BASHER_SHELL=zsh
+    elif [ -n "$BASH_VERSION" ]; then
+        export BASHER_SHELL=bash
+    fi
+fi
