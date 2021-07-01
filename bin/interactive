@@ -305,8 +305,7 @@ case "$__HOST" in
         }
 
         ml_toast_conda () {
-            TOAST_PREFIX="$SCRATCH/local/toast-conda"
-            conda activate "$TOAST_PREFIX"
+            conda activate toast-conda
         }
         ;;
 esac
