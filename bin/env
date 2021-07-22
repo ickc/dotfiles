@@ -76,6 +76,9 @@ case "$__HOST" in
         export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME"/mathematica
         export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
         export WGETRC="$XDG_CONFIG_HOME/wgetrc"
+
+        # https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
+        export NUMBA_CACHE_DIR="$XDG_CACHE_HOME/numba"
         ;;
     stampede2)
         # SCRATCH already defined, purge after 10 days
