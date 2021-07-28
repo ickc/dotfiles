@@ -72,3 +72,6 @@ EOF
 
 # powerlevel10k
 ln -sf "$DIR/.p10k.zsh" "$HOME"
+
+# git
+ln -sf "$DIR/git/ignore" "$HOME/.config/git"
