@@ -96,10 +96,6 @@ case "$__HOST" in
     gordita)
         SCRATCH="/scratch2/$USER"
         export EDITOR=nano
-        # pkgsrc
-        export PATH=/usr/pkg/sbin:/usr/pkg/bin:/usr/pkg/gcc8/bin:$PATH
-        export MANPATH=/usr/pkg/man:/usr/pkg/gcc8/man:$MANPATH
-        export LD_LIBRARY_PATH="/usr/pkg/gcc8/lib:/usr/pkg/gcc8/x86_64-redhat-linux/lib64:$LD_LIBRARY_PATH"
 
         __CONDA_PREFIX="$HOME/mambaforge"
         ;;
