@@ -59,12 +59,12 @@ fi
 case "$__HOST" in
     cori)
         # unfortunately on cori SCRATCH is not yet defined in this stage. So let's hard-code it here against the recommended practice in https://docs.nersc.gov/filesystems/cori-scratch/
-        [[ -z "$SCRATCH" ]] && printerr "SCRATCH is not defined on $__HOST at the stage, setting to /global/cscratch1/sd/khcheung"
-        SCRATCH=/global/cscratch1/sd/khcheung
+        [[ -z "$SCRATCH" ]] && printerr "SCRATCH is not defined on $__HOST at the stage, setting to /global/cscratch1/sd/$USERNAME"
+        SCRATCH="/global/cscratch1/sd/$USERNAME"
         ;&
     perlmutter)
-        [[ -z "$PSCRATCH" ]] && printerr "PSCRATCH is not defined on $__HOST at the stage, setting to /pscratch/sd/k/khcheung"
-        PSCRATCH=/pscratch/sd/k/khcheung
+        [[ -z "$PSCRATCH" ]] && printerr "PSCRATCH is not defined on $__HOST at the stage, setting to /pscratch/sd/k/$USERNAME"
+        PSCRATCH="/pscratch/sd/k/$USERNAME"
         SCRATCH="$PSCRATCH"
         ;&
     cori|perlmutter)
