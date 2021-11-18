@@ -59,20 +59,22 @@ fi
 
 # set __HOST-specific env var
 case "$__HOST" in
-    cori)
-        SCRATCH="/global/cscratch1/sd/$USERNAME"
-
-        # update by running
-        # module load python...
-        # . activate && echo $CONDA_PREFIX
-        __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
-        ;&
-    perlmutter)
-        SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
-
-        __CONDA_PREFIX=/global/common/software/nersc/shasta2105/python/3.8-anaconda-2021.05
-        ;&
     cori|perlmutter)
+        case "$__HOST" in
+            cori)
+                SCRATCH="/global/cscratch1/sd/$USERNAME"
+
+                # update by running
+                # module load python...
+                # . activate && echo $CONDA_PREFIX
+                __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
+                ;;
+            perlmutter)
+                SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
+
+                __CONDA_PREFIX=/global/common/software/nersc/shasta2105/python/3.8-anaconda-2021.05
+                ;;
+        esac
         PROJ_ROOT=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
 
