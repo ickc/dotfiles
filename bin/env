@@ -1,38 +1,44 @@
 #!/usr/bin/env bash
 
 # These variables must exist on all systems
-# SCRATCH, HOMEBREW_PREFIX, __CONDA_PREFIX
+# SCRATCH, __CONDA_PREFIX
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
 # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
 export CONDARC="$HOME/git/source/dotfiles/conda/condarc"
 
-# normalize OSTYPE
-# unset means unknown
+# set __OSTYPE as normalized OSTYPE
 # c.f. https://stackoverflow.com/a/18434831
-
 case "$OSTYPE" in
-    solaris*) __OSTYPE=solaris ;;
-    darwin*)  __OSTYPE=darwin  ;; 
-    linux*)   __OSTYPE=linux   ;;
-    *bsd*)    __OSTYPE=bsd     ;;
-    msys*)    __OSTYPE=msys    ;;
+    solaris*)   __OSTYPE=solaris    ;;
+    darwin*)    __OSTYPE=darwin     ;; 
+    linux*)     __OSTYPE=linux      ;;
+    *bsd*)      __OSTYPE=bsd        ;;
+    msys*)      __OSTYPE=msys       ;;
+    *)          __OSTYPE="$OSTYPE"  ;;
 esac
 
-# assume it is my own computer if it is not in this list
-# using hostname instead of HOSTNAME as the env var might not be set at this stage
-[[ -z "$HOSTNAME" ]] && export HOSTNAME="$(hostname)"
-case "$HOSTNAME" in
-    cori*)                        __HOST=cori      ;;
-    *stampede2*)                  __HOST=stampede2 ;;
-    comet*)                       __HOST=comet     ;;
-    gordita.physics.berkeley.edu) __HOST=gordita   ;;
-    bolo.berkeley.edu)            __HOST=bolo      ;;
-    lpc-mini)                     __HOST=lpc-mini  ;;
-esac
+# set HOSTNAME by hostname if undefined
+if [[ -z "$HOSTNAME" ]]; then
+    HOSTNAME="$(hostname)"
+    export HOSTNAME
+fi
 
-[[ -z "$HOST" ]] && export HOST="$__HOST" || export HOST="${HOST%%.*}"
+# set __HOST
+if [[ -n "$NERSC_HOST" ]]; then
+    __HOST="$NERSC_HOST"
+else
+    case "$HOSTNAME" in
+        *stampede2*)                    __HOST=stampede2    ;;
+        comet*)                         __HOST=comet        ;;
+        gordita.physics.berkeley.edu)   __HOST=gordita      ;;
+        bolo.berkeley.edu)              __HOST=bolo         ;;
+        lpc-mini)                       __HOST=lpc-mini     ;;
+        *)                              __HOST="$HOSTNAME"  ;;
+    esac
+fi
 
+# set HOMEBREW_PREFIX if undefined and discovered
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
     if [[ "$__OSTYPE" == darwin ]]; then
         for homebrew_prefix in "$HOME/.homebrew" /usr/local; do
@@ -45,18 +51,26 @@ if [[ -z "$HOMEBREW_PREFIX" ]]; then
     unset homebrew_prefix
 fi
 
+# set __HOST-specific env var
 case "$__HOST" in
     cori)
-        # SCRATCH already defined
+        # unfortunately on cori SCRATCH is not yet defined in this stage. So let's hard-code it here against the recommended practice in https://docs.nersc.gov/filesystems/cori-scratch/
+        [[ -z "$SCRATCH" ]] && printerr "SCRATCH is not defined on $__HOST at the stage, setting to /global/cscratch1/sd/khcheung"
+        SCRATCH=/global/cscratch1/sd/khcheung
+        ;&
+    perlmutter)
+        [[ -z "$PSCRATCH" ]] && printerr "PSCRATCH is not defined on $__HOST at the stage, please set this manually."
+        SCRATCH="$PSCRATCH"
+        ;&
+    cori|perlmutter)
         PROJ_ROOT=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
 
+        # update by running
         # module load python...
         # . activate && echo $CONDA_PREFIX
         __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
 
-        # unfortunately on cori SCRATCH is not yet defined in this stage. So let's hard-code it here against the recommended practice in https://docs.nersc.gov/filesystems/cori-scratch/
-        SCRATCH=/global/cscratch1/sd/khcheung
         # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
         export XDG_CONFIG_HOME="$SCRATCH/.local/config"
         export XDG_CACHE_HOME="$SCRATCH/.local/cache"
@@ -115,7 +129,9 @@ case "$__HOST" in
         if [[ "$__OSTYPE" == darwin ]]; then
             SCRATCH="${SCRATCH:-$HOME/scratch}"
 
-            # TODO: remove those that I'm not using anymore
+            conda_prefix="$HOMEBREW_PREFIX/anaconda3"
+            [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
+
             for conda_prefix in "$HOMEBREW_PREFIX/anaconda3" "$HOME/.mambaforge"; do
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
@@ -123,7 +139,9 @@ case "$__HOST" in
         else
             SCRATCH="${SCRATCH:-/scratch}"
 
-            # TODO: remove those that I'm not using anymore
+            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
+                [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
+            done
             for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3" "$HOME/.mambaforge"; do
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
@@ -132,39 +150,46 @@ case "$__HOST" in
         ;;
 esac
 
-export SCRATCH
+if [[ -z "$NERSC_HOST" ]]; then
+    export SCRATCH
+else
+    # TODO
+    printerr "SCRATCH is not exported on $NERSC_HOST, please check it equals to $SCRATCH"
+fi
+export __OSTYPE
+export __HOST
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
-[[ -n "$__OSTYPE" ]] && export __OSTYPE
-[[ -n "$__HOST" ]] && export __HOST
+[[ -n "$PROJ_DIR" ]] && export PROJ_DIR
+[[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
-__UNAME=$(uname)
 # c.f. https://stackoverflow.com/a/23378780/5769446
-case "$__UNAME" in
-    Darwin)
-        export __NCPU="$(sysctl -n hw.physicalcpu_max)"
+case "$__OSTYPE" in
+    darwin)
+        __NCPU="$(sysctl -n hw.physicalcpu_max)"
         ;;
-    Linux)
-        export __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+    linux)
+        __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
         ;;
-    FreeBSD)
-        export __NCPU="$(sysctl -n hw.ncpu)"
+    bsd)
+        __NCPU="$(sysctl -n hw.ncpu)"
         ;;
     *)
-        export __NCPU="$(getconf _NPROCESSORS_ONLN 2>/dev/null || getconf NPROCESSORS_ONLN 2>/dev/null || echo 1)"
+        __NCPU="$(getconf _NPROCESSORS_ONLN 2>/dev/null || getconf NPROCESSORS_ONLN 2>/dev/null || echo 1)"
         ;;
 esac
+export __NCPU
 export MAKEFLAGS="-j$__NCPU"
 
-# alias (putting this in "interactive" does not help)
+# set alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
 # this is to avoid can't find tmux after `mu`
-if [[ "$__UNAME" == Darwin ]]; then
+if [[ "$__OSTYPE" == darwin ]]; then
     __PREFIX=/opt/local/bin
 else
     case "$__HOST" in
-        cori)
+        cori|perlmutter)
             __PREFIX=/global/common/software/polar/.conda/envs/system39-conda-forge/bin
             ;;
         gordita)
@@ -177,10 +202,6 @@ if [[ -n "$__PREFIX" ]]; then
         j="$__PREFIX/$i"
         [[ -f "$j" ]] && alias $i="$j"
     done
-fi
-
-if [[ "$__HOST" == gordita ]]; then
-    alias mosh-server=/usr/bin/mosh-server
 fi
 
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'

@@ -3,7 +3,7 @@
 # * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
-echo -n "\033]0;${HOST}\007"
+echo -n "\033]0;${__HOST%%.*}\007"
 
 # helpers ######################################################################
 
@@ -158,7 +158,10 @@ ml_brew () {
 
     # TODO: remove this when all systems migrated away from GNU-ize
     # GNU-ize only needed on macOS
-    [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]] && . "$HOME/.path"
+    if [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]]; then
+        printerr "Deprecation notice: $HOME/.path will be ignored in the next release. This may be present if you used GNU-ize before."
+        . "$HOME/.path"
+    fi
 
     path_prepend_all "$HOMEBREW_PREFIX/opt/ruby"
 }
@@ -250,7 +253,7 @@ ml_cg () {
 # hosts ========================================================================
 
 case "$__HOST" in
-    cori)
+    cori|perlmutter)
         ml_host () {
             # common polar
             export PBCOMMON="$COMMON_ROOT/polar"
@@ -293,6 +296,7 @@ case "$__HOST" in
         }
 
         mu_host () {
+            true
         }
         ;;
     *)
@@ -348,11 +352,31 @@ ml () {
 }
 
 mu () {
-    [[ -n "$__PATH" ]] && export PATH="$__PATH" || unset PATH
-    [[ -n "$__MANPATH" ]] && export MANPATH="$__MANPATH" || unset MANPATH
-    [[ -n "$__INFOPATH" ]] && export INFOPATH="$__INFOPATH" || unset INFOPATH
-    [[ -n "$__PYTHONPATH" ]] && export PYTHONPATH="$__PYTHONPATH" || unset PYTHONPATH
-    [[ -n "$__LD_LIBRARY_PATH" ]] && export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH" || unset LD_LIBRARY_PATH
+    if [[ -n "$__PATH" ]]; then
+        export PATH="$__PATH"
+    else
+        unset PATH
+    fi
+    if [[ -n "$__MANPATH" ]]; then
+        export MANPATH="$__MANPATH"
+    else
+        unset MANPATH
+    fi
+    if [[ -n "$__INFOPATH" ]]; then
+        export INFOPATH="$__INFOPATH"
+    else
+        unset INFOPATH
+    fi
+    if [[ -n "$__PYTHONPATH" ]]; then
+        export PYTHONPATH="$__PYTHONPATH"
+    else
+        unset PYTHONPATH
+    fi
+    if [[ -n "$__LD_LIBRARY_PATH" ]]; then
+        export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH"
+    else
+        unset LD_LIBRARY_PATH
+    fi
 
     mu_brew
     mu_conda
@@ -364,16 +388,22 @@ mu () {
 }
 
 mkdir_xdg () {
-    # see https://docs.astropy.org/en/stable/config/index.html#getting-started
-    [[ -n "$XDG_CONFIG_HOME/astropy" ]] && mkdir -p "$XDG_CONFIG_HOME/astropy"
-    [[ -n "$XDG_CACHE_HOME/astropy" ]] && mkdir -p "$XDG_CACHE_HOME/astropy"
     [[ -n "$XDG_DATA_HOME" ]] && mkdir -p "$XDG_DATA_HOME"
     [[ -n "$XDG_STATE_HOME" ]] && mkdir -p "$XDG_STATE_HOME"
+    [[ -n "$XDG_CONFIG_HOME" ]] && mkdir -p "$XDG_CONFIG_HOME"
+    [[ -n "$XDG_CACHE_HOME" ]] && mkdir -p "$XDG_CACHE_HOME"
+    # see https://docs.astropy.org/en/stable/config/index.html#getting-started
+    [[ ! -d "$XDG_CONFIG_HOME/astropy" ]] && mkdir -p "$XDG_CONFIG_HOME/astropy"
+    [[ ! -d "$XDG_CACHE_HOME/astropy" ]] && mkdir -p "$XDG_CACHE_HOME/astropy"
 }
 
 # main #########################################################################
 
-[[ -n "$__CLEAN" ]] && ml_clean || ml
+if [[ -n "$__CLEAN" ]]; then
+    ml_clean
+else
+    ml
+fi
 
 # even if this doesn't mask the world readability
 # the parent directories should protect it already
