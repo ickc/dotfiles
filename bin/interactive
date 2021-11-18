@@ -5,6 +5,30 @@
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 echo -n "\033]0;${__HOST%%.*}\007"
 
+case "$__HOST" in
+    cori)
+        __SCRATCH="/global/cscratch1/sd/$USERNAME"
+        if [[ -z "$SCRATCH" ]]; then
+            printerr "SCRATCH is not defined on $__HOST at the stage of interactive, please check that it equals to $__SCRATCH"
+        elif [[ "$SCRATCH" != "$__SCRATCH" ]]; then
+            printerr "Warning: SCRATCH is defined as $SCRATCH while I assumed $__SCRATCH."
+        fi
+        ;;
+    perlmutter)
+        __SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
+        if [[ -z "$PSCRATCH" ]]; then
+            printerr "PSCRATCH is not defined on $__HOST at the stage of interactive, please check that it equals to $__SCRATCH"
+        elif [[ "$PSCRATCH" != "$__SCRATCH" ]]; then
+            printerr "Warning: PSCRATCH is defined as $PSCRATCH while I assumed $__SCRATCH."
+        fi
+        if [[ -z "$SCRATCH" ]]; then
+            printerr "SCRATCH is not defined on $__HOST at the stage of interactive, please check that it equals to $__SCRATCH"
+        elif [[ "$SCRATCH" != "$__SCRATCH" ]]; then
+            printerr "Warning: SCRATCH is defined as $SCRATCH while I assumed $__SCRATCH."
+        fi
+        ;;
+esac
+
 # helpers ######################################################################
 
 # * any path-like variables should be remember and reset using this machanism
