@@ -63,7 +63,8 @@ case "$__HOST" in
         SCRATCH=/global/cscratch1/sd/khcheung
         ;&
     perlmutter)
-        [[ -z "$PSCRATCH" ]] && printerr "PSCRATCH is not defined on $__HOST at the stage, please set this manually."
+        [[ -z "$PSCRATCH" ]] && printerr "PSCRATCH is not defined on $__HOST at the stage, setting to /pscratch/sd/k/khcheung"
+        PSCRATCH=/pscratch/sd/k/khcheung
         SCRATCH="$PSCRATCH"
         ;&
     cori|perlmutter)
