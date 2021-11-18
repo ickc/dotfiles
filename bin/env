@@ -59,15 +59,12 @@ fi
 case "$__HOST" in
     cori)
         __SCRATCH="/global/cscratch1/sd/$USERNAME"
-        # unfortunately on cori SCRATCH is not yet defined in this stage. So let's hard-code it here against the recommended practice in https://docs.nersc.gov/filesystems/cori-scratch/
-        [[ -z "$SCRATCH" ]] && printerr "SCRATCH is not defined on $__HOST at the stage of env, setting to $__SCRATCH"
-        SCRATCH="$__SCRATCH"
+        [[ -z "$SCRATCH" ]] && SCRATCH="$__SCRATCH"
         ;&
     perlmutter)
         __SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
-        [[ -z "$PSCRATCH" ]] && printerr "PSCRATCH is not defined on $__HOST at the stage of env, setting to $__SCRATCH"
-        PSCRATCH="$__SCRATCH"
-        SCRATCH="$PSCRATCH"
+        if [[ -z "$PSCRATCH" ]] && PSCRATCH="$__SCRATCH"
+        if [[ -z "$SCRATCH" ]] && SCRATCH="$__SCRATCH"
         ;&
     cori|perlmutter)
         PROJ_ROOT=/global/cfs/cdirs

@@ -8,7 +8,6 @@ echo -n "\033]0;${__HOST%%.*}\007"
 # check $SCRATCH as it is not defined yet at the stage of env
 case "$__HOST" in
     cori)
-        __SCRATCH="/global/cscratch1/sd/$USERNAME"
         if [[ -z "$SCRATCH" ]]; then
             printerr "SCRATCH is not defined on $__HOST at the stage of interactive, please check that it equals to $__SCRATCH"
         elif [[ "$SCRATCH" != "$__SCRATCH" ]]; then
@@ -16,7 +15,6 @@ case "$__HOST" in
         fi
         ;;
     perlmutter)
-        __SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
         if [[ -z "$PSCRATCH" ]]; then
             printerr "PSCRATCH is not defined on $__HOST at the stage of interactive, please check that it equals to $__SCRATCH"
         elif [[ "$PSCRATCH" != "$__SCRATCH" ]]; then
