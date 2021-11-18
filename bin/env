@@ -63,7 +63,6 @@ case "$__HOST" in
         ;&
     perlmutter)
         __SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
-        if [[ -z "$PSCRATCH" ]] && PSCRATCH="$__SCRATCH"
         if [[ -z "$SCRATCH" ]] && SCRATCH="$__SCRATCH"
         ;&
     cori|perlmutter)
@@ -154,14 +153,7 @@ case "$__HOST" in
         ;;
 esac
 
-# don't set/export SCRATCH by ourselves but check the assumption above is correct
-# during interactive stage
-if [[ -z "$NERSC_HOST" ]]; then
-    export SCRATCH
-else
-    unset SCRATCH
-    unset PSCRATCH
-fi
+export SCRATCH
 export __OSTYPE
 export __HOST
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
