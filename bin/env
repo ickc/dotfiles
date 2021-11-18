@@ -60,19 +60,21 @@ case "$__HOST" in
     cori)
         __SCRATCH="/global/cscratch1/sd/$USERNAME"
         [[ -z "$SCRATCH" ]] && SCRATCH="$__SCRATCH"
-        ;&
-    perlmutter)
-        __SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
-        if [[ -z "$SCRATCH" ]] && SCRATCH="$__SCRATCH"
-        ;&
-    cori|perlmutter)
-        PROJ_ROOT=/global/cfs/cdirs
-        COMMON_ROOT=/global/common/software
 
         # update by running
         # module load python...
         # . activate && echo $CONDA_PREFIX
         __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
+        ;&
+    perlmutter)
+        __SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
+        if [[ -z "$SCRATCH" ]] && SCRATCH="$__SCRATCH"
+
+        __CONDA_PREFIX=/global/common/software/nersc/shasta2105/python/3.8-anaconda-2021.05
+        ;&
+    cori|perlmutter)
+        PROJ_ROOT=/global/cfs/cdirs
+        COMMON_ROOT=/global/common/software
 
         # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
         export XDG_CONFIG_HOME="$SCRATCH/.local/config"
