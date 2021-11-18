@@ -345,7 +345,7 @@ ml () {
     [[ -n "$BASHER_PREFIX" ]] && ml_basher
 
     case "$__HOST" in
-        cori|comet|gordita) ml_host;;
+        cori|perlmutter|comet|gordita) ml_host;;
     esac
 
     ml_clean
@@ -383,7 +383,7 @@ mu () {
     mu_s
     mu_exa
     case "$__HOST" in
-        cori) mu_host;;
+        cori|perlmutter) mu_host;;
     esac
 }
 
