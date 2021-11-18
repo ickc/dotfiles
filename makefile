@@ -20,3 +20,6 @@ uninstall:
 	rm -rf $$HOME/git/fork/sman $$HOME/git/source/sman-snippets $$HOME/.zprezto $$HOME/.sman
 	# from make.sh
 	rm -f "$$HOME/.bash_profile" "$$HOME/.bashrc" "$$HOME/.zshenv" "$$HOME/.zprofile" "$$HOME/.zshrc" "$$HOME/.zlogin" "$$HOME/.zlogout" "$$HOME/.zpreztorc" "$$HOME/.p10k.zsh"
+
+todo:
+	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
