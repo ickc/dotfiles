@@ -30,9 +30,11 @@ fi
 
 # set __HOST
 if [[ -n "$NERSC_HOST" ]]; then
+    # permutter has this defined at this stage, but not cori
     __HOST="$NERSC_HOST"
 else
     case "$HOSTNAME" in
+        cori*)                          __HOST=cori         ;;
         *stampede2*)                    __HOST=stampede2    ;;
         comet*)                         __HOST=comet        ;;
         gordita.physics.berkeley.edu)   __HOST=gordita      ;;
