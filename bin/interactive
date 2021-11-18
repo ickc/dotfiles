@@ -5,6 +5,7 @@
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 echo -n "\033]0;${__HOST%%.*}\007"
 
+# check $SCRATCH as it is not defined yet at the stage of env
 case "$__HOST" in
     cori)
         __SCRATCH="/global/cscratch1/sd/$USERNAME"

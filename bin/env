@@ -157,11 +157,11 @@ case "$__HOST" in
         ;;
 esac
 
+# don't set/export SCRATCH by ourselves but check the assumption above is correct
+# during interactive stage
 if [[ -z "$NERSC_HOST" ]]; then
     export SCRATCH
 else
-    # TODO
-    printerr "SCRATCH is not exported on $NERSC_HOST, please check it equals to $SCRATCH"
     unset SCRATCH
     unset PSCRATCH
 fi
