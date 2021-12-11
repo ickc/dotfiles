@@ -160,7 +160,7 @@ esac
 export SCRATCH
 export __OSTYPE
 export __HOST
-[[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX
+[[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX HOMEBREW_NO_ANALYTICS=1
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
 [[ -n "$PROJ_DIR" ]] && export PROJ_DIR
 [[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
