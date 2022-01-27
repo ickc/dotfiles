@@ -1,0 +1,2 @@
+player=mpv --cache=yes --demuxer-max-bytes=8192 --cache-secs=10 --cache-pause-initial=yes
+stream-segment-threads 10

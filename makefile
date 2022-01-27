@@ -1,7 +1,9 @@
 SHELL = /usr/bin/env bash
 
-all:
-	./make.sh
+# option: slow, fast
+MPV=fast
+
+all: streamlink-install mpv-install shell-dot
 
 install:
 	@echo "Don't allow these to change your dotfiles automatically. We'll take care of that later."
@@ -23,3 +25,14 @@ uninstall:
 
 todo:
 	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
+
+# individual ###########################################################
+
+shell-dot:
+	./make.sh
+
+streamlink-install:
+	cd streamlink; ./install.sh
+
+mpv-install:
+	cd mpv; ./install.sh $(MPV)
