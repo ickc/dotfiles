@@ -69,11 +69,3 @@ cat << EOF > "$HOME/.zpreztorc"
 [[ -s "$HOME/.zprezto/runcoms/zpreztorc" ]] && . "$HOME/.zprezto/runcoms/zpreztorc"
 zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 EOF
-
-# git
-if [[ -n "$XDG_CONFIG_HOME" ]]; then
-    ln -sf "$DIR/git/ignore" "$XDG_CONFIG_HOME/git"
-else
-    mkdir -p "$HOME/.config/git"
-    ln -sf "$DIR/git/ignore" "$HOME/.config/git"
-fi
