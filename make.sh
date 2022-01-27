@@ -70,9 +70,6 @@ cat << EOF > "$HOME/.zpreztorc"
 zstyle ':prezto:module:prompt' theme 'powerlevel10k'
 EOF
 
-# powerlevel10k
-ln -sf "$DIR/.p10k.zsh" "$HOME"
-
 # git
 if [[ -n "$XDG_CONFIG_HOME" ]]; then
     ln -sf "$DIR/git/ignore" "$XDG_CONFIG_HOME/git"
