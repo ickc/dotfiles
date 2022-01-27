@@ -63,9 +63,3 @@ EOF
 cat << EOF > "$HOME/.zlogout"
 [[ -s "$HOME/.zprezto/runcoms/zlogout" ]] && . "$HOME/.zprezto/runcoms/zlogout"
 EOF
-
-# .zpreztorc
-cat << EOF > "$HOME/.zpreztorc"
-[[ -s "$HOME/.zprezto/runcoms/zpreztorc" ]] && . "$HOME/.zprezto/runcoms/zpreztorc"
-zstyle ':prezto:module:prompt' theme 'powerlevel10k'
-EOF

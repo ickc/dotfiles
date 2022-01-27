@@ -37,6 +37,9 @@ powerlevel10k-install:
 git-install:
 	cd git; ./install.sh
 
+zprezto-install:
+	cd zprezto; ./install.sh
+
 streamlink-install:
 	cd streamlink; ./install.sh
 
