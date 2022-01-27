@@ -16,15 +16,15 @@ case "$__HOST" in
 esac
 
 cat << EOF >> "$HOME/.bash_profile"
-[[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
-[[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
+[[ -s "$DIR/env" ]] && . "$DIR/env"
+[[ -s "$DIR/.env" ]] && . "$DIR/.env"
 EOF
 
 # .bashrc
 cat << EOF > "$HOME/.bashrc"
-[[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
-[[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
-[[ \$- == *i* && -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
+[[ -s "$DIR/env" ]] && . "$DIR/env"
+[[ -s "$DIR/.env" ]] && . "$DIR/.env"
+[[ \$- == *i* && -s "$DIR/interactive" ]] && . "$DIR/interactive"
 EOF
 command -v basher >/dev/null 2>&1 && basher init - bash >> "$HOME/.bashrc"
 
@@ -32,8 +32,8 @@ command -v basher >/dev/null 2>&1 && basher init - bash >> "$HOME/.bashrc"
 
 # .zshenv
 cat << EOF > "$HOME/.zshenv"
-[[ -s "$DIR/bin/env" ]] && . "$DIR/bin/env"
-[[ -s "$DIR/bin/.env" ]] && . "$DIR/bin/.env"
+[[ -s "$DIR/env" ]] && . "$DIR/env"
+[[ -s "$DIR/.env" ]] && . "$DIR/.env"
 [[ -s "$HOME/.zprezto/runcoms/zshenv" ]] && . "$HOME/.zprezto/runcoms/zshenv"
 EOF
 
@@ -43,7 +43,7 @@ cat << EOF > "$HOME/.zprofile"
 EOF
 # .zshrc
 cat << EOF > "$HOME/.zshrc"
-[[ -s "$DIR/bin/interactive" ]] && . "$DIR/bin/interactive"
+[[ -s "$DIR/interactive" ]] && . "$DIR/interactive"
 EOF
 # only inserted in this order works
 # c.f. https://github.com/sorin-ionescu/prezto/issues/657#issuecomment-52546927

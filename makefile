@@ -3,7 +3,7 @@ SHELL = /usr/bin/env bash
 # option: slow, fast
 MPV=fast
 
-all: powerlevel10k-install git-install streamlink-install mpv-install shell-dot
+all: shell-install powerlevel10k-install git-install streamlink-install mpv-install
 
 install:
 	@echo "Don't allow these to change your dotfiles automatically. We'll take care of that later."
@@ -28,8 +28,8 @@ todo:
 
 # individual ###########################################################
 
-shell-dot:
-	./make.sh
+shell-install:
+	cd bin; ./install.sh
 
 powerlevel10k-install:
 	cd powerlevel10k; ./install.sh
