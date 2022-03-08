@@ -3,7 +3,7 @@ SHELL = /usr/bin/env bash
 # option: slow, fast
 MPV=fast
 
-all: shell-install powerlevel10k-install git-install conda-install streamlink-install mpv-install
+all: shell-install powerlevel10k-install git-install conda-install zprezto-install streamlink-install mpv-install
 
 install:
 	@echo "Don't allow these to change your dotfiles automatically. We'll take care of that later."
