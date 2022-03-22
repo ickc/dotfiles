@@ -72,7 +72,7 @@ case "$__HOST" in
             perlmutter)
                 SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
 
-                __CONDA_PREFIX=/global/common/software/nersc/shasta2105/python/3.8-anaconda-2021.05
+                __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
                 ;;
         esac
         PROJ_ROOT=/global/cfs/cdirs
