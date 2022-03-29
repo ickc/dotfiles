@@ -10,9 +10,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
 case "$__HOST" in
-    gordita|bolo) echo '[[ "$HOSTNAME" == gordita* ]] && exec /usr/pkg/bin/zsh || exec zsh' > "$HOME/.bash_profile"          ;;
-    comet)        echo "exec $(which zsh)" > "$HOME/.bash_profile" ;;
-    *)            : > "$HOME/.bash_profile"                        ;;
+    gordita|bolo) echo '[[ "$HOSTNAME" == gordita* ]] && exec $HOME/mambaforge/envs/system39-conda-forge/bin/zsh || exec zsh' > "$HOME/.bash_profile"   ;;
+    comet)        echo "exec $(which zsh)" > "$HOME/.bash_profile"                                                                                      ;;
+    *)            : > "$HOME/.bash_profile"                                                                                                             ;;
 esac
 
 cat << EOF >> "$HOME/.bash_profile"
