@@ -67,7 +67,7 @@ case "$__HOST" in
                 # update by running
                 # module load python...
                 # . activate && echo $CONDA_PREFIX
-                __CONDA_PREFIX=/usr/common/software/python/3.8-anaconda-2020.11
+                __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
                 ;;
             perlmutter)
                 SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
