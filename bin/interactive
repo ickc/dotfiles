@@ -409,4 +409,8 @@ fi
 # the parent directories should protect it already
 umask 022
 
+# git external diff
+# $PATH is not fully set in zshenv so we have to put it here
+command -v difft >/dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
+
 neofetch 2>/dev/null
