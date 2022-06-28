@@ -41,9 +41,10 @@ EOF
 cat << EOF > "$HOME/.zprofile"
 if [[ -s "$HOME/.zprezto/runcoms/zprofile" ]]; then
     # prevent zprezto to modify path, c.f. https://github.com/sorin-ionescu/prezto/pull/1997
-    __PATH="\$PATH"
+    ORIGINAL_PATH="\$PATH"
     . "$HOME/.zprezto/runcoms/zprofile"
-    export PATH="\$__PATH"
+    export PATH="\$ORIGINAL_PATH"
+    unset ORIGINAL_PATH
 fi
 EOF
 # .zshrc
