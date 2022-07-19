@@ -1,3 +1,4 @@
+# TODO: delete this file after migration. Previous version symlink to this file. Later it is written by install.sh directly and hence this file is no longer needed.
 channels:
     - conda-forge
     - defaults
@@ -6,4 +7,4 @@ allow_softlinks: False
 create_default_packages:
     # - mamba
     - pip
-default_threads: 16
+default_threads: 10
