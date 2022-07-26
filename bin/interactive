@@ -270,6 +270,12 @@ ml_cg () {
     path_append_all "$CARGO_PREFIX"
 }
 
+ml_ghcup () {
+    # See `cat ~/.ghcup/env`.
+    path_append_all "$HOME/.cabal"
+    path_append_all "$HOME/.ghcup"
+}
+
 # hosts ========================================================================
 
 case "$__HOST" in
@@ -356,13 +362,14 @@ ml_clean () {
 
 ml () {
     # * load all installed environments
-    # * includes clean, go, brew, port, conda, host
+    # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
     ml_go
+    ml_ghcup
     [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
     [[ "$__OSTYPE" == darwin ]] && ml_port
     [[ -n "$__CONDA_PREFIX" ]] && ml_conda
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
-    [[ -n "$HOME/.basher" ]] && ml_basher
+    [[ -d "$HOME/.basher" ]] && ml_basher
 
     case "$__HOST" in
         cori|perlmutter|comet|gordita) ml_host;;
