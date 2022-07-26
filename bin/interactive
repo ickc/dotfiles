@@ -232,6 +232,13 @@ ml_basher () {
     path_append_all "$BASHER_PREFIX"
 }
 
+mu_basher () {
+    unset BASHER_SHELL
+    unset BASHER_ROOT
+    unset BASHER_PREFIX
+    unset BASHER_PACKAGES_PATH
+}
+
 # go
 ml_go () {
     path_append_all "$HOME/go"
@@ -395,6 +402,7 @@ mu () {
     mu_conda
     mu_s
     mu_exa
+    mu_basher
     case "$__HOST" in
         cori|perlmutter) mu_host;;
     esac
