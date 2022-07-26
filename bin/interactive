@@ -362,7 +362,7 @@ ml () {
     [[ "$__OSTYPE" == darwin ]] && ml_port
     [[ -n "$__CONDA_PREFIX" ]] && ml_conda
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
-    command -v basher >/dev/null 2>&1 && ml_basher
+    [[ -n "$HOME/.basher" ]] && ml_basher
 
     case "$__HOST" in
         cori|perlmutter|comet|gordita) ml_host;;
