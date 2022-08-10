@@ -78,6 +78,12 @@ case "$__HOST" in
         PROJ_ROOT=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
 
+        # NERSC's home is a symbolic link, and vscode's git doesn't like that
+        # see https://github.com/microsoft/vscode/issues/5970
+        # so we resolve to the realpath here
+        HOME="$(realpath ~)"
+        export HOME
+
         # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
         export XDG_CONFIG_HOME="$SCRATCH/.local/config"
         export XDG_CACHE_HOME="$SCRATCH/.local/cache"
