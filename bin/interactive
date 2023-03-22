@@ -306,6 +306,11 @@ case "$__HOST" in
             conda activate "$TOAST_PREFIX"
         }
         ;;
+    sirius7)
+        ml_host () {
+            path_prepend_all "$SCRATCH/.local"
+        }
+        ;;
     comet)
         ml_host () {
             # adapted from from /etc/bashrc
@@ -371,9 +376,7 @@ ml () {
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
     [[ -d "$HOME/.basher" ]] && ml_basher
 
-    case "$__HOST" in
-        cori|perlmutter|comet|gordita) ml_host;;
-    esac
+    declare -F ml_host && ml_host
 
     ml_clean
 }

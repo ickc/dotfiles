@@ -87,6 +87,10 @@ case "$__HOST" in
         HOME="$(realpath ~)"
         export HOME
         ;;
+    sirius7)
+        SCRATCH="/nvme/scratch/$USER"
+        __CONDA_PREFIX="$SCRATCH/.mambaforge"
+        ;;
     stampede2)
         # SCRATCH already defined, purge after 10 days
         # WORK is like project dir, global, 1TB. Probably install software here as HOME is 10GB only.
@@ -144,7 +148,7 @@ esac
 
 # general XDG related setup: add all systems that we want to setup XDG away from the default
 case "$__HOST" in
-    cori|perlmutter)
+    cori|perlmutter|sirius7)
         # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
         export XDG_CONFIG_HOME="$SCRATCH/.local/config"
         export XDG_CACHE_HOME="$SCRATCH/.local/cache"
@@ -213,6 +217,9 @@ else
     case "$__HOST" in
         cori|perlmutter)
             __PREFIX=/global/common/software/polar/.conda/envs/system39-conda-forge/bin
+            ;;
+        sirius7)
+            __PREFIX=/nvme/scratch/khcheung/.local/share/conda/envs/system39-conda-forge/bin
             ;;
         gordita)
             __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
