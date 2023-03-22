@@ -35,8 +35,9 @@ if [[ -n "$NERSC_HOST" ]]; then
 else
     case "$HOSTNAME" in
         cori*)                          __HOST=cori         ;;
-        superclass3.jb.man.ac.uk)       __HOST=superclass3  ;;
         styx.jb.man.ac.uk)              __HOST=styx         ;;
+        sirius7.jb.man.ac.uk)           __HOST=sirius7      ;;
+        superclass3.jb.man.ac.uk)       __HOST=superclass3  ;;
         *stampede2*)                    __HOST=stampede2    ;;
         comet*)                         __HOST=comet        ;;
         gordita.physics.berkeley.edu)   __HOST=gordita      ;;
