@@ -102,7 +102,6 @@ case "$__HOST" in
         ;;
     gordita)
         SCRATCH="/scratch2/$USER"
-        export EDITOR=nano
 
         __CONDA_PREFIX="$HOME/mambaforge"
         ;;
@@ -240,3 +239,5 @@ if [[ -d "$HOME/.basher" ]]; then
         export BASHER_SHELL=bash
     fi
 fi
+
+export EDITOR=nano
