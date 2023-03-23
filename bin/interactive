@@ -278,73 +278,73 @@ ml_ghcup () {
 
 # hosts ========================================================================
 
-case "$__HOST" in
-    cori|perlmutter)
-        ml_host () {
-            # common polar
-            export PBCOMMON="$COMMON_ROOT/polar"
-            path_prepend_all "$PBCOMMON/local"
-        }
+if [[ -n "$NERSC_HOST" ]]; then
+    ml_host () {
+        # common polar
+        export PBCOMMON="$COMMON_ROOT/polar"
+        path_prepend_all "$PBCOMMON/local"
+    }
 
-        mu_host () {
-            unset PBCOMMON
-        }
+    mu_host () {
+        unset PBCOMMON
+    }
 
-        ml_toast () {
-            module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
-            # module use /global/common/software/cmb/cori/default/modulefiles
-            module load cmbenv
-            # manually edit /global/common/software/polar/.conda/envs/cmbenv/modulefiles/cmbenv/v1.0.3.dev124
-            # to remove PATH editing, sqs alias, PYTHONSTARTUP, PYTHONUSERBASE
-            # manual edit /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
-            # to fix zsh error
-            . /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
-        }
+    ml_toast () {
+        module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
+        # module use /global/common/software/cmb/cori/default/modulefiles
+        module load cmbenv
+        # manually edit /global/common/software/polar/.conda/envs/cmbenv/modulefiles/cmbenv/v1.0.3.dev124
+        # to remove PATH editing, sqs alias, PYTHONSTARTUP, PYTHONUSERBASE
+        # manual edit /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
+        # to fix zsh error
+        . /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
+    }
 
-        ml_toast_conda () {
-            TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
-            conda activate "$TOAST_PREFIX"
-        }
-        ;;
-    sirius7)
-        ml_host () {
-            path_prepend_all "$SCRATCH/.local"
-        }
-        ;;
-    comet)
-        ml_host () {
-            # adapted from from /etc/bashrc
-            for i in /etc/profile.d/*.sh; do
-                [[ -r "$i" ]] && . "$i"
-            done
-            path_prepend_all /share/apps/compute/gcc-7.2.0
-            path_prepend_all /share/apps/compute/parallel
-        }
-        ;;
-    gordita)
-        ml_host () {
-            [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"
-        }
+    ml_toast_conda () {
+        TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
+        conda activate "$TOAST_PREFIX"
+    }
+elif [[ -n "$JBCA_HOST" ]] && [[ -n "$SCRATCH" ]]; then
+    ml_host () {
+        path_prepend_all "$SCRATCH/.local"
+    }
+else
+    case "$__HOST" in
+        comet)
+            ml_host () {
+                # adapted from from /etc/bashrc
+                for i in /etc/profile.d/*.sh; do
+                    [[ -r "$i" ]] && . "$i"
+                done
+                path_prepend_all /share/apps/compute/gcc-7.2.0
+                path_prepend_all /share/apps/compute/parallel
+            }
+            ;;
+        gordita)
+            ml_host () {
+                [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"
+            }
 
-        mu_host () {
-            true
-        }
-        ;;
-    *)
-        ml_toast_gnu () {
-            TOAST_PREFIX="$SCRATCH/local/toast-gnu"
-            conda activate "$TOAST_PREFIX/conda"
-            [[ $__UNAME == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
-            ld_library_path_prepend "$TOAST_PREFIX/compile/lib"
-            pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.8/site-packages"
-            path_prepend "$TOAST_PREFIX/compile/bin:$TOAST_PREFIX/conda/bin"
-        }
+            mu_host () {
+                true
+            }
+            ;;
+        *)
+            ml_toast_gnu () {
+                TOAST_PREFIX="$SCRATCH/local/toast-gnu"
+                conda activate "$TOAST_PREFIX/conda"
+                [[ $__UNAME == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
+                ld_library_path_prepend "$TOAST_PREFIX/compile/lib"
+                pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.8/site-packages"
+                path_prepend "$TOAST_PREFIX/compile/bin:$TOAST_PREFIX/conda/bin"
+            }
 
-        ml_toast_conda () {
-            conda activate toast-conda
-        }
-        ;;
-esac
+            ml_toast_conda () {
+                conda activate toast-conda
+            }
+            ;;
+    esac
+fi
 
 #===============================================================================
 
