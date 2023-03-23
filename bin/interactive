@@ -304,7 +304,7 @@ if [[ -n "$NERSC_HOST" ]]; then
         TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
         conda activate "$TOAST_PREFIX"
     }
-elif [[ -n "$JBCA_HOST" ]] && [[ -n "$SCRATCH" ]]; then
+elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     ml_host () {
         path_prepend_all "$SCRATCH/.local"
     }
@@ -330,6 +330,8 @@ else
             }
             ;;
         *)
+            # just to make sure it always exists
+            ml_host () {}
             ml_toast_gnu () {
                 TOAST_PREFIX="$SCRATCH/local/toast-gnu"
                 conda activate "$TOAST_PREFIX/conda"
@@ -376,7 +378,7 @@ ml () {
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
     [[ -d "$HOME/.basher" ]] && ml_basher
 
-    declare -F ml_host && ml_host
+    ml_host
 
     ml_clean
 }
