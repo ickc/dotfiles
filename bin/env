@@ -8,8 +8,12 @@ printerr () {
 # SCRATCH, __CONDA_PREFIX
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
+# CONDARC ##############################################################
+
 # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
 export CONDARC="$HOME/git/source/dotfiles/conda/.condarc"
+
+# __OSTYPE detection ###################################################
 
 # set __OSTYPE as normalized OSTYPE
 # c.f. https://stackoverflow.com/a/18434831
@@ -21,6 +25,8 @@ case "$OSTYPE" in
     msys*)      __OSTYPE=msys       ;;
     *)          __OSTYPE="$OSTYPE"  ;;
 esac
+
+# __HOST detection #####################################################
 
 # set HOSTNAME by hostname if undefined
 if [[ -z "$HOSTNAME" ]]; then
@@ -53,6 +59,8 @@ else
     esac
 fi
 
+# HOMEBREW_PREFIX detection ############################################
+
 # set HOMEBREW_PREFIX if undefined and discovered
 if [[ -z "$HOMEBREW_PREFIX" ]]; then
     if [[ "$__OSTYPE" == darwin ]]; then
@@ -66,7 +74,8 @@ if [[ -z "$HOMEBREW_PREFIX" ]]; then
     unset homebrew_prefix
 fi
 
-# set __HOST-specific env var
+# set __HOST-specific env var ##########################################
+
 case "$__HOST" in
     cori|perlmutter)
         case "$__HOST" in
@@ -152,6 +161,8 @@ case "$__HOST" in
         ;;
 esac
 
+# XDG setup ############################################################
+
 # general XDG related setup: add all systems that we want to setup XDG away from the default
 if [[ ( -n "$NERSC_HOST" || -n "$JBCA_HOST" ) && -n "$SCRATCH" ]]; then
     # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
@@ -183,6 +194,8 @@ if [[ -n "$NERSC_HOST" ]]; then
     # export CONDA_PKGS_DIRS="$(find /usr/common/software/python -maxdepth 2 -mindepth 2 -type d -name pkgs | sort -r | tr '\n' ':')$XDG_CACHE_HOME/conda/pkgs"
 fi
 
+# export all variables #################################################
+
 export SCRATCH
 export __OSTYPE
 export __HOST
@@ -209,6 +222,10 @@ case "$__OSTYPE" in
 esac
 export __NCPU
 export MAKEFLAGS="-j$__NCPU"
+
+export EDITOR=nano
+
+# alias ################################################################
 
 # set alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
@@ -238,7 +255,8 @@ fi
 
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
 
-# basher
+# basher ###############################################################
+
 if [[ -d "$HOME/.basher" ]]; then
     export BASHER_ROOT="$HOME/.basher"
     export BASHER_PREFIX="$HOME/.basher/cellar"
@@ -249,5 +267,3 @@ if [[ -d "$HOME/.basher" ]]; then
         export BASHER_SHELL=bash
     fi
 fi
-
-export EDITOR=nano
