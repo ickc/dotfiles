@@ -34,22 +34,21 @@ if [[ -z "$HOSTNAME" ]]; then
     export HOSTNAME
 fi
 
-case "$HOSTNAME" in
-    *.jb.man.ac.uk)
-        JBCA_HOST="${HOSTNAME%%.*}"
-        export JBCA_HOST
-        ;;
-esac
-
-# set __HOST
 if [[ -n "$NERSC_HOST" ]]; then
-    # permutter has this defined at this stage, but not cori
     __HOST="$NERSC_HOST"
-elif [[ -n "$JBCA_HOST" ]]; then
-    __HOST="$JBCA_HOST"
 else
     case "$HOSTNAME" in
-        cori*)                          __HOST=cori         ;;
+        cori*)
+            # permutter has NERSC_HOST defined at this stage, but not cori
+            NERSC_HOST=cori
+            export NERSC_HOST
+            __HOST=cori
+            ;;
+        *.jb.man.ac.uk)
+            JBCA_HOST="${HOSTNAME%%.*}"
+            export JBCA_HOST
+            __HOST="$JBCA_HOST"
+            ;;
         *stampede2*)                    __HOST=stampede2    ;;
         comet*)                         __HOST=comet        ;;
         gordita.physics.berkeley.edu)   __HOST=gordita      ;;
@@ -82,7 +81,7 @@ case "$__HOST" in
             cori)
                 SCRATCH="/global/cscratch1/sd/$USERNAME"
 
-                # update by running
+                # TODO: update by running
                 # module load python...
                 # . activate && echo $CONDA_PREFIX
                 __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
@@ -90,6 +89,9 @@ case "$__HOST" in
             perlmutter)
                 SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
 
+                # TODO: update by running
+                # module load python...
+                # . activate && echo $CONDA_PREFIX
                 __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
                 ;;
         esac
@@ -140,6 +142,7 @@ case "$__HOST" in
         if [[ "$__OSTYPE" == darwin ]]; then
             SCRATCH="${SCRATCH:-$HOME/scratch}"
 
+            # TODO
             conda_prefix="$HOMEBREW_PREFIX/anaconda3"
             [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
 
@@ -150,6 +153,7 @@ case "$__HOST" in
         elif [[ -z "$JBCA_HOST" ]]; then
             SCRATCH="${SCRATCH:-/scratch}"
 
+            # TODO
             for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
                 [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
             done
