@@ -1,3 +1,5 @@
+zstyle ':zim:zmodule' use 'degit'
+
 zmodule romkatv/powerlevel10k
 
 zmodule zsh-users/zsh-completions --fpath src
