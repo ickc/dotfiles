@@ -11,7 +11,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # .bash_profile
 case "$__HOST" in
     gordita|bolo) echo '[[ "$HOSTNAME" == gordita* ]] && exec $HOME/mambaforge/envs/system39-conda-forge/bin/zsh || exec zsh' > "$HOME/.bash_profile"   ;;
-    comet)        echo "exec $(which zsh)" > "$HOME/.bash_profile"                                                                                      ;;
     *)            : > "$HOME/.bash_profile"                                                                                                             ;;
 esac
 
@@ -49,14 +48,6 @@ EOF
 # .zshrc
 cat << EOF > "$HOME/.zshrc"
 [[ -s "$DIR/interactive" ]] && . "$DIR/interactive"
-EOF
-# only inserted in this order works
-# c.f. https://github.com/sorin-ionescu/prezto/issues/657#issuecomment-52546927
-# c.f. https://github.com/ohmyzsh/ohmyzsh/issues/7246#issuecomment-427674055
-case "$__HOST" in
-    comet) echo "export FPATH=\"$HOME/.linuxbrew/share/zsh/site-functions:$HOME/.linuxbrew/share/zsh/functions:$FPATH\"" >> "$HOME/.zshrc" ;;
-esac
-cat << EOF >> "$HOME/.zshrc"
 [[ -s "$HOME/.zprezto/runcoms/zshrc" ]] && . "$HOME/.zprezto/runcoms/zshrc"
 EOF
 # .zlogin

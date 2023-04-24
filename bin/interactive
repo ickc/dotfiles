@@ -310,16 +310,6 @@ elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     }
 else
     case "$__HOST" in
-        comet)
-            ml_host () {
-                # adapted from from /etc/bashrc
-                for i in /etc/profile.d/*.sh; do
-                    [[ -r "$i" ]] && . "$i"
-                done
-                path_prepend_all /share/apps/compute/gcc-7.2.0
-                path_prepend_all /share/apps/compute/parallel
-            }
-            ;;
         gordita)
             ml_host () {
                 [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"

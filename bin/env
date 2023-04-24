@@ -49,8 +49,6 @@ else
             export JBCA_HOST
             __HOST="$JBCA_HOST"
             ;;
-        *stampede2*)                    __HOST=stampede2    ;;
-        comet*)                         __HOST=comet        ;;
         gordita.physics.berkeley.edu)   __HOST=gordita      ;;
         bolo.berkeley.edu)              __HOST=bolo         ;;
         lpc-mini)                       __HOST=lpc-mini     ;;
@@ -107,19 +105,6 @@ case "$__HOST" in
     sirius7)
         SCRATCH="/nvme/scratch/$USER"
         __CONDA_PREFIX="$SCRATCH/.mambaforge"
-        ;;
-    stampede2)
-        # SCRATCH already defined, purge after 10 days
-        # WORK is like project dir, global, 1TB. Probably install software here as HOME is 10GB only.
-        PROJ_DIR="$WORK"
-
-        __CONDA_PREFIX="$WORK/anaconda3"
-        ;;
-    comet)
-        SCRATCH="/oasis/scratch/comet/$USER/temp_project"
-        PROJ_ROOT=/oasis/projects/nsf
-
-        __CONDA_PREFIX="$HOME/anaconda3"
         ;;
     gordita)
         SCRATCH="/scratch2/$USER"
