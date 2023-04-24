@@ -26,35 +26,33 @@ cat << EOF > "$HOME/.bashrc"
 [[ \$- == *i* && -s "$DIR/interactive" ]] && . "$DIR/interactive"
 EOF
 
-# assume zprezto always at ~/.zprezto
-
 # .zshenv
 cat << EOF > "$HOME/.zshenv"
 [[ -s "$DIR/env" ]] && . "$DIR/env"
 [[ -s "$DIR/.env" ]] && . "$DIR/.env"
-[[ -s "$HOME/.zprezto/runcoms/zshenv" ]] && . "$HOME/.zprezto/runcoms/zshenv"
 EOF
 
 # .zprofile
-cat << EOF > "$HOME/.zprofile"
-if [[ -s "$HOME/.zprezto/runcoms/zprofile" ]]; then
-    # prevent zprezto to modify path, c.f. https://github.com/sorin-ionescu/prezto/pull/1997
-    ORIGINAL_PATH="\$PATH"
-    . "$HOME/.zprezto/runcoms/zprofile"
-    export PATH="\$ORIGINAL_PATH"
-    unset ORIGINAL_PATH
-fi
-EOF
+rm -f "$HOME/.zprofile"
 # .zshrc
 cat << EOF > "$HOME/.zshrc"
-[[ -s "$DIR/interactive" ]] && . "$DIR/interactive"
-[[ -s "$HOME/.zprezto/runcoms/zshrc" ]] && . "$HOME/.zprezto/runcoms/zshrc"
+[[ -s '$DIR/interactive' ]] && . '$DIR/interactive'
+
+# Install missing modules, and update \${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! "\${ZIM_HOME}/init.zsh" -nt "\${ZDOTDIR:-\${HOME}}/.zimrc" ]]; then
+  source "\${ZIM_HOME}/zimfw.zsh" init -q
+fi
+
+# ssh
+zstyle ':zim:ssh' ids id_ed25519
+# zsh-users/zsh-history-substring-search
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+
+# Initialize modules.
+source "\${ZIM_HOME}/init.zsh"
 EOF
 # .zlogin
-cat << EOF > "$HOME/.zlogin"
-[[ -s "$HOME/.zprezto/runcoms/zlogin" ]] && . "$HOME/.zprezto/runcoms/zlogin"
-EOF
+rm -f "$HOME/.zlogin"
 # .zlogout
-cat << EOF > "$HOME/.zlogout"
-[[ -s "$HOME/.zprezto/runcoms/zlogout" ]] && . "$HOME/.zprezto/runcoms/zlogout"
-EOF
+rm -f "$HOME/.zlogout"

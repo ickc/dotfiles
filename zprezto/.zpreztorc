@@ -1,2 +1,0 @@
-[[ -s "$HOME/.zprezto/runcoms/zpreztorc" ]] && . "$HOME/.zprezto/runcoms/zpreztorc"
-zstyle ':prezto:module:prompt' theme 'powerlevel10k'

@@ -2,4 +2,5 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-ln -sf "$DIR/.zpreztorc" "$HOME"
+rm -f "$HOME/.zimrc"
+ln -sf "$DIR/.zimrc" "$HOME"

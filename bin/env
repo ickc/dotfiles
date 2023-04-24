@@ -213,6 +213,7 @@ export __NCPU
 export MAKEFLAGS="-j$__NCPU"
 
 export EDITOR=nano
+export ZIM_HOME=~/.zim
 
 # alias ################################################################
 
