@@ -3,7 +3,7 @@ SHELL = /usr/bin/env bash
 # option: slow, fast
 MPV=fast
 
-all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install
+all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install
 
 install-zim:
 	curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
@@ -53,3 +53,6 @@ mpv-install:
 
 tmux-install:
 	cd tmux; ./install.sh
+
+neofetch-install:
+	cd neofetch; ./install.sh
