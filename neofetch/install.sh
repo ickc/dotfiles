@@ -2,6 +2,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-mkdir -p "${HOME}/.config/neofetch/"
-rm -f "${HOME}/.config/neofetch/config.conf"
-ln -sf "$DIR/config.conf" "${HOME}/.config/neofetch/"
+mkdir -p "${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/"
+rm -f "${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/config.conf"
+ln -sf "$DIR/config.conf" "${XDG_CONFIG_HOME:-${HOME}/.config}/neofetch/"
