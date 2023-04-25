@@ -13,6 +13,9 @@ case "$__HOST" in
     gordita|bolo)
       echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
+    simons1)
+      echo 'SHELL="$HOME/.mambaforge/envs/system311-conda-forge/bin/zsh"; export SHELL; exec "$SHELL" -l' > "$HOME/.bash_profile"
+      ;;
     *)
       : > "$HOME/.bash_profile"
       ;;

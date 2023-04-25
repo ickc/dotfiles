@@ -85,7 +85,7 @@ case "$__HOST" in
     cori|perlmutter)
         case "$__HOST" in
             cori)
-                SCRATCH="/global/cscratch1/sd/$USERNAME"
+                SCRATCH="/global/cscratch1/sd/$USER"
 
                 # TODO: update by running
                 # module load python...
@@ -93,7 +93,7 @@ case "$__HOST" in
                 __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
                 ;;
             perlmutter)
-                SCRATCH="/pscratch/sd/${USERNAME:0:1}/$USERNAME"
+                SCRATCH="/pscratch/sd/${USER:0:1}/$USER"
 
                 # TODO: update by running
                 # module load python...
@@ -109,6 +109,12 @@ case "$__HOST" in
         # so we resolve to the realpath here
         HOME="$(realpath ~)"
         export HOME
+        ;;
+    simons1)
+        SCRATCH="/mnt/so1/users/$USER"
+        __CONDA_PREFIX=$HOME/.mambaforge
+        PROJ_ROOT=/mnt/physicsso
+        WWW_DIR="/mnt/so1/public_html/$USER"
         ;;
     sirius7)
         SCRATCH="/nvme/scratch/$USER"
@@ -198,7 +204,7 @@ export __OSTYPE
 export __HOST
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX HOMEBREW_NO_ANALYTICS=1
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
-[[ -n "$PROJ_DIR" ]] && export PROJ_DIR
+[[ -n "$WWW_DIR" ]] && export WWW_DIR
 [[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
