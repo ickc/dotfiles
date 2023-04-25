@@ -112,7 +112,7 @@ case "$__HOST" in
         ;;
     simons1)
         SCRATCH="/mnt/so1/users/$USER"
-        __CONDA_PREFIX=$HOME/.mambaforge
+        __CONDA_PREFIX=$SCRATCH/.mambaforge
         PROJ_ROOT=/mnt/physicsso
         WWW_DIR="/mnt/so1/public_html/$USER"
         ;;
