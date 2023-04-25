@@ -13,9 +13,6 @@ case "$__HOST" in
     gordita|bolo)
       echo '[[ "$HOSTNAME" == gordita* ]] && exec $HOME/mambaforge/envs/system39-conda-forge/bin/zsh || exec zsh' > "$HOME/.bash_profile"
       ;;
-    styx)
-      echo 'exec ~/.local/bin/zsh' > "$HOME/.bash_profile"
-      ;;
     *)
       : > "$HOME/.bash_profile"
       ;;
@@ -63,3 +60,15 @@ EOF
 rm -f "$HOME/.zlogin"
 # .zlogout
 rm -f "$HOME/.zlogout"
+
+# .login for tcsh
+case "$__HOST" in
+    styx)
+      cat << EOF > "$HOME/.login"
+if ( "\`uname -s\`" == Linux ) then
+  setenv SHELL "\$HOME/.local/bin/zsh"
+  exec "\$SHELL" -l
+endif
+EOF
+      ;;
+esac
