@@ -49,8 +49,16 @@ else
             export JBCA_HOST
             __HOST="$JBCA_HOST"
             ;;
-        gordita.physics.berkeley.edu)   __HOST=gordita      ;;
-        bolo.berkeley.edu)              __HOST=bolo         ;;
+        gordita.physics.berkeley.edu)
+            BOLO_HOST=gordita
+            export BOLO_HOST
+            __HOST="$BOLO_HOST"
+            ;;
+        bolo.berkeley.edu)
+            BOLO_HOST=bolo
+            export BOLO_HOST
+            __HOST="$BOLO_HOST"
+            ;;
         lpc-mini)                       __HOST=lpc-mini     ;;
         *)                              __HOST="$HOSTNAME"  ;;
     esac
