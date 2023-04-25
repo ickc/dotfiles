@@ -11,7 +11,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # .bash_profile
 case "$__HOST" in
     gordita|bolo)
-      echo '[[ "$HOSTNAME" == gordita* ]] && exec $HOME/mambaforge/envs/system39-conda-forge/bin/zsh || exec zsh' > "$HOME/.bash_profile"
+      echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
     *)
       : > "$HOME/.bash_profile"
