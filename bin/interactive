@@ -321,7 +321,7 @@ else
             ;;
         *)
             # just to make sure it always exists
-            ml_host () {}
+            ml_host () { :; }
             ml_toast_gnu () {
                 TOAST_PREFIX="$SCRATCH/local/toast-gnu"
                 conda activate "$TOAST_PREFIX/conda"
