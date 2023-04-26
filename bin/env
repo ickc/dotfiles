@@ -110,7 +110,7 @@ case "$__HOST" in
         HOME="$(realpath ~)"
         export HOME
         ;;
-    fornax)
+    centaurus|fornax)
         # TODO: nowhere else I can call it SCRATCH
         SCRATCH="$HOME/scratch"
         __CONDA_PREFIX="$HOME/.mambaforge"
