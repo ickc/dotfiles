@@ -11,10 +11,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # .bash_profile
 case "$__HOST" in
     gordita|bolo)
-      echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; exec "$SHELL" -l' > "$HOME/.bash_profile"
+      echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
     simons1)
-      echo 'SHELL="$HOME/.mambaforge/envs/system311-conda-forge/bin/zsh"; export SHELL; exec "$SHELL" -l' > "$HOME/.bash_profile"
+      echo 'SHELL="$SCRATCH/.mambaforge/envs/system311-conda-forge/bin/zsh"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
     *)
       : > "$HOME/.bash_profile"
@@ -70,7 +70,7 @@ case "$__HOST" in
       cat << EOF > "$HOME/.login"
 if ( "\`uname -s\`" == Linux ) then
   setenv SHELL "\$HOME/.local/bin/zsh"
-  exec "\$SHELL" -l
+  [[ -e "\$SHELL" ]] && exec "\$SHELL" -l
 endif
 EOF
       ;;
