@@ -315,8 +315,13 @@ else
                 [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"
             }
 
-            mu_host () {
-                true
+            mu_host () { :; }
+            ;;
+        soukdev1)
+            # just to make sure it always exists
+            ml_host () { :; }
+            ml_intel () {
+                . /opt/intel/oneapi/setvars.sh
             }
             ;;
         *)
