@@ -117,7 +117,7 @@ case "$__HOST" in
         ;;
     soukdev1)
         # TODO: move to HDD later
-        SCRATCH="$HOME/scratch"
+        SCRATCH="/mnt/scratch/$USER"
         __CONDA_PREFIX=/opt/mambaforge
         ;;
     simons1)
