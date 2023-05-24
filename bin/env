@@ -60,13 +60,8 @@ else
             __HOST="$BOLO_HOST"
             ;;
         lpc-mini)                       __HOST=lpc-mini     ;;
-        login1)
-            if [[ "$LMOD_SYSTEM_NAME" == ascent ]]; then
-                __HOST=ascent
-            else
-                __HOST=login1
-            fi
-            ;;
+        # be careful that it may collide...
+        login1)                         __HOST=ascent       ;;
         *)                              __HOST="$HOSTNAME"  ;;
     esac
 fi
