@@ -335,6 +335,18 @@ else
                 conda activate /opt/cmb/toast-conda
             }
             ;;
+        kolen-server)
+            # just to make sure it always exists
+            ml_host () { :; }
+            ml_cuda () {
+                path_append /usr/local/cuda-11
+                ld_library_path_prepend /usr/local/cuda-11/lib64
+            }
+            ml_cuda_12 () {
+                path_append /usr/local/cuda-12
+                ld_library_path_prepend /usr/local/cuda-12/lib64
+            }
+            ;;
         *)
             # just to make sure it always exists
             ml_host () { :; }
