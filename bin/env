@@ -157,6 +157,10 @@ case "$__HOST" in
         SCRATCH="/gpfs/wolf/trn017/scratch/$USER"
         __CONDA_PREFIX="$HOME/.mambaforge"
         ;;
+    vm77.tier2.hep.manchester.ac.uk)
+        SCRATCH="$HOME/scratch"
+        __CONDA_PREFIX="$HOME/.mambaforge"
+        ;;
     *)
         # macOS catalina doesn't allow /scratch anymore
         # on macOS, SCRATCH is ~/scratch, else /scratch
@@ -276,6 +280,9 @@ else
             ;;
         gordita)
             __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
+            ;;
+        vm77.tier2.hep.manchester.ac.uk)
+            __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
             ;;
     esac
 fi
