@@ -266,7 +266,7 @@ export ZIM_HOME=~/.zim
 if [[ "$__OSTYPE" == darwin ]]; then
     __PREFIX=/opt/local/bin
 elif [[ -n "$NERSC_HOST" ]]; then
-    __PREFIX=/global/common/software/polar/.conda/envs/system39-conda-forge/bin
+    __PREFIX=/global/common/software/polar/.conda/envs/system311-conda-forge/bin
 elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     __PREFIX="$SCRATCH/.local/share/conda/envs/system39-conda-forge/bin"
 else
