@@ -11,7 +11,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # .bash_profile
 case "$__HOST" in
     datatran)
-      echo 'SHELL=/global/common/software/polar/.conda/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
+      echo 'SHELL="/global/u2/${USER:0:1}/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
     gordita|bolo)
       echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
