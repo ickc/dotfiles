@@ -39,14 +39,8 @@ if [[ -n "$NERSC_HOST" ]]; then
     __HOST="$NERSC_HOST"
 else
     case "$HOSTNAME" in
-        cori*)
-            # permutter has NERSC_HOST defined at this stage, but not cori
-            NERSC_HOST=cori
-            export NERSC_HOST
-            __HOST=cori
-            ;;
         dtn0?.nersc.gov)
-            # permutter has NERSC_HOST defined at this stage, but not cori
+            # permutter has NERSC_HOST defined at this stage, but not dtn
             NERSC_HOST=datatran
             export NERSC_HOST
             __HOST=datatran
@@ -91,16 +85,8 @@ fi
 # set __HOST-specific env var ##########################################
 
 case "$__HOST" in
-    cori|perlmutter|datatran)
+    perlmutter|datatran)
         case "$__HOST" in
-            cori)
-                SCRATCH="/global/cscratch1/sd/$USER"
-
-                # TODO: update by running
-                # module load python...
-                # . activate && echo $CONDA_PREFIX
-                __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
-                ;;
             perlmutter)
                 SCRATCH="/pscratch/sd/${USER:0:1}/$USER"
 
