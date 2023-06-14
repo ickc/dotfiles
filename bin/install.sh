@@ -10,6 +10,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
 case "$__HOST" in
+    datatran)
+      echo 'SHELL=/global/common/software/polar/.conda/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
+      ;;
     gordita|bolo)
       echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
@@ -30,10 +33,11 @@ cat << EOF >> "$HOME/.bash_profile"
 EOF
 
 # .bashrc
+# interactive is not put here because it causes some problems when launching zsh from bash
+# as I don't really use bash interactively, it should be fine
 cat << EOF > "$HOME/.bashrc"
 [[ -s "$DIR/env" ]] && . "$DIR/env"
 [[ -s "$DIR/.env" ]] && . "$DIR/.env"
-[[ \$- == *i* && -s "$DIR/interactive" ]] && . "$DIR/interactive"
 EOF
 
 # .zshenv

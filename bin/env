@@ -6,6 +6,7 @@ printerr () {
 
 # These variables must exist on all systems
 # SCRATCH, __CONDA_PREFIX
+# for non-compute system, SCRATCH can be undefined
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
 # CONDARC ##############################################################
@@ -43,6 +44,12 @@ else
             NERSC_HOST=cori
             export NERSC_HOST
             __HOST=cori
+            ;;
+        dtn0?.nersc.gov)
+            # permutter has NERSC_HOST defined at this stage, but not cori
+            NERSC_HOST=datatran
+            export NERSC_HOST
+            __HOST=datatran
             ;;
         *.jb.man.ac.uk)
             JBCA_HOST="${HOSTNAME%%.*}"
@@ -84,7 +91,7 @@ fi
 # set __HOST-specific env var ##########################################
 
 case "$__HOST" in
-    cori|perlmutter)
+    cori|perlmutter|datatran)
         case "$__HOST" in
             cori)
                 SCRATCH="/global/cscratch1/sd/$USER"
@@ -101,6 +108,12 @@ case "$__HOST" in
                 # module load python...
                 # . activate && echo $CONDA_PREFIX
                 __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
+                ;;
+            datatran)
+                # TODO: update by running
+                # module load python...
+                # . activate && echo $CONDA_PREFIX
+                __CONDA_PREFIX=/global/common/datatran2/usg/python/Miniconda3-latest-Linux-x86_64
                 ;;
         esac
         PROJ_ROOT=/global/cfs/cdirs
@@ -215,7 +228,7 @@ fi
 
 # export all variables #################################################
 
-export SCRATCH
+[[ -n "$SCRATCH" ]] && export SCRATCH
 export __OSTYPE
 export __HOST
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX HOMEBREW_NO_ANALYTICS=1
