@@ -145,7 +145,7 @@ case "$__HOST" in
     lpc-mini)
         SCRATCH=/scratch
 
-        __CONDA_PREFIX=/opt/anaconda
+        __CONDA_PREFIX=/opt/mambaforge
         ;;
     ascent)
         SCRATCH="/gpfs/wolf/trn017/scratch/$USER"
