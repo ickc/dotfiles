@@ -23,7 +23,11 @@ case "$__HOST" in
       echo 'SHELL=/mnt/so1/users/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
     *)
-      : > "$HOME/.bash_profile"
+      if [[ -n $PRINCETON_HOST ]]; then
+          echo 'SHELL=$HOME/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
+      else
+        : > "$HOME/.bash_profile"
+      fi
       ;;
 esac
 

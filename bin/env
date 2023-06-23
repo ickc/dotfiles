@@ -50,6 +50,12 @@ else
             export JBCA_HOST
             __HOST="$JBCA_HOST"
             ;;
+        *.princeton.edu)
+            # seems like nobel is load balanced and it can lands on different __HOST here...
+            PRINCETON_HOST="${HOSTNAME%%.*}"
+            export PRINCETON_HOST
+            __HOST="$PRINCETON_HOST"
+            ;;
         gordita.physics.berkeley.edu)
             BOLO_HOST=gordita
             export BOLO_HOST
@@ -165,6 +171,11 @@ case "$__HOST" in
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
             unset conda_prefix
+        elif [[ -n "$PRINCETON_HOST" ]]; then
+            # simons1 is not PRINCETON_HOST!
+            SCRATCH="/n/lowrie-scratch/$USER"
+            __CONDA_PREFIX=$SCRATCH/.mambaforge
+            PROJ_ROOT=/n/lowrie-scratch
         elif [[ -z "$JBCA_HOST" ]]; then
             SCRATCH="${SCRATCH:-/scratch}"
 
