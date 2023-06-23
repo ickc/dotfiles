@@ -267,6 +267,8 @@ elif [[ -n "$NERSC_HOST" ]]; then
     __PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge/envs/system311-conda-forge/bin"
 elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     __PREFIX="$SCRATCH/.local/share/conda/envs/system39-conda-forge/bin"
+elif [[ -n "$PRINCETON_HOST" ]]; then
+    __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
 else
     case "$__HOST" in
         simons1)
