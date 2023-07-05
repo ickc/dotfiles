@@ -39,6 +39,20 @@ if [[ -n "$NERSC_HOST" ]]; then
     __HOST="$NERSC_HOST"
 else
     case "$HOSTNAME" in
+        vm*.in.tier2.hep.manchester.ac.uk)
+            BLACKETT_HOST="$HOSTNAME"
+            export BLACKETT_HOST
+            BLACKETT_INTERACTIVE=1
+            export BLACKETT_INTERACTIVE
+            __HOST="$BLACKETT_HOST"
+            ;;
+        vm77.tier2.hep.manchester.ac.uk)
+            BLACKETT_HOST="$HOSTNAME"
+            export BLACKETT_HOST
+            BLACKETT_INTERACTIVE=0
+            export BLACKETT_INTERACTIVE
+            __HOST="$BLACKETT_HOST"
+            ;;
         dtn0?.nersc.gov)
             # permutter has NERSC_HOST defined at this stage, but not dtn
             NERSC_HOST=datatran
@@ -91,6 +105,15 @@ fi
 # set __HOST-specific env var ##########################################
 
 case "$__HOST" in
+    *.hep.manchester.ac.uk)
+        if [[ "$BATCH_SYSTEM" == "HTCondor" ]]; then
+            SCRATCH="$_CONDOR_SCRATCH_DIR"
+            __CONDA_PREFIX="$HOME/.mambaforge"
+        else
+            SCRATCH="$HOME/scratch"
+            __CONDA_PREFIX="$HOME/.mambaforge"
+        fi
+        ;;
     perlmutter|datatran)
         case "$__HOST" in
             perlmutter)
@@ -155,10 +178,6 @@ case "$__HOST" in
         ;;
     ascent)
         SCRATCH="/gpfs/wolf/trn017/scratch/$USER"
-        __CONDA_PREFIX="$HOME/.mambaforge"
-        ;;
-    vm77.tier2.hep.manchester.ac.uk)
-        SCRATCH="$HOME/scratch"
         __CONDA_PREFIX="$HOME/.mambaforge"
         ;;
     *)
@@ -269,6 +288,8 @@ if [[ "$__OSTYPE" == darwin ]]; then
     __PREFIX=/opt/local/bin
 elif [[ -n "$NERSC_HOST" ]]; then
     __PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge/envs/system311-conda-forge/bin"
+elif [[ -n "$BLACKETT_HOST" ]]; then
+    __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
 elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     __PREFIX="$SCRATCH/.local/share/conda/envs/system39-conda-forge/bin"
 elif [[ -n "$PRINCETON_HOST" ]]; then
@@ -280,9 +301,6 @@ else
             ;;
         gordita)
             __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
-            ;;
-        vm77.tier2.hep.manchester.ac.uk)
-            __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
             ;;
     esac
 fi
