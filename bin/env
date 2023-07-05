@@ -39,7 +39,7 @@ if [[ -n "$NERSC_HOST" ]]; then
     __HOST="$NERSC_HOST"
 else
     case "$HOSTNAME" in
-        vm*.in.tier2.hep.manchester.ac.uk)
+        *.in.tier2.hep.manchester.ac.uk)
             BLACKETT_HOST="$HOSTNAME"
             export BLACKETT_HOST
             BLACKETT_INTERACTIVE=1
