@@ -22,7 +22,7 @@ case "$__HOST" in
     simons1)
       echo 'SHELL=/mnt/so1/users/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
-    vm77.tier2.hep.manchester.ac.uk)
+    *.tier2.hep.manchester.ac.uk)
       echo 'SHELL=/home/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
       ;;
     *)
