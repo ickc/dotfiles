@@ -9,30 +9,14 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
-case "$__HOST" in
-    datatran)
-      echo 'SHELL="/global/u2/${USER:0:1}/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
-      ;;
-    gordita|bolo)
-      echo '[[ "$HOSTNAME" == gordita* ]] && SHELL="$HOME/mambaforge/envs/system39-conda-forge/bin/zsh" || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
-      ;;
-    centaurus|fornax)
-      echo 'SHELL=/home/$USER/scratch/.local/share/conda/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
-      ;;
-    simons1)
-      echo 'SHELL=/mnt/so1/users/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
-      ;;
-    *.tier2.hep.manchester.ac.uk)
-      echo 'SHELL=/home/$USER/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
-      ;;
-    *)
-      if [[ -n $PRINCETON_HOST ]]; then
-          echo 'SHELL=$HOME/.mambaforge/envs/system311-conda-forge/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
-      else
-        : > "$HOME/.bash_profile"
-      fi
-      ;;
-esac
+
+if [[ -n "$BLACKETT_HOST" || -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || -n "$JBCA_HOST" ]]; then
+    echo 'SHELL=~/.local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
+elif [[ -n "$BOLO_HOST" ]]; then
+    echo '[[ "$HOSTNAME" == gordita* ]] && SHELL=~/.local/bin/zsh || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
+else
+    : > "$HOME/.bash_profile"
+fi
 
 cat << EOF >> "$HOME/.bash_profile"
 [[ -s "$DIR/env" ]] && . "$DIR/env"

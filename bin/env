@@ -70,6 +70,16 @@ else
             export PRINCETON_HOST
             __HOST="$PRINCETON_HOST"
             ;;
+        simons1)
+            PRINCETON_HOST="$HOSTNAME"
+            export PRINCETON_HOST
+            __HOST="$PRINCETON_HOST"
+            ;;
+        centaurus|fornax)
+            JBCA_HOST="$HOSTNAME"
+            export JBCA_HOST
+            __HOST="$JBCA_HOST"
+            ;;
         gordita.physics.berkeley.edu)
             BOLO_HOST=gordita
             export BOLO_HOST
@@ -143,7 +153,6 @@ case "$__HOST" in
         ;;
     centaurus|fornax)
         # TODO: nowhere else I can call it SCRATCH
-        SCRATCH="$HOME/scratch"
         __CONDA_PREFIX="$HOME/.mambaforge"
         ;;
     soukdev1)
