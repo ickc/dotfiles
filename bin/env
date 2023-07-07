@@ -175,8 +175,6 @@ case "$__HOST" in
 
         __CONDA_PREFIX="$HOME/mambaforge"
         ;;
-    # same as * case below
-    # just define this explicitly
     bolo)
         SCRATCH="/tank/scratch/$USER"
         ;;
@@ -295,19 +293,10 @@ export ZIM_HOME=~/.zim
 # this is to avoid can't find tmux after `mu`
 if [[ "$__OSTYPE" == darwin ]]; then
     __PREFIX=/opt/local/bin
-elif [[ -n "$NERSC_HOST" ]]; then
-    __PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge/envs/system311-conda-forge/bin"
-elif [[ -n "$BLACKETT_HOST" ]]; then
-    __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
-elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
-    __PREFIX="$SCRATCH/.local/share/conda/envs/system39-conda-forge/bin"
-elif [[ -n "$PRINCETON_HOST" ]]; then
-    __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
+elif [[ -n "$BLACKETT_HOST" || -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || ( -n "$JBCA_HOST" && -n "$SCRATCH" ) ]]; then
+    __PREFIX="$HOME/.local/bin"
 else
     case "$__HOST" in
-        simons1)
-            __PREFIX="$HOME/.mambaforge/envs/system311-conda-forge/bin"
-            ;;
         gordita)
             __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
             ;;
