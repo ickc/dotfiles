@@ -177,6 +177,8 @@ case "$__HOST" in
         ;;
     bolo)
         SCRATCH="/tank/scratch/$USER"
+        HOME="/home/$USER"
+        export HOME
         ;;
     lpc-mini)
         SCRATCH=/scratch
