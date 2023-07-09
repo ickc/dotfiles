@@ -281,6 +281,10 @@ ml_ghcup () {
     path_append_all "$HOME/.ghcup"
 }
 
+ml_jetbrains () {
+    path_append "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+}
+
 # hosts ========================================================================
 
 if [[ -n "$NERSC_HOST" ]]; then
@@ -407,6 +411,7 @@ ml () {
     [[ -n "$__CONDA_PREFIX" ]] && ml_conda
     [[ -n "$CARGO_PREFIX" ]] && ml_cg
     [[ -d "$HOME/.basher" ]] && ml_basher
+    [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
     ml_host
 
