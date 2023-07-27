@@ -484,8 +484,15 @@ fi
 # the parent directories should protect it already
 umask 022
 
-# for tmux
+# for tmux to work properly on macOS
 # see https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
+if [[ "$__OSTYPE" == darwin && ! -d "$HOME/.local/share/terminfo" ]]; then
+    echo "Setting up terminfo for tmux on macOS" >&2
+    rm -f "$HOME/tmux-256color.src"
+    /opt/local/bin/infocmp -x tmux-256color > "$HOME/tmux-256color.src"
+    /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color.src"
+    rm -f "$HOME/tmux-256color.src"
+fi
 [[ -d "$HOME/.local/share/terminfo" ]] && TERMINFO_DIRS_append "$HOME/.local/share/terminfo"
 
 # git external diff
