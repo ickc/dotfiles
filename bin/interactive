@@ -328,6 +328,15 @@ elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     }
 else
     case "$__HOST" in
+        simons1)
+            ml_host () {
+                . /usr/share/modules/init/zsh
+                module use --append /mnt/so1/shared/modules/
+            }
+            ml_toast () {
+                module load tod_stack_unstable
+            }
+            ;;
         gordita)
             ml_host () {
                 [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"
