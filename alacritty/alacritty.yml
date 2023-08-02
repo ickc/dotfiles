@@ -802,7 +802,14 @@ colors:
 #
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
-#key_bindings:
+key_bindings:
+  # https://github.com/alacritty/alacritty/issues/2049#issuecomment-1644666747
+  # xterm-style
+  - { key: B, mods: Alt, chars: "\x1b[27;3;98~" }
+  - { key: F, mods: Alt, chars: "\x1b[27;3;102~" }
+  # libtickit-style
+  # - { key: B, mods: Alt, chars: "\x1b[98;3u" }
+  # - { key: F, mods: Alt, chars: "\x1b[102;3u" }
   #- { key: Paste,                                       action: Paste          }
   #- { key: Copy,                                        action: Copy           }
   #- { key: L,         mods: Control,                    action: ClearLogNotice }
