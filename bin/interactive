@@ -280,6 +280,14 @@ mu_exa () {
     alias ls="noglob ls"
 }
 
+ml_eza () {
+    alias ls=eza
+}
+
+mu_eza () {
+    alias ls="noglob ls"
+}
+
 ml_cg () {
     path_append_all "$CARGO_PREFIX"
 }
@@ -413,6 +421,7 @@ ml_clean () {
     [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on NERSC
     type exa >/dev/null 2>&1 && ml_exa
+    type eza >/dev/null 2>&1 && ml_eza
 }
 
 ml () {
@@ -467,6 +476,7 @@ mu () {
     mu_conda
     mu_s
     mu_exa
+    mu_eza
     mu_basher
     [[ -n "$NERSC_HOST" ]] && mu_host
 }
