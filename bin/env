@@ -31,7 +31,7 @@ esac
 
 # set HOSTNAME by hostname if undefined
 if [[ -z "$HOSTNAME" ]]; then
-    HOSTNAME="$(hostname)"
+    HOSTNAME="$(hostname --fqdn)"
     export HOSTNAME
 fi
 
@@ -75,6 +75,7 @@ else
             export PRINCETON_HOST
             __HOST="$PRINCETON_HOST"
             ;;
+        # TODO: check `hostname --fqdn` on these hosts
         centaurus|fornax)
             JBCA_HOST="$HOSTNAME"
             export JBCA_HOST
