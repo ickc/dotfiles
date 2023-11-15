@@ -91,8 +91,6 @@ else
             __HOST="$BOLO_HOST"
             ;;
         lpc-mini)                       __HOST=lpc-mini     ;;
-        # be careful that it may collide...
-        login1)                         __HOST=ascent       ;;
         *)                              __HOST="$HOSTNAME"  ;;
     esac
 fi
@@ -184,10 +182,6 @@ case "$__HOST" in
         SCRATCH=/scratch
 
         __CONDA_PREFIX=/opt/mambaforge
-        ;;
-    ascent)
-        SCRATCH="/gpfs/wolf/trn017/scratch/$USER"
-        __CONDA_PREFIX="$HOME/.mambaforge"
         ;;
     *)
         # macOS catalina doesn't allow /scratch anymore
