@@ -10,7 +10,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # .bash_profile
 
-if [[ -n "$BLACKETT_HOST" || -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || -n "$JBCA_HOST" ]]; then
+if [[ -n "$BLACKETT_HOST" || -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || -n "$JBCA_HOST" || -n "$SO_HOST" ]]; then
     echo 'SHELL=~/.local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
 elif [[ -n "$BOLO_HOST" ]]; then
     echo '[[ "$HOSTNAME" == gordita* ]] && SHELL=~/.local/bin/zsh || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
