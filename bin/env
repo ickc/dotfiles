@@ -31,7 +31,8 @@ esac
 
 # set HOSTNAME by hostname if undefined
 if [[ -z "$HOSTNAME" ]]; then
-    HOSTNAME="$(hostname --fqdn)"
+    # be careful that different implementation of hostname has different options
+    HOSTNAME="$(hostname -f)"
     export HOSTNAME
 fi
 
