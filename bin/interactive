@@ -203,6 +203,7 @@ ml_conda () {
     # changing your PATH
     local __PATH__="$PATH"
     . "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+    . "$__CONDA_PREFIX/etc/profile.d/mamba.sh"
     export PATH="$__PATH__"
 }
 
