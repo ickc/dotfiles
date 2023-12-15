@@ -169,22 +169,12 @@ ml_brew () {
 
     path_prepend "$HOMEBREW_PREFIX/sbin"
     path_prepend_all "$HOMEBREW_PREFIX"
-
-    # TODO: remove this when all systems migrated away from GNU-ize
-    # GNU-ize only needed on macOS
-    if [[ "$__OSTYPE" == darwin && -s "$HOME/.path" ]]; then
-        printerr "Deprecation notice: $HOME/.path will be ignored in the next release. This may be present if you used GNU-ize before."
-        . "$HOME/.path"
-    fi
-
     path_prepend_all "$HOMEBREW_PREFIX/opt/ruby"
 }
 
 mu_brew () {
     unset HOMEBREW_CELLAR
     unset HOMEBREW_REPOSITORY
-    # TODO: remove this when all systems migrated away from GNU-ize
-    # from "$HOME/.path"
     unset HOMEBREW_CC
     unset HOMEBREW_CXX
 }
