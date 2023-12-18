@@ -9,11 +9,11 @@ echo -n "\033]0;${__HOST%%.*}\007"
 
 # * any path-like variables should be remember and reset using this machanism
 # keeping the original PATH for cleaning environments
-export __PATH="${__PATH:-$PATH}"
-export __MANPATH="${__MANPATH:-$MANPATH}"
-export __INFOPATH="${__INFOPATH:-$INFOPATH}"
-export __PYTHONPATH="${__PYTHONPATH:-$PYTHONPATH}"
-export __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-$LD_LIBRARY_PATH}"
+export __PATH="${__PATH:-$PATH}" \
+    __MANPATH="${__MANPATH:-$MANPATH}" \
+    __INFOPATH="${__INFOPATH:-$INFOPATH}" \
+    __PYTHONPATH="${__PYTHONPATH:-$PYTHONPATH}" \
+    __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-$LD_LIBRARY_PATH}"
 # reset PATH every time a new interactive shell is started
 # berfore any paths are added to it
 [[ -n "$__PATH" ]] && export PATH="$__PATH"

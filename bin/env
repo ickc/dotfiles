@@ -200,10 +200,8 @@ case "$__HOST" in
             done
             unset conda_prefix
         elif [[ -n "$BLACKETT_HOST" ]]; then
-            CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory
-            export CVMFS_ROOT
-            XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
-            export XROOTD_ROOT
+            export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
+                XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
             __CONDA_PREFIX="$CVMFS_ROOT/opt/miniforge3"
             if [[ -n "$_CONDOR_SCRATCH_DIR" ]]; then
                 SCRATCH="$_CONDOR_SCRATCH_DIR"
@@ -236,25 +234,22 @@ esac
 # general XDG related setup: add all systems that we want to setup XDG away from the default
 if [[ ( -n "$NERSC_HOST" || -n "$JBCA_HOST" ) && -n "$SCRATCH" ]]; then
     # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-    export XDG_CONFIG_HOME="$SCRATCH/.local/config"
-    export XDG_CACHE_HOME="$SCRATCH/.local/cache"
-    export XDG_DATA_HOME="$SCRATCH/.local/share"
-    export XDG_STATE_HOME="$SCRATCH/.local/state"
-
     # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
-    export CONDA_ENVS_PATH="$XDG_DATA_HOME/conda/envs"
-    export CONDA_PKGS_DIRS="$XDG_CACHE_HOME/conda/pkgs"
-    export CONDA_BLD_PATH="$XDG_CACHE_HOME/conda-bld/"
-
     # https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
-    export IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter
-    export JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter
-    export MATHEMATICA_USERBASE="$XDG_CONFIG_HOME"/mathematica
-    export PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel
-    export WGETRC="$XDG_CONFIG_HOME/wgetrc"
-
     # https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
-    export NUMBA_CACHE_DIR="$XDG_CACHE_HOME/numba"
+    export XDG_CONFIG_HOME="$SCRATCH/.local/config" \
+        XDG_CACHE_HOME="$SCRATCH/.local/cache" \
+        XDG_DATA_HOME="$SCRATCH/.local/share" \
+        XDG_STATE_HOME="$SCRATCH/.local/state"
+    export CONDA_ENVS_PATH="$XDG_DATA_HOME/conda/envs" \
+        CONDA_PKGS_DIRS="$XDG_CACHE_HOME/conda/pkgs" \
+        CONDA_BLD_PATH="$XDG_CACHE_HOME/conda-bld/" \
+        IPYTHONDIR="$XDG_CONFIG_HOME"/jupyter \
+        JUPYTER_CONFIG_DIR="$XDG_CONFIG_HOME"/jupyter \
+        MATHEMATICA_USERBASE="$XDG_CONFIG_HOME"/mathematica \
+        PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel \
+        WGETRC="$XDG_CONFIG_HOME/wgetrc" \
+        NUMBA_CACHE_DIR="$XDG_CACHE_HOME/numba"
 fi
 # specific XDG related setup
 if [[ -n "$NERSC_HOST" ]]; then
@@ -267,13 +262,12 @@ fi
 # export all variables #################################################
 
 [[ -n "$SCRATCH" ]] && export SCRATCH
-export __OSTYPE
-export __HOST
+export __OSTYPE __HOST
 if [[ -n "$HOMEBREW_PREFIX" ]]; then
     export HOMEBREW_PREFIX \
-    HOMEBREW_NO_ANALYTICS=1 \
-    HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar" \
-    HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+        HOMEBREW_NO_ANALYTICS=1 \
+        HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar" \
+        HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
 fi
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
 [[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
@@ -294,24 +288,19 @@ case "$__OSTYPE" in
         __NCPU="$(getconf _NPROCESSORS_ONLN 2>/dev/null || getconf NPROCESSORS_ONLN 2>/dev/null || echo 1)"
         ;;
 esac
-export __NCPU
-export MAKEFLAGS="-j$__NCPU"
-
-export EDITOR=nano
-export ZIM_HOME=~/.zim
-
-# sman
-export SMAN_APPEND_HISTORY=false
-export SMAN_EXEC_CONFIRM=false
+export __NCPU \
+    MAKEFLAGS="-j$__NCPU" \
+    EDITOR=nano \
+    ZIM_HOME=~/.zim \
+    GOPATH="$HOME/go" \
+    GOBIN="$HOME/go/bin" \
+    SMAN_APPEND_HISTORY=false \
+    SMAN_EXEC_CONFIRM=false
 if [[ -n "$BLACKETT_HOST" ]]; then
     export SMAN_SNIPPET_DIR="$CVMFS_ROOT/git/ickc/sman-snippets"
 else
     export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
 fi
-
-# go
-export GOPATH="$HOME/go"
-export GOBIN="$HOME/go/bin"
 
 # alias ################################################################
 
@@ -349,8 +338,8 @@ elif [[ -d "$HOME/.basher" ]]; then
     BASHER_ROOT="$HOME/.basher"
 fi
 if [[ -n "$BASHER_ROOT" ]]; then
-    export BASHER_ROOT
-    export BASHER_PREFIX="$BASHER_ROOT/cellar"
+    export BASHER_ROOT \
+        BASHER_PREFIX="$BASHER_ROOT/cellar"
     export BASHER_PACKAGES_PATH="$BASHER_PREFIX/packages"
     if [[ -n "$ZSH_VERSION" ]]; then
         export BASHER_SHELL=zsh
