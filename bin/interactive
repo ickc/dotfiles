@@ -164,19 +164,9 @@ fi
 
 ml_brew () {
     # adapted from `brew shellenv`
-    export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
-    export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
-
     path_prepend "$HOMEBREW_PREFIX/sbin"
     path_prepend_all "$HOMEBREW_PREFIX"
     path_prepend_all "$HOMEBREW_PREFIX/opt/ruby"
-}
-
-mu_brew () {
-    unset HOMEBREW_CELLAR
-    unset HOMEBREW_REPOSITORY
-    unset HOMEBREW_CC
-    unset HOMEBREW_CXX
 }
 
 # macports
@@ -220,23 +210,9 @@ ml_basher () {
     path_append_all "$BASHER_PREFIX"
 }
 
-# go
-ml_go () {
-    path_append_all "$HOME/go"
-}
-
 # sman
 ml_s () {
     . "$HOME/.sman/sman.rc"
-    export SMAN_APPEND_HISTORY=false
-    export SMAN_EXEC_CONFIRM=false
-    export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
-}
-
-mu_s () {
-    unset SMAN_APPEND_HISTORY
-    unset SMAN_EXEC_CONFIRM
-    unset SMAN_SNIPPET_DIR
 }
 
 ml_exa () {
@@ -273,13 +249,7 @@ ml_jetbrains () {
 
 if [[ -n "$NERSC_HOST" ]]; then
     ml_host () {
-        # common polar
-        export PBCOMMON="$COMMON_ROOT/polar"
         path_prepend_all "$PBCOMMON/local"
-    }
-
-    mu_host () {
-        unset PBCOMMON
     }
 
     ml_toast () {
@@ -372,14 +342,8 @@ fi
 ml_clean () {
     # special case, may generalize something like this to any FreeBSD?
     if [[ "$__HOST" == bolo ]]; then
-        path_append "$HOME/.freebsd.local/gopath/bin"
         remove_home_local_bin_from_PATH
     fi
-
-    # go
-    path_append_all "$HOME/gopath"
-    export GOPATH="$HOME/go"
-    export GOBIN="$HOME/go/bin"
 
     # * load minimal environment for interactive use
     path_prepend_all "$HOME/.local"
@@ -397,7 +361,6 @@ ml () {
 
     # * load all installed environments
     # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
-    ml_go
     ml_ghcup
     [[ -n "$HOMEBREW_PREFIX" ]] && ml_brew
     [[ "$__OSTYPE" == darwin ]] && ml_port
@@ -438,12 +401,9 @@ mu () {
         unset LD_LIBRARY_PATH
     fi
 
-    mu_brew
     mu_conda
-    mu_s
     mu_exa
     mu_eza
-    type mu_host &>/dev/null && mu_host
 }
 
 mkdir_xdg () {

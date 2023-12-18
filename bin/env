@@ -141,6 +141,8 @@ case "$__HOST" in
         __CONDA_PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge"
         PROJ_ROOT=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
+        # common polar
+        export PBCOMMON="$COMMON_ROOT/polar"
 
         # NERSC's home is a symbolic link, and vscode's git doesn't like that
         # see https://github.com/microsoft/vscode/issues/5970
@@ -267,7 +269,12 @@ fi
 [[ -n "$SCRATCH" ]] && export SCRATCH
 export __OSTYPE
 export __HOST
-[[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX HOMEBREW_NO_ANALYTICS=1
+if [[ -n "$HOMEBREW_PREFIX" ]]; then
+    export HOMEBREW_PREFIX \
+    HOMEBREW_NO_ANALYTICS=1 \
+    HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar" \
+    HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+fi
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
 [[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
@@ -292,6 +299,19 @@ export MAKEFLAGS="-j$__NCPU"
 
 export EDITOR=nano
 export ZIM_HOME=~/.zim
+
+# sman
+export SMAN_APPEND_HISTORY=false
+export SMAN_EXEC_CONFIRM=false
+if [[ -n "$BLACKETT_HOST" ]]; then
+    export SMAN_SNIPPET_DIR="$CVMFS_ROOT/git/ickc/sman-snippets"
+else
+    export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
+fi
+
+# go
+export GOPATH="$HOME/go"
+export GOBIN="$HOME/go/bin"
 
 # alias ################################################################
 
