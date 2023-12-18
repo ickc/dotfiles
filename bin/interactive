@@ -209,10 +209,6 @@ mu_conda () {
 ml_basher () {
     if [[ -n "$ZSH_VERSION" ]]; then
         # basher init - zsh | sed "s:$HOME:\$HOME:g" | pbcopy
-        export BASHER_SHELL=zsh
-        export BASHER_ROOT=$HOME/.basher
-        export BASHER_PREFIX=$HOME/.basher/cellar
-        export BASHER_PACKAGES_PATH=$HOME/.basher/cellar/packages
         if [ "${PATH#*$BASHER_ROOT/cellar/bin}" = "${PATH}" ]; then
         export PATH="$BASHER_ROOT/cellar/bin:$PATH"
         fi
@@ -220,12 +216,8 @@ ml_basher () {
         . "$BASHER_ROOT/completions/basher.zsh"
         fpath=("$BASHER_ROOT/cellar/completions/zsh/compsys" $fpath)
         for f in $(command ls "$BASHER_ROOT/cellar/completions/zsh/compctl"); do source "$BASHER_ROOT/cellar/completions/zsh/compctl/$f"; done
-    elif [ -n "$BASH_VERSION" ]; then
+    elif [[ -n "$BASH_VERSION" ]]; then
         # basher init - bash | sed "s:$HOME:\$HOME:g" | pbcopy
-        export BASHER_SHELL=bash
-        export BASHER_ROOT=$HOME/.basher
-        export BASHER_PREFIX=$HOME/.basher/cellar
-        export BASHER_PACKAGES_PATH=$HOME/.basher/cellar/packages
         if [ "${PATH#*$BASHER_ROOT/cellar/bin}" = "${PATH}" ]; then
         export PATH="$BASHER_ROOT/cellar/bin:$PATH"
         fi
@@ -235,13 +227,6 @@ ml_basher () {
     fi
     path_append_all "$BASHER_ROOT"
     path_append_all "$BASHER_PREFIX"
-}
-
-mu_basher () {
-    unset BASHER_SHELL
-    unset BASHER_ROOT
-    unset BASHER_PREFIX
-    unset BASHER_PACKAGES_PATH
 }
 
 # go
@@ -321,6 +306,13 @@ if [[ -n "$NERSC_HOST" ]]; then
         TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
         conda activate "$TOAST_PREFIX"
     }
+elif [[ -n "$BLACKETT_HOST" ]]; then
+    ml_host () {
+        path_prepend_all "$CVMFS_ROOT/opt/system312-conda-forge"
+    }
+    ml_intel () {
+        . $CVMFS_ROOT/opt/intel/oneapi/setvars.sh
+    }
 elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     ml_host () {
         path_prepend_all "$SCRATCH/.local"
@@ -340,12 +332,8 @@ else
             ml_host () {
                 [[ "$__HOST" == gordita ]] && path_prepend_all "$HOME/.linux.local"
             }
-
-            mu_host () { :; }
             ;;
         soukdev1)
-            # just to make sure it always exists
-            ml_host () { :; }
             ml_intel () {
                 . /opt/intel/oneapi/setvars.sh
             }
@@ -362,8 +350,6 @@ else
             }
             ;;
         kolen-server)
-            # just to make sure it always exists
-            ml_host () { :; }
             ml_cuda () {
                 path_append /usr/local/cuda-11
                 ld_library_path_prepend /usr/local/cuda-11/lib64
@@ -374,8 +360,6 @@ else
             }
             ;;
         *)
-            # just to make sure it always exists
-            ml_host () { :; }
             ml_toast_gnu () {
                 TOAST_PREFIX="$SCRATCH/local/toast-gnu"
                 conda activate "$TOAST_PREFIX/conda"
@@ -431,7 +415,7 @@ ml () {
     [[ -d "$HOME/.basher" ]] && ml_basher
     [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
-    ml_host
+    type ml_host &>/dev/null && ml_host
 
     ml_clean
 }
@@ -468,8 +452,7 @@ mu () {
     mu_s
     mu_exa
     mu_eza
-    mu_basher
-    [[ -n "$NERSC_HOST" ]] && mu_host
+    type mu_host &>/dev/null && mu_host
 }
 
 mkdir_xdg () {

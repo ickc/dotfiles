@@ -40,18 +40,14 @@ if [[ -n "$NERSC_HOST" ]]; then
     __HOST="$NERSC_HOST"
 else
     case "$HOSTNAME" in
-        *.in.tier2.hep.manchester.ac.uk)
-            BLACKETT_HOST="$HOSTNAME"
+        vm77.tier2.hep.manchester.ac.uk)
+            BLACKETT_HOST="${HOSTNAME%%.*}"
             export BLACKETT_HOST
-            BLACKETT_INTERACTIVE=1
-            export BLACKETT_INTERACTIVE
             __HOST="$BLACKETT_HOST"
             ;;
-        vm77.tier2.hep.manchester.ac.uk)
-            BLACKETT_HOST="$HOSTNAME"
+        *.tier2.hep.manchester.ac.uk)
+            BLACKETT_HOST="${HOSTNAME%%.*}"
             export BLACKETT_HOST
-            BLACKETT_INTERACTIVE=0
-            export BLACKETT_INTERACTIVE
             __HOST="$BLACKETT_HOST"
             ;;
         dtn0?.nersc.gov)
@@ -120,15 +116,6 @@ fi
 # set __HOST-specific env var ##########################################
 
 case "$__HOST" in
-    *.hep.manchester.ac.uk)
-        if [[ "$BATCH_SYSTEM" == "HTCondor" ]]; then
-            SCRATCH="$_CONDOR_SCRATCH_DIR"
-            __CONDA_PREFIX="$HOME/.mambaforge"
-        else
-            SCRATCH="$HOME/scratch"
-            __CONDA_PREFIX="$HOME/.mambaforge"
-        fi
-        ;;
     perlmutter|datatran)
         case "$__HOST" in
             perlmutter)
@@ -170,6 +157,7 @@ case "$__HOST" in
         __CONDA_PREFIX=$SCRATCH/.mambaforge
         PROJ_ROOT=/mnt/physicsso
         WWW_DIR="/mnt/so1/public_html/$USER"
+        export WWW_DIR
         ;;
     sirius7)
         SCRATCH="/nvme/scratch/$USER"
@@ -204,6 +192,15 @@ case "$__HOST" in
                 command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             done
             unset conda_prefix
+        elif [[ -n "$BLACKETT_HOST" ]]; then
+            CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory
+            export CVMFS_ROOT
+            XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+            export XROOTD_ROOT
+            __CONDA_PREFIX="$CVMFS_ROOT/opt/miniforge3"
+            if [[ -n "$_CONDOR_SCRATCH_DIR" ]]; then
+                SCRATCH="$_CONDOR_SCRATCH_DIR"
+            fi
         elif [[ -n "$PRINCETON_HOST" ]]; then
             # simons1 is not PRINCETON_HOST!
             SCRATCH="/n/lowrie-scratch/$USER"
@@ -267,7 +264,6 @@ export __OSTYPE
 export __HOST
 [[ -n "$HOMEBREW_PREFIX" ]] && export HOMEBREW_PREFIX HOMEBREW_NO_ANALYTICS=1
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
-[[ -n "$WWW_DIR" ]] && export WWW_DIR
 [[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
 [[ -d "$HOME/.cargo" ]] && export CARGO_PREFIX="$HOME/.cargo"
 
@@ -299,8 +295,10 @@ export ZIM_HOME=~/.zim
 # this is to avoid can't find tmux after `mu`
 if [[ "$__OSTYPE" == darwin ]]; then
     __PREFIX=/opt/local/bin
-elif [[ -n "$BLACKETT_HOST" || -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || ( -n "$JBCA_HOST" && -n "$SCRATCH" ) ]]; then
+elif [[ -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || ( -n "$JBCA_HOST" && -n "$SCRATCH" ) ]]; then
     __PREFIX="$HOME/.local/bin"
+elif [[ -n "$BLACKETT_HOST" ]]; then
+    __PREFIX="$CVMFS_ROOT/opt/system312-conda-forge"
 else
     case "$__HOST" in
         gordita)
@@ -315,14 +313,20 @@ if [[ -n "$__PREFIX" ]]; then
     done
 fi
 
+command -v squeue >/dev/null 2>&1 &&
 alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
 
 # basher ###############################################################
 
-if [[ -d "$HOME/.basher" ]]; then
-    export BASHER_ROOT="$HOME/.basher"
-    export BASHER_PREFIX="$HOME/.basher/cellar"
-    export BASHER_PACKAGES_PATH="$HOME/.basher/cellar/packages"
+if [[ -n "$BLACKETT_HOST" ]]; then
+    BASHER_ROOT="$CVMFS_ROOT/opt/basher"
+elif [[ -d "$HOME/.basher" ]]; then
+    BASHER_ROOT="$HOME/.basher"
+fi
+if [[ -n "$BASHER_ROOT" ]]; then
+    export BASHER_ROOT
+    export BASHER_PREFIX="$BASHER_ROOT/cellar"
+    export BASHER_PACKAGES_PATH="$BASHER_PREFIX/packages"
     if [[ -n "$ZSH_VERSION" ]]; then
         export BASHER_SHELL=zsh
     elif [ -n "$BASH_VERSION" ]; then
