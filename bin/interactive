@@ -207,22 +207,13 @@ mu_conda () {
 }
 
 ml_basher () {
+    path_prepend "$BASHER_ROOT/cellar/bin"
+    . "$BASHER_ROOT/lib/include.$BASHER_SHELL"
+    . "$BASHER_ROOT/completions/basher.$BASHER_SHELL"
     if [[ -n "$ZSH_VERSION" ]]; then
-        # basher init - zsh | sed "s:$HOME:\$HOME:g" | pbcopy
-        if [ "${PATH#*$BASHER_ROOT/cellar/bin}" = "${PATH}" ]; then
-        export PATH="$BASHER_ROOT/cellar/bin:$PATH"
-        fi
-        . "$BASHER_ROOT/lib/include.zsh"
-        . "$BASHER_ROOT/completions/basher.zsh"
         fpath=("$BASHER_ROOT/cellar/completions/zsh/compsys" $fpath)
         for f in $(command ls "$BASHER_ROOT/cellar/completions/zsh/compctl"); do source "$BASHER_ROOT/cellar/completions/zsh/compctl/$f"; done
     elif [[ -n "$BASH_VERSION" ]]; then
-        # basher init - bash | sed "s:$HOME:\$HOME:g" | pbcopy
-        if [ "${PATH#*$BASHER_ROOT/cellar/bin}" = "${PATH}" ]; then
-        export PATH="$BASHER_ROOT/cellar/bin:$PATH"
-        fi
-        . "$BASHER_ROOT/lib/include.bash"
-        . "$BASHER_ROOT/completions/basher.bash"
         for f in $(command ls "$BASHER_ROOT/cellar/completions/bash"); do source "$BASHER_ROOT/cellar/completions/bash/$f"; done
     fi
     path_append_all "$BASHER_ROOT"
