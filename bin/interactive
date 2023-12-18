@@ -136,7 +136,8 @@ path_append_all () {
 
 # this remove ~/.local/bin from PATH
 remove_home_local_bin_from_PATH () {
-    export PATH="$(echo $PATH | tr ":" "\n" | grep -v "$HOME/.local/bin" | tr "\n" ":")"
+    PATH="$(echo "$PATH" | tr ":" "\n" | grep -v "$HOME/.local/bin" | tr "\n" ":")"
+    export PATH
 }
 
 # Powerlevel10k ################################################################
@@ -272,7 +273,7 @@ elif [[ -n "$BLACKETT_HOST" ]]; then
         path_prepend_all "$CVMFS_ROOT/opt/system312-conda-forge"
     }
     ml_intel () {
-        . $CVMFS_ROOT/opt/intel/oneapi/setvars.sh
+        . "$CVMFS_ROOT/opt/intel/oneapi/setvars.sh"
     }
 elif [[ -n "$JBCA_HOST" && -n "$SCRATCH" ]]; then
     ml_host () {
