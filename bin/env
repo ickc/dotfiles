@@ -50,6 +50,11 @@ else
             export BLACKETT_HOST
             __HOST="$BLACKETT_HOST"
             ;;
+        cvmfs-uploader*.gridpp.rl.ac.uk)
+            BLACKETT_HOST="${HOSTNAME%%.*}"
+            export BLACKETT_HOST
+            __HOST="$BLACKETT_HOST"
+            ;;
         dtn0?.nersc.gov)
             # permutter has NERSC_HOST defined at this stage, but not dtn
             NERSC_HOST=datatran
