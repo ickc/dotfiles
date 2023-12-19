@@ -18,10 +18,21 @@ install-basher:
 	~/.basher/bin/basher install ickc/dautil-sh
 
 uninstall:
-	# from install
-	rm -rf ~/.zim ~/.sman ~/git/source/sman-snippets ~/.basher
-	# from make.sh
-	rm -f "~/.bash_profile" "~/.bashrc" "~/.zshenv" "~/.zprofile" "~/.zshrc" "~/.zlogin" "~/.zlogout" "~/.zimrc" "~/.p10k.zsh"
+	rm -rf \
+		~/.bash_profile \
+		~/.basher \
+		~/.bashrc \
+		~/.local/bin/sman \
+		~/.p10k.zsh \
+		~/.sman \
+		~/.zim \
+		~/.zimrc \
+		~/.zlogin \
+		~/.zlogout \
+		~/.zprofile \
+		~/.zshenv \
+		~/.zshrc \
+		~/git/source/sman-snippets
 todo:
 	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
 
