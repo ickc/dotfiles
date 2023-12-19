@@ -317,9 +317,9 @@ elif [[ -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || (-n "$JBCA_HOST" && -n "$SCR
     __PREFIX="$HOME/.local/bin"
 elif [[ -n "$BLACKETT_HOST" ]]; then
     if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
-        __PREFIX="$CVMFS_ROOT/usr"
+        __PREFIX="$CVMFS_ROOT/usr/bin"
     else
-        __PREFIX="$HOME/.local"
+        __PREFIX=/opt/local/bin
     fi
 else
     case "$__HOST" in

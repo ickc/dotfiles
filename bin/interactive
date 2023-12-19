@@ -273,6 +273,10 @@ elif [[ -n "$BLACKETT_HOST" ]]; then
         ml_host () {
             path_prepend_all "$CVMFS_ROOT/usr"
         }
+    else
+        ml_host () {
+            path_prepend_all /opt/local
+        }
     fi
     ml_intel () {
         . "$CVMFS_ROOT/opt/intel/oneapi/setvars.sh"
