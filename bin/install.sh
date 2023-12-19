@@ -16,7 +16,7 @@ elif [[ -n "$BLACKETT_HOST" ]]; then
     if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
         echo 'SHELL=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory/usr/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
     else
-        echo 'SHELL=~/.local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
+        echo 'SHELL=/opt/local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
     fi
 elif [[ -n "$BOLO_HOST" ]]; then
     echo '[[ "$HOSTNAME" == gordita* ]] && SHELL=~/.local/bin/zsh || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
