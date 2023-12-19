@@ -14,9 +14,13 @@ Put non-public env var into `bin/.env`.
 # Install
 
 ```bash
-mkdir -p ~/git/source; cd ~/git/source
+mkdir -p ~/git/source
+cd ~/git/source
 git clone git@github.com:ickc/dotfiles.git ||
 git clone https://github.com/ickc/dotfiles.git
 cd dotfiles
+. bin/env
 make uninstall && make install && make
+. bin/env
+. bin/interactive
 ```
