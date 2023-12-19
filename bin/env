@@ -261,6 +261,11 @@ if [[ -n "$NERSC_HOST" ]]; then
     export CONDA_ENVS_PATH="$CONDA_ENVS_PATH:$COMMON_ROOT/polar/.conda/envs"
     # doesn't work, see https://github.com/conda/conda/issues/10719
     # export CONDA_PKGS_DIRS="$(find /usr/common/software/python -maxdepth 2 -mindepth 2 -type d -name pkgs | sort -r | tr '\n' ':')$XDG_CACHE_HOME/conda/pkgs"
+elif [[ -n "$BLACKETT_HOST" ]]; then
+    export CONDA_ENVS_PATH="$CONDA_ENVS_PATH:$CVMFS_ROOT/opt:$CVMFS_ROOT/pmpm:$CVMFS_ROOT/conda"
+    if [[ "$BLACKETT_HOST"  == vm77 ]]; then
+        export CONDA_ENVS_PATH="/opt:$CONDA_ENVS_PATH"
+    fi
 fi
 
 # export all variables #################################################
