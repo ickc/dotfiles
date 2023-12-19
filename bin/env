@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-printerr () {
+printerr() {
     printf "%s\\n" "$@" >&2
 }
 
@@ -19,12 +19,12 @@ export CONDARC="$HOME/git/source/dotfiles/conda/.condarc"
 # set __OSTYPE as normalized OSTYPE
 # c.f. https://stackoverflow.com/a/18434831
 case "$OSTYPE" in
-    solaris*)   __OSTYPE=solaris    ;;
-    darwin*)    __OSTYPE=darwin     ;; 
-    linux*)     __OSTYPE=linux      ;;
-    *bsd*)      __OSTYPE=bsd        ;;
-    msys*)      __OSTYPE=msys       ;;
-    *)          __OSTYPE="$OSTYPE"  ;;
+solaris*) __OSTYPE=solaris ;;
+darwin*) __OSTYPE=darwin ;;
+linux*) __OSTYPE=linux ;;
+*bsd*) __OSTYPE=bsd ;;
+msys*) __OSTYPE=msys ;;
+*) __OSTYPE="$OSTYPE" ;;
 esac
 
 # __HOST detection #####################################################
@@ -40,66 +40,66 @@ if [[ -n "$NERSC_HOST" ]]; then
     __HOST="$NERSC_HOST"
 else
     case "$HOSTNAME" in
-        vm77.tier2.hep.manchester.ac.uk)
-            BLACKETT_HOST="${HOSTNAME%%.*}"
-            export BLACKETT_HOST
-            __HOST="$BLACKETT_HOST"
-            ;;
-        *.tier2.hep.manchester.ac.uk)
-            BLACKETT_HOST="${HOSTNAME%%.*}"
-            export BLACKETT_HOST
-            __HOST="$BLACKETT_HOST"
-            ;;
-        cvmfs-uploader*.gridpp.rl.ac.uk)
-            BLACKETT_HOST="${HOSTNAME%%.*}"
-            export BLACKETT_HOST
-            __HOST="$BLACKETT_HOST"
-            ;;
-        dtn0?.nersc.gov)
-            # permutter has NERSC_HOST defined at this stage, but not dtn
-            NERSC_HOST=datatran
-            export NERSC_HOST
-            __HOST=datatran
-            ;;
-        *.simonsobs.org)
-            SO_HOST="${HOSTNAME%%.*}"
-            export SO_HOST
-            __HOST="$SO_HOST"
-            ;;
-        *.jb.man.ac.uk)
-            JBCA_HOST="${HOSTNAME%%.*}"
-            export JBCA_HOST
-            __HOST="$JBCA_HOST"
-            ;;
-        *.princeton.edu)
-            # seems like nobel is load balanced and it can lands on different __HOST here...
-            PRINCETON_HOST="${HOSTNAME%%.*}"
-            export PRINCETON_HOST
-            __HOST="$PRINCETON_HOST"
-            ;;
-        simons1)
-            PRINCETON_HOST="$HOSTNAME"
-            export PRINCETON_HOST
-            __HOST="$PRINCETON_HOST"
-            ;;
-        # TODO: check `hostname --fqdn` on these hosts
-        centaurus|fornax)
-            JBCA_HOST="$HOSTNAME"
-            export JBCA_HOST
-            __HOST="$JBCA_HOST"
-            ;;
-        gordita.physics.berkeley.edu)
-            BOLO_HOST=gordita
-            export BOLO_HOST
-            __HOST="$BOLO_HOST"
-            ;;
-        bolo.berkeley.edu)
-            BOLO_HOST=bolo
-            export BOLO_HOST
-            __HOST="$BOLO_HOST"
-            ;;
-        lpc-mini)                       __HOST=lpc-mini     ;;
-        *)                              __HOST="$HOSTNAME"  ;;
+    vm77.tier2.hep.manchester.ac.uk)
+        BLACKETT_HOST="${HOSTNAME%%.*}"
+        export BLACKETT_HOST
+        __HOST="$BLACKETT_HOST"
+        ;;
+    *.tier2.hep.manchester.ac.uk)
+        BLACKETT_HOST="${HOSTNAME%%.*}"
+        export BLACKETT_HOST BLACKETT_CVMFS_ENV=1
+        __HOST="$BLACKETT_HOST"
+        ;;
+    cvmfs-uploader*.gridpp.rl.ac.uk)
+        BLACKETT_HOST="${HOSTNAME%%.*}"
+        export BLACKETT_HOST BLACKETT_CVMFS_ENV=1
+        __HOST="$BLACKETT_HOST"
+        ;;
+    dtn0?.nersc.gov)
+        # permutter has NERSC_HOST defined at this stage, but not dtn
+        NERSC_HOST=datatran
+        export NERSC_HOST
+        __HOST=datatran
+        ;;
+    *.simonsobs.org)
+        SO_HOST="${HOSTNAME%%.*}"
+        export SO_HOST
+        __HOST="$SO_HOST"
+        ;;
+    *.jb.man.ac.uk)
+        JBCA_HOST="${HOSTNAME%%.*}"
+        export JBCA_HOST
+        __HOST="$JBCA_HOST"
+        ;;
+    *.princeton.edu)
+        # seems like nobel is load balanced and it can lands on different __HOST here...
+        PRINCETON_HOST="${HOSTNAME%%.*}"
+        export PRINCETON_HOST
+        __HOST="$PRINCETON_HOST"
+        ;;
+    simons1)
+        PRINCETON_HOST="$HOSTNAME"
+        export PRINCETON_HOST
+        __HOST="$PRINCETON_HOST"
+        ;;
+    # TODO: check `hostname --fqdn` on these hosts
+    centaurus | fornax)
+        JBCA_HOST="$HOSTNAME"
+        export JBCA_HOST
+        __HOST="$JBCA_HOST"
+        ;;
+    gordita.physics.berkeley.edu)
+        BOLO_HOST=gordita
+        export BOLO_HOST
+        __HOST="$BOLO_HOST"
+        ;;
+    bolo.berkeley.edu)
+        BOLO_HOST=bolo
+        export BOLO_HOST
+        __HOST="$BOLO_HOST"
+        ;;
+    lpc-mini) __HOST=lpc-mini ;;
+    *) __HOST="$HOSTNAME" ;;
     esac
 fi
 
@@ -121,118 +121,122 @@ fi
 # set __HOST-specific env var ##########################################
 
 case "$__HOST" in
-    perlmutter|datatran)
-        case "$__HOST" in
-            perlmutter)
-                SCRATCH="/pscratch/sd/${USER:0:1}/$USER"
+perlmutter | datatran)
+    case "$__HOST" in
+    perlmutter)
+        SCRATCH="/pscratch/sd/${USER:0:1}/$USER"
 
-                # TODO: update by running
-                # module load python...
-                # . activate && echo $CONDA_PREFIX
-                # __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
-                ;;
-            datatran)
-                # TODO: update by running
-                # module load python...
-                # . activate && echo $CONDA_PREFIX
-                # __CONDA_PREFIX=/global/common/datatran2/usg/python/Miniconda3-latest-Linux-x86_64
-                ;;
-        esac
-        __CONDA_PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge"
-        PROJ_ROOT=/global/cfs/cdirs
-        COMMON_ROOT=/global/common/software
-        # common polar
-        export PBCOMMON="$COMMON_ROOT/polar"
+        # TODO: update by running
+        # module load python...
+        # . activate && echo $CONDA_PREFIX
+        # __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
+        ;;
+    datatran)
+        # TODO: update by running
+        # module load python...
+        # . activate && echo $CONDA_PREFIX
+        # __CONDA_PREFIX=/global/common/datatran2/usg/python/Miniconda3-latest-Linux-x86_64
+        ;;
+    esac
+    __CONDA_PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge"
+    PROJ_ROOT=/global/cfs/cdirs
+    COMMON_ROOT=/global/common/software
+    # common polar
+    export PBCOMMON="$COMMON_ROOT/polar"
 
-        # NERSC's home is a symbolic link, and vscode's git doesn't like that
-        # see https://github.com/microsoft/vscode/issues/5970
-        # so we resolve to the realpath here
-        HOME="$(realpath ~)"
-        export HOME
-        ;;
-    centaurus|fornax)
-        # TODO: nowhere else I can call it SCRATCH
-        __CONDA_PREFIX="$HOME/.mambaforge"
-        ;;
-    soukdev1)
-        # TODO: move to HDD later
-        SCRATCH="/mnt/scratch/$USER"
-        __CONDA_PREFIX=/opt/mambaforge
-        ;;
-    simons1)
-        SCRATCH="/mnt/so1/users/$USER"
-        __CONDA_PREFIX=$SCRATCH/.mambaforge
-        PROJ_ROOT=/mnt/physicsso
-        WWW_DIR="/mnt/so1/public_html/$USER"
-        export WWW_DIR
-        ;;
-    sirius7)
-        SCRATCH="/nvme/scratch/$USER"
-        __CONDA_PREFIX="$SCRATCH/.mambaforge"
-        ;;
-    gordita)
-        SCRATCH="/scratch2/$USER"
+    # NERSC's home is a symbolic link, and vscode's git doesn't like that
+    # see https://github.com/microsoft/vscode/issues/5970
+    # so we resolve to the realpath here
+    HOME="$(realpath ~)"
+    export HOME
+    ;;
+centaurus | fornax)
+    # TODO: nowhere else I can call it SCRATCH
+    __CONDA_PREFIX="$HOME/.mambaforge"
+    ;;
+soukdev1)
+    # TODO: move to HDD later
+    SCRATCH="/mnt/scratch/$USER"
+    __CONDA_PREFIX=/opt/mambaforge
+    ;;
+simons1)
+    SCRATCH="/mnt/so1/users/$USER"
+    __CONDA_PREFIX=$SCRATCH/.mambaforge
+    PROJ_ROOT=/mnt/physicsso
+    WWW_DIR="/mnt/so1/public_html/$USER"
+    export WWW_DIR
+    ;;
+sirius7)
+    SCRATCH="/nvme/scratch/$USER"
+    __CONDA_PREFIX="$SCRATCH/.mambaforge"
+    ;;
+gordita)
+    SCRATCH="/scratch2/$USER"
 
-        __CONDA_PREFIX="$HOME/mambaforge"
-        ;;
-    bolo)
-        SCRATCH="/tank/scratch/$USER"
-        HOME="/home/$USER"
-        export HOME
-        ;;
-    lpc-mini)
-        SCRATCH=/scratch
+    __CONDA_PREFIX="$HOME/mambaforge"
+    ;;
+bolo)
+    SCRATCH="/tank/scratch/$USER"
+    HOME="/home/$USER"
+    export HOME
+    ;;
+lpc-mini)
+    SCRATCH=/scratch
 
-        __CONDA_PREFIX=/opt/mambaforge
-        ;;
-    *)
-        # macOS catalina doesn't allow /scratch anymore
-        # on macOS, SCRATCH is ~/scratch, else /scratch
-        if [[ "$__OSTYPE" == darwin ]]; then
-            SCRATCH="${SCRATCH:-$HOME/scratch}"
+    __CONDA_PREFIX=/opt/mambaforge
+    ;;
+*)
+    # macOS catalina doesn't allow /scratch anymore
+    # on macOS, SCRATCH is ~/scratch, else /scratch
+    if [[ "$__OSTYPE" == darwin ]]; then
+        SCRATCH="${SCRATCH:-$HOME/scratch}"
 
-            # TODO
-            conda_prefix="$HOMEBREW_PREFIX/anaconda3"
-            [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
+        # TODO
+        conda_prefix="$HOMEBREW_PREFIX/anaconda3"
+        [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
 
-            for conda_prefix in "$HOMEBREW_PREFIX/anaconda3" "$HOME/.mambaforge"; do
-                command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
-            done
-            unset conda_prefix
-        elif [[ -n "$BLACKETT_HOST" ]]; then
-            export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
-                XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+        for conda_prefix in "$HOMEBREW_PREFIX/anaconda3" "$HOME/.mambaforge"; do
+            command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
+        done
+        unset conda_prefix
+    elif [[ -n "$BLACKETT_HOST" ]]; then
+        export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
+            XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+        if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
             __CONDA_PREFIX="$CVMFS_ROOT/opt/miniforge3"
-            if [[ -n "$_CONDOR_SCRATCH_DIR" ]]; then
-                SCRATCH="$_CONDOR_SCRATCH_DIR"
-            fi
-        elif [[ -n "$PRINCETON_HOST" ]]; then
-            # simons1 is not PRINCETON_HOST!
-            SCRATCH="/n/lowrie-scratch/$USER"
-            __CONDA_PREFIX=$SCRATCH/.mambaforge
-            PROJ_ROOT=/n/lowrie-scratch
-        elif [[ -n "$SO_HOST" ]]; then
-                SCRATCH="/so/scratch/$USER"
-            __CONDA_PREFIX="$HOME/.mambaforge"
-        elif [[ -z "$JBCA_HOST" ]]; then
-            SCRATCH="${SCRATCH:-/scratch}"
-
-            # TODO
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
-                [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
-            done
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3" "$HOME/.mambaforge"; do
-                command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
-            done
-            unset conda_prefix
+        else
+            __CONDA_PREFIX=/opt/miniforge3
         fi
-        ;;
+        if [[ -n "$_CONDOR_SCRATCH_DIR" ]]; then
+            SCRATCH="$_CONDOR_SCRATCH_DIR"
+        fi
+    elif [[ -n "$PRINCETON_HOST" ]]; then
+        # simons1 is not PRINCETON_HOST!
+        SCRATCH="/n/lowrie-scratch/$USER"
+        __CONDA_PREFIX=$SCRATCH/.mambaforge
+        PROJ_ROOT=/n/lowrie-scratch
+    elif [[ -n "$SO_HOST" ]]; then
+        SCRATCH="/so/scratch/$USER"
+        __CONDA_PREFIX="$HOME/.mambaforge"
+    elif [[ -z "$JBCA_HOST" ]]; then
+        SCRATCH="${SCRATCH:-/scratch}"
+
+        # TODO
+        for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
+            [[ -d "$conda_prefix" ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
+        done
+        for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3" "$HOME/.mambaforge"; do
+            command -v "$conda_prefix/bin/conda" >/dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
+        done
+        unset conda_prefix
+    fi
+    ;;
 esac
 
 # XDG setup ############################################################
 
 # general XDG related setup: add all systems that we want to setup XDG away from the default
-if [[ ( -n "$NERSC_HOST" || -n "$JBCA_HOST" ) && -n "$SCRATCH" ]]; then
+if [[ (-n "$NERSC_HOST" || -n "$JBCA_HOST") && -n "$SCRATCH" ]]; then
     # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
     # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
     # https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
@@ -275,18 +279,18 @@ fi
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
 case "$__OSTYPE" in
-    darwin)
-        __NCPU="$(sysctl -n hw.physicalcpu_max)"
-        ;;
-    linux)
-        __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
-        ;;
-    bsd)
-        __NCPU="$(sysctl -n hw.ncpu)"
-        ;;
-    *)
-        __NCPU="$(getconf _NPROCESSORS_ONLN 2>/dev/null || getconf NPROCESSORS_ONLN 2>/dev/null || echo 1)"
-        ;;
+darwin)
+    __NCPU="$(sysctl -n hw.physicalcpu_max)"
+    ;;
+linux)
+    __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+    ;;
+bsd)
+    __NCPU="$(sysctl -n hw.ncpu)"
+    ;;
+*)
+    __NCPU="$(getconf _NPROCESSORS_ONLN 2>/dev/null || getconf NPROCESSORS_ONLN 2>/dev/null || echo 1)"
+    ;;
 esac
 export __NCPU \
     MAKEFLAGS="-j$__NCPU" \
@@ -296,7 +300,7 @@ export __NCPU \
     GOBIN="$HOME/go/bin" \
     SMAN_APPEND_HISTORY=false \
     SMAN_EXEC_CONFIRM=false
-if [[ -n "$BLACKETT_HOST" ]]; then
+if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
     export SMAN_SNIPPET_DIR="$CVMFS_ROOT/git/ickc/sman-snippets"
 else
     export SMAN_SNIPPET_DIR="$HOME/git/source/sman-snippets"
@@ -309,15 +313,19 @@ fi
 # this is to avoid can't find tmux after `mu`
 if [[ "$__OSTYPE" == darwin ]]; then
     __PREFIX=/opt/local/bin
-elif [[ -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || ( -n "$JBCA_HOST" && -n "$SCRATCH" ) ]]; then
+elif [[ -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || (-n "$JBCA_HOST" && -n "$SCRATCH") ]]; then
     __PREFIX="$HOME/.local/bin"
 elif [[ -n "$BLACKETT_HOST" ]]; then
-    __PREFIX="$CVMFS_ROOT/opt/system312-conda-forge"
+    if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
+        __PREFIX="$CVMFS_ROOT/usr"
+    else
+        __PREFIX="$HOME/.local"
+    fi
 else
     case "$__HOST" in
-        gordita)
-            __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
-            ;;
+    gordita)
+        __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
+        ;;
     esac
 fi
 if [[ -n "$__PREFIX" ]]; then
@@ -328,11 +336,11 @@ if [[ -n "$__PREFIX" ]]; then
 fi
 
 command -v squeue >/dev/null 2>&1 &&
-alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
+    alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
 
 # basher ###############################################################
 
-if [[ -n "$BLACKETT_HOST" ]]; then
+if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
     BASHER_ROOT="$CVMFS_ROOT/opt/basher"
 elif [[ -d "$HOME/.basher" ]]; then
     BASHER_ROOT="$HOME/.basher"

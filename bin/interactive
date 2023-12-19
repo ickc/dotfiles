@@ -269,9 +269,11 @@ if [[ -n "$NERSC_HOST" ]]; then
         conda activate "$TOAST_PREFIX"
     }
 elif [[ -n "$BLACKETT_HOST" ]]; then
-    ml_host () {
-        path_prepend_all "$CVMFS_ROOT/opt/system312-conda-forge"
-    }
+    if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
+        ml_host () {
+            path_prepend_all "$CVMFS_ROOT/usr"
+        }
+    fi
     ml_intel () {
         . "$CVMFS_ROOT/opt/intel/oneapi/setvars.sh"
     }
