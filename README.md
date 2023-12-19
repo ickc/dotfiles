@@ -4,6 +4,13 @@ my public dotfiles
 
 Put non-public env var into `bin/.env`.
 
+# Dependencies
+
+- conda & mamba
+- zim
+- sman
+- basher
+
 # Install
 
 ```bash
