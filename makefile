@@ -3,33 +3,32 @@ SHELL = /usr/bin/env bash
 # option: slow, fast
 MPV=fast
 
-all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install
+.PHONY: default install install-zim install-sman install-basher uninstall todo
+default: all
 
+install: install-zim install-sman install-basher
 install-zim:
 	curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
-install: install-zim
-	@echo "Don't allow these to change your dotfiles automatically. We'll take care of that later."
-	mkdir -p $$HOME/git/fork
-	cd $$HOME/git/fork; git clone git@github.com:ickc/sman.git || git clone https://github.com/ickc/sman.git
-	ln -s git/fork/sman $$HOME/.sman
-	mkdir -p $$HOME/.local/bin
-	bash -c "$$(curl https://raw.githubusercontent.com/ickc/sman/master/install.sh)"
+install-sman:
+	curl -L https://github.com/ickc/sman/raw/master/install.sh | bash
+	mkdir -p ~/git/source
+	cd ~/git/source; git clone git@github.com:ickc/sman-snippets.git || git clone https://github.com/ickc/sman-snippets.git
+install-basher:
+	git clone https://github.com/basherpm/basher.git ~/.basher
+	~/.basher/bin/basher install ickc/dautil-sh
 
-	mkdir -p $$HOME/git/source
-	cd $$HOME/git/source; git clone git@github.com:ickc/sman-snippets.git || git clone https://github.com/ickc/sman-snippets.git
 uninstall:
 	# from install
-	rm -rf $$HOME/git/fork/sman $$HOME/git/source/sman-snippets $$HOME/.zim $$HOME/.sman
+	rm -rf ~/.zim ~/.sman ~/git/source/sman-snippets ~/.basher
 	# from make.sh
-	rm -f "$$HOME/.bash_profile" "$$HOME/.bashrc" "$$HOME/.zshenv" "$$HOME/.zprofile" "$$HOME/.zshrc" "$$HOME/.zlogin" "$$HOME/.zlogout" "$$HOME/.zimrc" "$$HOME/.p10k.zsh"
-uninstall-zprezto:
-	rm -rf "$$HOME/.zprezto"
-	rm -f "$$HOME/.zpreztorc"
+	rm -f "~/.bash_profile" "~/.bashrc" "~/.zshenv" "~/.zprofile" "~/.zshrc" "~/.zlogin" "~/.zlogout" "~/.zimrc" "~/.p10k.zsh"
 todo:
 	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
 
 # individual ###########################################################
 
+.PHONY: all shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install
+all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install
 shell-install:
 	cd bin; ./install.sh
 
