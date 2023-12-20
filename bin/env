@@ -158,6 +158,7 @@ soukdev1)
     # TODO: move to HDD later
     SCRATCH="/mnt/scratch/$USER"
     __CONDA_PREFIX=/opt/mambaforge
+    HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew
     ;;
 simons1)
     SCRATCH="/mnt/so1/users/$USER"
