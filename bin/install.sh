@@ -49,6 +49,8 @@ rm -f "$HOME/.zprofile"
 cat <<EOF >"$HOME/.zshrc"
 [[ -s '$DIR/interactive' ]] && . '$DIR/interactive'
 
+zstyle ':zim:zmodule' use 'degit'
+
 # Install missing modules, and update \${ZIM_HOME}/init.zsh if missing or outdated.
 if [[ ! "\${ZIM_HOME}/init.zsh" -nt "\${ZDOTDIR:-\${HOME}}/.zimrc" ]]; then
   source "\${ZIM_HOME}/zimfw.zsh" init -q
