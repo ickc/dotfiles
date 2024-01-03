@@ -9,7 +9,7 @@ zmodule run-help
 
 zmodule ssh
 
-zmodule zsh-users/zsh-syntax-highlighting
-zmodule zsh-users/zsh-history-substring-search
-
 zmodule zsh-users/zsh-autosuggestions
+
+zmodule zsh-users/zsh-history-substring-search
+zmodule zsh-users/zsh-syntax-highlighting
