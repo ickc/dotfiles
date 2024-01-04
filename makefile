@@ -1,4 +1,6 @@
 SHELL = /usr/bin/env bash
+GIT_SSH_COMMAND = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+export GIT_SSH_COMMAND
 
 # option: slow, fast
 MPV=fast
@@ -12,9 +14,9 @@ install-zim:
 install-sman:
 	curl -L https://github.com/ickc/sman/raw/master/install.sh | bash
 	mkdir -p ~/git/source
-	cd ~/git/source;  -c core.sshCommand="ssh -o StrictHostKeyChecking=no" clone git@github.com:ickc/sman-snippets.git ||  -c core.sshCommand="ssh -o StrictHostKeyChecking=no" clone https://github.com/ickc/sman-snippets.git
+	cd ~/git/source; git clone git@github.com:ickc/sman-snippets.git || git clone https://github.com/ickc/sman-snippets.git
 install-basher:
-	 -c core.sshCommand="ssh -o StrictHostKeyChecking=no" clone https://github.com/basherpm/basher.git ~/.basher
+	git clone https://github.com/basherpm/basher.git ~/.basher
 	~/.basher/bin/basher install ickc/dautil-sh
 
 uninstall:
