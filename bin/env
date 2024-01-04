@@ -281,10 +281,10 @@ if [[ -n "$HOMEBREW_PREFIX" ]]; then
 fi
 [[ -n "$__CONDA_PREFIX" ]] && export __CONDA_PREFIX
 [[ -n "$PROJ_ROOT" ]] && export PROJ_ROOT
-if [[ -d "$HOME/.cargo" ]]; then
-    export CARGO_PREFIX="$HOME/.cargo"
-elif [[ -n "$BLACKETT_HOST" && -d /opt/rh/rust-toolset-7/root/usr ]]; then
+if [[ -n "$BLACKETT_HOST" && -d /opt/rh/rust-toolset-7/root/usr ]]; then
     export CARGO_PREFIX=/opt/rh/rust-toolset-7/root/usr
+elif [[ -d "$HOME/.cargo" ]]; then
+    export CARGO_PREFIX="$HOME/.cargo"
 fi
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
