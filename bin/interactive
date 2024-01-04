@@ -220,15 +220,15 @@ ml_exa () {
     alias ls=exa
 }
 
-mu_exa () {
-    alias ls="noglob ls"
-}
-
 ml_eza () {
     alias ls=eza
 }
 
-mu_eza () {
+ml_lsd () {
+    alias ls=lsd
+}
+
+ml_ls () {
     alias ls="noglob ls"
 }
 
@@ -359,6 +359,8 @@ ml_clean () {
     # exa: only alias if exist. hash is incorrect on NERSC
     type exa >/dev/null 2>&1 && ml_exa
     type eza >/dev/null 2>&1 && ml_eza
+    # note that this prefers lsd over exa
+    type lsd >/dev/null 2>&1 && ml_lsd
 }
 
 ml () {
@@ -409,8 +411,7 @@ mu () {
     fi
 
     mu_conda
-    mu_exa
-    mu_eza
+    ml_ls
 }
 
 mkdir_xdg () {

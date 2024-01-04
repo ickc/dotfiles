@@ -333,7 +333,7 @@ else
     esac
 fi
 if [[ -n "$__PREFIX" ]]; then
-    for i in mosh-server tmux exa eza; do
+    for i in mosh-server tmux exa eza lsd; do
         j="$__PREFIX/$i"
         [[ -f "$j" ]] && alias $i="$j"
     done
