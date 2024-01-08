@@ -265,7 +265,7 @@ if [[ -n "$NERSC_HOST" ]]; then
 elif [[ -n "$BLACKETT_HOST" ]]; then
     export CONDA_ENVS_PATH="$CONDA_ENVS_PATH:$CVMFS_ROOT/opt:$CVMFS_ROOT/pmpm:$CVMFS_ROOT/conda"
     if [[ "$BLACKETT_HOST"  == vm77 ]]; then
-        export CONDA_ENVS_PATH="/opt:$CONDA_ENVS_PATH"
+        export CONDA_ENVS_PATH="/opt:$CONDA_ENVS_PATH" HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
     fi
 fi
 
