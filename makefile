@@ -40,8 +40,8 @@ todo:
 
 # individual ###########################################################
 
-.PHONY: all shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install
-all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install
+.PHONY: all shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install kitty-install
+all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install kitty-install
 shell-install:
 	cd bin; ./install.sh
 
@@ -71,6 +71,9 @@ neofetch-install:
 
 alacritty-install:
 	cd alacritty; ./install.sh
+
+kitty-install:
+	cd kitty; ./install.sh
 
 print-%:
 	$(info $* = $($*))
