@@ -1,6 +1,8 @@
 SHELL = /usr/bin/env bash
 GIT_SSH_COMMAND = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 export GIT_SSH_COMMAND
+XDG_CONFIG_HOME ?= $(HOME)/.config
+export XDG_CONFIG_HOME
 
 # option: slow, fast
 MPV=fast
@@ -9,73 +11,96 @@ MPV=fast
 
 .PHONY: all
 all: \
-	aerospace-install \
-	alacritty-install \
-	conda-install \
-	git-install \
-	kitty-install \
-	mpv-install \
-	neofetch-install \
-	powerlevel10k-install \
-	shell-install \
-	streamlink-install \
-	tmux-install \
-	wezterm-install \
-	zim-install
+	aerospace \
+	alacritty \
+	conda \
+	git \
+	kitty \
+	mpv \
+	neofetch \
+	powerlevel10k \
+	shell \
+	streamlink \
+	tmux \
+	wezterm \
+	zim
 
 .PHONY: \
-	aerospace-install \
-	alacritty-install \
-	conda-install \
-	git-install \
-	kitty-install \
-	mpv-install \
-	neofetch-install \
-	powerlevel10k-install \
-	shell-install \
-	streamlink-install \
-	tmux-install \
-	wezterm-install \
-	zim-install
-aerospace-install: ; cd aerospace; ../src/ln_pwd_XDG_CONFIG_HOME.sh
-alacritty-install: ; cd alacritty; ./install.sh
-conda-install: ; cd conda; ./install.sh
-git-install: ; cd git; ./install.sh
-kitty-install: ; cd kitty; ./install.sh
-mpv-install: ; cd mpv; ./install.sh $(MPV)
-neofetch-install: ; cd neofetch; ./install.sh
-powerlevel10k-install: ; cd powerlevel10k; ./install.sh
-shell-install: ; cd bin; ./install.sh
-streamlink-install: ; cd streamlink; ./install.sh
-tmux-install: ; cd tmux; ./install.sh
-wezterm-install: ; cd wezterm; ./install.sh
-zim-install: ; cd zim; ./install.sh
+	aerospace \
+	alacritty \
+	conda \
+	git \
+	kitty \
+	mpv \
+	neofetch \
+	powerlevel10k \
+	shell \
+	streamlink \
+	tmux \
+	wezterm \
+	zim
+aerospace: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+alacritty: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+conda: ; cd conda; ./install.sh
+git: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+kitty: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+mpv: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@; ln -sf input-$(MPV).conf mpv/input.conf
+neofetch: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+powerlevel10k: ; ln -sf $(PWD)/powerlevel10k/.p10k.zsh ~
+shell: ; cd bin; ./install.sh
+streamlink: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@  # https://streamlink.github.io/cli/config.html
+tmux: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+wezterm: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+zim: ; ln -sf $(PWD)/$@/.zimrc ~
+remove-aerospace: ; rm -rf $(XDG_CONFIG_HOME)/aerospace
+remove-alacritty: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
+remove-conda: ; cd conda; ./uninstall.sh
+remove-git: ; rm -rf $(XDG_CONFIG_HOME)/git
+remove-kitty: ; rm -rf $(XDG_CONFIG_HOME)/kitty
+remove-mpv: ; rm -rf $(XDG_CONFIG_HOME)/mpv mpv/shaders mpv/input.conf
+remove-neofetch: ; rm -rf $(XDG_CONFIG_HOME)/neofetch
+remove-powerlevel10k: ; rm -rf ~/.p10k.zsh
+remove-shell: ; cd bin; ./uninstall.sh
+remove-streamlink: ; rm -rf $(XDG_CONFIG_HOME)/streamlink
+remove-tmux: ; rm -rf $(XDG_CONFIG_HOME)/tmux
+remove-wezterm: ; rm -rf $(XDG_CONFIG_HOME)/wezterm
+remove-zim: ; rm -rf ~/.zimrc
 
 .PHONY: uninstall-dotfiles
-uninstall-dotfiles:
-	rm -rf \
-		~/.bash_profile \
-		~/.bashrc \
-		~/.p10k.zsh \
-		~/.zimrc \
-		~/.zlogin \
-		~/.zlogout \
-		~/.zprofile \
-		~/.zshenv \
-		~/.zshrc
+uninstall-dotfiles: \
+	remove-aerospace \
+	remove-alacritty \
+	remove-conda \
+	remove-git \
+	remove-kitty \
+	remove-mpv \
+	remove-neofetch \
+	remove-powerlevel10k \
+	remove-shell \
+	remove-streamlink \
+	remove-tmux \
+	remove-wezterm \
+	remove-zim
 
 # update dotfiles from upstream ########################################
 
 .PHONY: update
 update: \
-	aerospace-update
+	aerospace-update \
+	mpv-update
 
 .PHONY: \
-	aerospace-update
+	aerospace-update \
+	mpv-update
 aerospace-update: aerospace/aerospace.toml
 aerospace/aerospace.toml: /Applications/AeroSpace.app/Contents/Resources/default-config.toml
 	mkdir -p $(@D)
 	cp -f $< $@
+mpv-update: mpv/shaders/
+mpv/shaders/:
+	cd mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
+	unzip mpv/Anime4K_v4.0.zip -d $@
+	rm mpv/Anime4K_v4.0.zip
 
 # installing softwares #################################################
 
@@ -107,12 +132,12 @@ uninstall-zim:
 
 .PHONY: install uninstall
 install: install-zim install-sman install-basher
-uninstall: uninstall-zim uninstall-sman uninstall-basher
+uninstall-software: uninstall-zim uninstall-sman uninstall-basher
 
 # helpers ##############################################################
 
 .PHONY: uninstall-all
-uninstall-all: uninstall uninstall-dotfiles
+uninstall: uninstall-dotfiles uninstall-software
 
 .PHONY: todo
 todo:

@@ -1,6 +1,6 @@
-.DS_Store
-.vscode/
-.idea/
 .dmypy.json
+.DS_Store
+.idea/
 .ipynb_checkpoints/
 .obsidian/
+.vscode/

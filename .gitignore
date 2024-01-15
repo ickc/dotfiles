@@ -1,1 +1,4 @@
+*.zip
 bin/.env
+mpv/shaders
+mpv/input.conf

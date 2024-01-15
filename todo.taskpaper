@@ -1,0 +1,3 @@
+- set and refactor to ZDOTDIR
+    includes p10k, zim
+- refactor how bin/ is install and uninstall

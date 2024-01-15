@@ -20,6 +20,7 @@ git clone git@github.com:ickc/dotfiles.git ||
 git clone https://github.com/ickc/dotfiles.git
 cd dotfiles
 . bin/env
+. bin/interactive
 make uninstall && make install && make
 . bin/env
 . bin/interactive
