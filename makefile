@@ -78,5 +78,14 @@ kitty-install:
 wezterm-install:
 	cd wezterm; ./install.sh
 
+# update from upstream #################################################
+
+.PHONY: aerospace-update
+aerospace-update: aerospace/aerospace.toml
+
+aerospace/aerospace.toml: /Applications/AeroSpace.app/Contents/Resources/default-config.toml
+	mkdir -p $(@D)
+	cp -f $< $@
+
 print-%:
 	$(info $* = $($*))
