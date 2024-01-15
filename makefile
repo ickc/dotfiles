@@ -40,8 +40,8 @@ todo:
 
 # individual ###########################################################
 
-.PHONY: all shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install kitty-install wezterm-install
-all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install kitty-install wezterm-install
+.PHONY: all shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install kitty-install wezterm-install aerospace-install
+all: shell-install powerlevel10k-install git-install conda-install zim-install streamlink-install mpv-install tmux-install neofetch-install alacritty-install kitty-install wezterm-install aerospace-install
 shell-install:
 	cd bin; ./install.sh
 
@@ -77,6 +77,9 @@ kitty-install:
 
 wezterm-install:
 	cd wezterm; ./install.sh
+
+aerospace-install:
+	cd aerospace; ../src/ln_pwd_XDG_CONFIG_HOME.sh
 
 # update from upstream #################################################
 
