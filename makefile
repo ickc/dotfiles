@@ -38,18 +38,18 @@ all: \
 	tmux \
 	wezterm \
 	zim
-aerospace: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-alacritty: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+aerospace: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+alacritty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 conda: ; cd conda; ./install.sh
-git: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-kitty: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-mpv: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@; ln -sf input-$(MPV).conf mpv/input.conf
-neofetch: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+git: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+kitty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+mpv: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@; ln -sf input-$(MPV).conf mpv/input.conf
+neofetch: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 powerlevel10k: ; ln -sf $(PWD)/powerlevel10k/.p10k.zsh ~
 shell: ; cd bin; ./install.sh
-streamlink: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@  # https://streamlink.github.io/cli/config.html
-tmux: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-wezterm: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+streamlink: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@  # https://streamlink.github.io/cli/config.html
+tmux: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+wezterm: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 zim: ; ln -sf $(PWD)/$@/.zimrc ~
 
 .PHONY: remove
