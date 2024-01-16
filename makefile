@@ -105,39 +105,39 @@ mpv/shaders/:
 # installing softwares #################################################
 
 .PHONY: \
-	install-basher \
-	install-sman \
-	install-zim \
-	uninstall-basher \
-	uninstall-sman \
-	uninstall-zim
-install-basher:
+	basher-install \
+	sman-install \
+	zim-install \
+	basher-uninstall \
+	sman-uninstall \
+	zim-uninstall
+basher-install:
 	git clone https://github.com/basherpm/basher.git ~/.basher
 	~/.basher/bin/basher install ickc/dautil-sh
-uninstall-basher:
+basher-uninstall:
 	rm -rf ~/.basher
-install-sman:
+sman-install:
 	curl -L https://github.com/ickc/sman/raw/master/install.sh | bash
 	mkdir -p ~/git/source
 	cd ~/git/source; git clone git@github.com:ickc/sman-snippets.git || git clone https://github.com/ickc/sman-snippets.git
-uninstall-sman:
+sman-uninstall:
 	rm -rf \
 		~/.local/bin/sman \
 		~/.sman \
 		~/git/source/sman-snippets
-install-zim:
+zim-install:
 	curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
-uninstall-zim:
+zim-uninstall:
 	rm -rf ~/.zim
 
 .PHONY: install uninstall
-install: install-zim install-sman install-basher
-uninstall-software: uninstall-zim uninstall-sman uninstall-basher
+install: zim-install sman-install basher-install
+software-uninstall: zim-uninstall sman-uninstall basher-uninstall
 
 # helpers ##############################################################
 
-.PHONY: uninstall-all
-uninstall: remove uninstall-software
+.PHONY: all-uninstall
+uninstall: remove software-uninstall
 
 .PHONY: todo
 todo:
