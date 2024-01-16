@@ -66,8 +66,8 @@ tmux-remove: ; rm -rf $(XDG_CONFIG_HOME)/tmux
 wezterm-remove: ; rm -rf $(XDG_CONFIG_HOME)/wezterm
 zim-remove: ; rm -rf ~/.zimrc
 
-.PHONY: uninstall-dotfiles
-uninstall-dotfiles: \
+.PHONY: remove
+remove: \
 	aerospace-remove \
 	alacritty-remove \
 	conda-remove \
@@ -137,7 +137,7 @@ uninstall-software: uninstall-zim uninstall-sman uninstall-basher
 # helpers ##############################################################
 
 .PHONY: uninstall-all
-uninstall: uninstall-dotfiles uninstall-software
+uninstall: remove uninstall-software
 
 .PHONY: todo
 todo:
