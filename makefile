@@ -52,35 +52,35 @@ streamlink: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@  # https://streamlink.githu
 tmux: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 wezterm: ; ln -sf $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 zim: ; ln -sf $(PWD)/$@/.zimrc ~
-remove-aerospace: ; rm -rf $(XDG_CONFIG_HOME)/aerospace
-remove-alacritty: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
-remove-conda: ; cd conda; ./uninstall.sh
-remove-git: ; rm -rf $(XDG_CONFIG_HOME)/git
-remove-kitty: ; rm -rf $(XDG_CONFIG_HOME)/kitty
-remove-mpv: ; rm -rf $(XDG_CONFIG_HOME)/mpv mpv/shaders mpv/input.conf
-remove-neofetch: ; rm -rf $(XDG_CONFIG_HOME)/neofetch
-remove-powerlevel10k: ; rm -rf ~/.p10k.zsh
-remove-shell: ; cd bin; ./uninstall.sh
-remove-streamlink: ; rm -rf $(XDG_CONFIG_HOME)/streamlink
-remove-tmux: ; rm -rf $(XDG_CONFIG_HOME)/tmux
-remove-wezterm: ; rm -rf $(XDG_CONFIG_HOME)/wezterm
-remove-zim: ; rm -rf ~/.zimrc
+aerospace-remove: ; rm -rf $(XDG_CONFIG_HOME)/aerospace
+alacritty-remove: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
+conda-remove: ; cd conda; ./uninstall.sh
+git-remove: ; rm -rf $(XDG_CONFIG_HOME)/git
+kitty-remove: ; rm -rf $(XDG_CONFIG_HOME)/kitty
+mpv-remove: ; rm -rf $(XDG_CONFIG_HOME)/mpv mpv/shaders mpv/input.conf
+neofetch-remove: ; rm -rf $(XDG_CONFIG_HOME)/neofetch
+powerlevel-remove10k: ; rm -rf ~/.p10k.zsh
+shell-remove: ; cd bin; ./uninstall.sh
+streamlink-remove: ; rm -rf $(XDG_CONFIG_HOME)/streamlink
+tmux-remove: ; rm -rf $(XDG_CONFIG_HOME)/tmux
+wezterm-remove: ; rm -rf $(XDG_CONFIG_HOME)/wezterm
+zim-remove: ; rm -rf ~/.zimrc
 
 .PHONY: uninstall-dotfiles
 uninstall-dotfiles: \
-	remove-aerospace \
-	remove-alacritty \
-	remove-conda \
-	remove-git \
-	remove-kitty \
-	remove-mpv \
-	remove-neofetch \
-	remove-powerlevel10k \
-	remove-shell \
-	remove-streamlink \
-	remove-tmux \
-	remove-wezterm \
-	remove-zim
+	aerospace-remove \
+	alacritty-remove \
+	conda-remove \
+	git-remove \
+	kitty-remove \
+	mpv-remove \
+	neofetch-remove \
+	powerlevel-remove10k \
+	shell-remove \
+	streamlink-remove \
+	tmux-remove \
+	wezterm-remove \
+	zim-remove
 
 # update dotfiles from upstream ########################################
 
