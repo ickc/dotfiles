@@ -11,7 +11,6 @@ MPV=fast
 
 .PHONY: all
 all: \
-	aerospace \
 	alacritty \
 	conda \
 	git \
@@ -25,7 +24,6 @@ all: \
 	wezterm \
 	zim
 .PHONY: \
-	aerospace \
 	alacritty \
 	conda \
 	git \
@@ -38,7 +36,6 @@ all: \
 	tmux \
 	wezterm \
 	zim
-aerospace: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 alacritty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 conda: ; cd conda; ./install.sh
 git: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
@@ -54,7 +51,6 @@ zim: ; ln -sf $(PWD)/$@/.zimrc ~
 
 .PHONY: remove
 remove: \
-	aerospace-remove \
 	alacritty-remove \
 	conda-remove \
 	git-remove \
@@ -68,7 +64,6 @@ remove: \
 	wezterm-remove \
 	zim-remove
 .PHONY: \
-	aerospace-remove \
 	alacritty-remove \
 	conda-remove \
 	git-remove \
@@ -81,7 +76,6 @@ remove: \
 	tmux-remove \
 	wezterm-remove \
 	zim-remove
-aerospace-remove: ; rm -rf $(XDG_CONFIG_HOME)/aerospace
 alacritty-remove: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
 conda-remove: ; cd conda; ./uninstall.sh
 git-remove: ; rm -rf $(XDG_CONFIG_HOME)/git
@@ -99,17 +93,11 @@ zim-remove: ; rm -rf ~/.zimrc
 
 .PHONY: update
 update: \
-	aerospace-update \
 	mpv-update
 .PHONY: \
-	aerospace-update \
 	mpv-update
-aerospace-update: aerospace/aerospace.toml
 mpv-update: mpv/shaders/
 
-aerospace/aerospace.toml: /Applications/AeroSpace.app/Contents/Resources/default-config.toml
-	mkdir -p $(@D)
-	cp -f $< $@
 mpv/shaders/:
 	cd mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
 	unzip mpv/Anime4K_v4.0.zip -d $@
