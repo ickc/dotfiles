@@ -12,6 +12,7 @@ MPV=fast
 .PHONY: all
 all: \
 	alacritty \
+	amethyst \
 	conda \
 	git \
 	kitty \
@@ -25,6 +26,7 @@ all: \
 	zim
 .PHONY: \
 	alacritty \
+	amethyst \
 	conda \
 	git \
 	kitty \
@@ -37,6 +39,7 @@ all: \
 	wezterm \
 	zim
 alacritty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+amethyst: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 conda: ; cd conda; ./install.sh
 git: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 kitty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
@@ -52,6 +55,7 @@ zim: ; ln -sf $(PWD)/$@/.zimrc ~
 .PHONY: remove
 remove: \
 	alacritty-remove \
+	amethyst-remove \
 	conda-remove \
 	git-remove \
 	kitty-remove \
@@ -65,6 +69,7 @@ remove: \
 	zim-remove
 .PHONY: \
 	alacritty-remove \
+	amethyst-remove \
 	conda-remove \
 	git-remove \
 	kitty-remove \
@@ -77,6 +82,7 @@ remove: \
 	wezterm-remove \
 	zim-remove
 alacritty-remove: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
+amethyst-remove: ; rm -rf $(XDG_CONFIG_HOME)/amethyst
 conda-remove: ; cd conda; ./uninstall.sh
 git-remove: ; rm -rf $(XDG_CONFIG_HOME)/git
 kitty-remove: ; rm -rf $(XDG_CONFIG_HOME)/kitty
