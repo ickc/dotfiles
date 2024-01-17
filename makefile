@@ -108,9 +108,12 @@ update: \
 amethyst-update: amethyst/amethyst.yml
 mpv-update: mpv/shaders/
 
+# by default comment out all lines in amethyst.yml due to
+# https://github.com/ianyh/Amethyst/issues/1419
 amethyst/amethyst.yml:
 	mkdir -p $(@D)
 	wget https://github.com/ianyh/Amethyst/raw/development/.amethyst.sample.yml -O $@
+	sed -i '/^\s*#/!{/^$$/!s/^/# /}' $@
 mpv/shaders/:
 	cd mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
 	unzip mpv/Anime4K_v4.0.zip -d $@
