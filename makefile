@@ -93,11 +93,18 @@ zim-remove: ; rm -rf ~/.zimrc
 
 .PHONY: update
 update: \
+	amethyst-update \
 	mpv-update
 .PHONY: \
+	amethyst-update \
 	mpv-update
+
+amethyst-update: amethyst/amethyst.yml
 mpv-update: mpv/shaders/
 
+amethyst/amethyst.yml:
+	mkdir -p $(@D)
+	wget https://github.com/ianyh/Amethyst/raw/development/.amethyst.sample.yml -O $@
 mpv/shaders/:
 	cd mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
 	unzip mpv/Anime4K_v4.0.zip -d $@
