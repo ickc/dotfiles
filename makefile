@@ -15,6 +15,7 @@ all: \
 	amethyst \
 	conda \
 	git \
+	joshuto \
 	kitty \
 	mpv \
 	neofetch \
@@ -29,6 +30,7 @@ all: \
 	amethyst \
 	conda \
 	git \
+	joshuto \
 	kitty \
 	mpv \
 	neofetch \
@@ -42,6 +44,7 @@ alacritty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 amethyst: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 conda: ; cd conda; ./install.sh
 git: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+joshuto: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 kitty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 mpv: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@; ln -sf input-$(MPV).conf mpv/input.conf
 neofetch: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
@@ -58,6 +61,7 @@ remove: \
 	amethyst-remove \
 	conda-remove \
 	git-remove \
+	joshuto-remove \
 	kitty-remove \
 	mpv-remove \
 	neofetch-remove \
@@ -72,6 +76,7 @@ remove: \
 	amethyst-remove \
 	conda-remove \
 	git-remove \
+	joshuto-remove \
 	kitty-remove \
 	mpv-remove \
 	neofetch-remove \
@@ -85,6 +90,7 @@ alacritty-remove: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
 amethyst-remove: ; rm -rf $(XDG_CONFIG_HOME)/amethyst
 conda-remove: ; cd conda; ./uninstall.sh
 git-remove: ; rm -rf $(XDG_CONFIG_HOME)/git
+joshuto-remove: ; rm -rf $(XDG_CONFIG_HOME)/joshuto
 kitty-remove: ; rm -rf $(XDG_CONFIG_HOME)/kitty
 mpv-remove: ; rm -rf $(XDG_CONFIG_HOME)/mpv mpv/shaders mpv/input.conf
 neofetch-remove: ; rm -rf $(XDG_CONFIG_HOME)/neofetch
@@ -100,12 +106,15 @@ zim-remove: ; rm -rf ~/.zimrc
 .PHONY: update
 update: \
 	amethyst-update \
+	joshuto-update \
 	mpv-update
 .PHONY: \
 	amethyst-update \
+	joshuto-update \
 	mpv-update
 
 amethyst-update: amethyst/amethyst.yml
+joshuto-update: joshuto/
 mpv-update: mpv/shaders/
 
 # by default comment out all lines in amethyst.yml due to
@@ -114,6 +123,12 @@ amethyst/amethyst.yml:
 	mkdir -p $(@D)
 	wget https://github.com/ianyh/Amethyst/raw/development/.amethyst.sample.yml -O $@
 	sed -i '/^\s*#/!{/^$$/!s/^/# /}' $@
+joshuto/:
+	rm -rf $@
+	mkdir -p $@
+	joshuto_version_output="$$(joshuto --version)"; \
+	version_string="$${joshuto_version_output#*-}"; \
+	wget "https://github.com/kamiyaa/joshuto/archive/refs/tags/v$${version_string}.tar.gz" -O - | tar -xz --strip-components=2 -C $@ "joshuto-$${version_string}/config"
 mpv/shaders/:
 	cd mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
 	unzip mpv/Anime4K_v4.0.zip -d $@
