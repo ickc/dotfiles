@@ -191,14 +191,14 @@ throw-screen-4:
 #   key: i
 
 # Select tall layout
-# select-tall-layout:
-#   mod: mod1
-#   key: a
+select-tall-layout:
+  mod: ""
+  key: ""
 
 # Select wide layout
-select-two-pane-layout:
-  mod: mod1
-  key: d
+select-wide-layout:
+  mod: ""
+  key: ""
 
 # Select fullscreen layout
 select-fullscreen-layout:
@@ -206,17 +206,22 @@ select-fullscreen-layout:
   key: a
 
 # Select column layout
-# select-column-layout:
-#   mod: mod1
-#   key: f
-
-select-floating-layout:
-  mod: mod1
-  key: f
+select-column-layout:
+  mod: ""
+  key: ""
 
 select-bsp-layout:
   mod: mod1
   key: s
+
+# Select wide layout
+select-two-pane-layout:
+  mod: mod1
+  key: d
+
+select-floating-layout:
+  mod: mod1
+  key: f
 
 # Move the currently focused window to the space to the left.
 # throw-space-left:
