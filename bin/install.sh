@@ -10,21 +10,21 @@ DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # .bash_profile
 
-if [[ -n "$NERSC_HOST" || -n "$PRINCETON_HOST" || -n "$JBCA_HOST" || -n "$SO_HOST" ]]; then
-    echo 'SHELL=~/.local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
-elif [[ -n "$BLACKETT_HOST" ]]; then
-    if [[ -n "$BLACKETT_CVMFS_ENV" ]]; then
-        echo 'SHELL=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory/usr/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
+if [[ -n $NERSC_HOST || -n $PRINCETON_HOST || -n $JBCA_HOST || -n $SO_HOST ]]; then
+    echo 'SHELL=~/.local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
+elif [[ -n $BLACKETT_HOST ]]; then
+    if [[ -n $BLACKETT_CVMFS_ENV ]]; then
+        echo 'SHELL=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory/usr/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
     else
-        echo 'SHELL=/opt/local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
+        echo 'SHELL=/opt/local/bin/zsh; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
     fi
-elif [[ -n "$BOLO_HOST" ]]; then
-    echo '[[ "$HOSTNAME" == gordita* ]] && SHELL=~/.local/bin/zsh || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' >"$HOME/.bash_profile"
+elif [[ -n $BOLO_HOST ]]; then
+    echo '[[ "$HOSTNAME" == gordita* ]] && SHELL=~/.local/bin/zsh || SHELL="$(which zsh)"; export SHELL; [[ -e "$SHELL" ]] && exec "$SHELL" -l' > "$HOME/.bash_profile"
 else
-    : >"$HOME/.bash_profile"
+    : > "$HOME/.bash_profile"
 fi
 
-cat <<EOF >>"$HOME/.bash_profile"
+cat << EOF >> "$HOME/.bash_profile"
 [[ -s "$DIR/env" ]] && . "$DIR/env"
 [[ -s "$DIR/.env" ]] && . "$DIR/.env"
 EOF
@@ -32,13 +32,13 @@ EOF
 # .bashrc
 # interactive is not put here because it causes some problems when launching zsh from bash
 # as I don't really use bash interactively, it should be fine
-cat <<EOF >"$HOME/.bashrc"
+cat << EOF > "$HOME/.bashrc"
 [[ -s "$DIR/env" ]] && . "$DIR/env"
 [[ -s "$DIR/.env" ]] && . "$DIR/.env"
 EOF
 
 # .zshenv
-cat <<EOF >"$HOME/.zshenv"
+cat << EOF > "$HOME/.zshenv"
 [[ -s "$DIR/env" ]] && . "$DIR/env"
 [[ -s "$DIR/.env" ]] && . "$DIR/.env"
 EOF
@@ -46,7 +46,7 @@ EOF
 # .zprofile
 rm -f "$HOME/.zprofile"
 # .zshrc
-cat <<EOF >"$HOME/.zshrc"
+cat << EOF > "$HOME/.zshrc"
 [[ -s '$DIR/interactive' ]] && . '$DIR/interactive'
 
 zstyle ':zim:zmodule' use 'degit'
@@ -72,12 +72,12 @@ rm -f "$HOME/.zlogout"
 
 # .login for tcsh
 case "$__HOST" in
-styx)
-    cat <<EOF >"$HOME/.login"
+    styx)
+        cat << EOF > "$HOME/.login"
 if ( "\`uname -s\`" == Linux ) then
   setenv SHELL "\$HOME/.local/bin/zsh"
   [[ -e "\$SHELL" ]] && exec "\$SHELL" -l
 endif
 EOF
-    ;;
+        ;;
 esac
