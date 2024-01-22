@@ -34,18 +34,18 @@ layouts:
   # - widescreen-tall-right
 
 # First mod (default option + shift).
-# mod1:
-#   - option
+mod1:
 #   - shift
-  # - control
+  - option
+  - control
   # - command
 
 # Second mod (default option + shift + control).
-# mod2:
-#   - option
+mod2:
+  - option
 #   - shift
-#   - control
-  # - command
+  - control
+  - command
 
 # Commands:
 # special key values
