@@ -19,8 +19,8 @@ layouts:
   - fullscreen
   # - tall-right
   - bsp
-  - wide
-  # - two-pane
+  # - wide
+  - two-pane
   # - middle-wide
   # - 3column-left
   # - middle-wide # The legacy name of "3column-middle"
@@ -196,7 +196,7 @@ throw-screen-4:
 #   key: a
 
 # Select wide layout
-select-wide-layout:
+select-two-pane-layout:
   mod: mod1
   key: d
 
