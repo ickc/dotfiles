@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-printerr() {
-    printf '%s\n' "$@" >&2
-}
-
 # These variables must exist on all systems
 # SCRATCH, __CONDA_PREFIX
 # for non-compute system, SCRATCH can be undefined
@@ -192,13 +188,8 @@ case "$__HOST" in
         if [[ $__OSTYPE == darwin ]]; then
             SCRATCH="${SCRATCH:-$HOME/scratch}"
 
-            # TODO
-            conda_prefix="$HOMEBREW_PREFIX/anaconda3"
-            [[ -d $conda_prefix ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
-
-            for conda_prefix in "$HOMEBREW_PREFIX/anaconda3" "$HOME/.mambaforge"; do
-                command -v "$conda_prefix/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
-            done
+            conda_prefix="$HOME/.mambaforge"
+            command -v "$conda_prefix/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             unset conda_prefix
         elif [[ -n $BLACKETT_HOST ]]; then
             export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
@@ -222,13 +213,8 @@ case "$__HOST" in
         elif [[ -z $JBCA_HOST ]]; then
             SCRATCH="${SCRATCH:-/scratch}"
 
-            # TODO
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3"; do
-                [[ -d $conda_prefix ]] && printerr "Deprecation notice: you should not be using conda at $conda_prefix. It will be removed from auto-discovery in the next release."
-            done
-            for conda_prefix in /opt/anaconda "$HOMEBREW_PREFIX/anaconda3" "$HOME/anaconda3" "$HOME/miniconda3" "$HOME/.mambaforge"; do
-                command -v "$conda_prefix/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
-            done
+            conda_prefix="$HOME/.mambaforge"
+            command -v "$conda_prefix/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="$conda_prefix"
             unset conda_prefix
         fi
         ;;
