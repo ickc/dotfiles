@@ -359,3 +359,18 @@ if [[ -n "$BASHER_ROOT" ]]; then
         export BASHER_SHELL=bash
     fi
 fi
+
+# functions ############################################################
+
+# https://stackoverflow.com/a/30547074/5769446
+startsudo() {
+    sudo -v
+    ( while true; do sudo -v; sleep 50; done; ) &
+    SUDO_PID="$!"
+    trap stopsudo SIGINT SIGTERM
+}
+stopsudo() {
+    kill "$SUDO_PID"
+    trap - SIGINT SIGTERM
+    sudo -k
+}
