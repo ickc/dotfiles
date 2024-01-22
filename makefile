@@ -164,6 +164,18 @@ zim-uninstall:
 .PHONY: uninstall
 uninstall: remove uninstall-software
 
+.PHONY: format
+format:
+	find . -type f \
+		\( -name '*.sh' -o -name env -o -name interactive \) \
+		-exec shfmt \
+			--write \
+			--simplify \
+			--indent 4 \
+			--case-indent \
+			--space-redirects \
+			{} +
+
 .PHONY: todo
 todo:
 	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
