@@ -183,6 +183,7 @@ uninstall: remove uninstall-software
 format:
 	find . -type f \
 		\( -name '*.sh' -o -name env -o -name interactive \) \
+		\! -name preview_file.sh \
 		-exec shfmt \
 			--write \
 			--simplify \
