@@ -24,7 +24,7 @@ all: \
 	powerlevel10k \
 	shell \
 	zim
-conda: ; cd conda; ./install.sh
+conda: ; cd config/conda; ./install.sh
 config:
 	find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete
 	find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;
@@ -48,7 +48,7 @@ remove: \
 	powerlevel-remove10k \
 	shell-remove \
 	zim-remove
-conda-remove: ; cd conda; ./uninstall.sh
+conda-remove: ; cd config/conda; ./uninstall.sh
 mpv-remove: ; rm -rf mpv/shaders mpv/input.conf
 powerlevel-remove10k: ; rm -rf ~/.p10k.zsh
 shell-remove: ; cd bin; ./uninstall.sh
