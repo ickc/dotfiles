@@ -38,17 +38,20 @@ zim: ; ln -sf $(PWD)/$@/.zimrc ~
 .PHONY: remove
 remove: \
 	conda-remove \
+	config-remove \
 	mpv-remove \
 	powerlevel-remove10k \
 	shell-remove \
 	zim-remove
 .PHONY: \
 	conda-remove \
+	config-remove \
 	mpv-remove \
 	powerlevel-remove10k \
 	shell-remove \
 	zim-remove
 conda-remove: ; cd config/conda; ./uninstall.sh
+config-remove: ; rm -f $(XDG_CONFIG_HOME)
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
 powerlevel-remove10k: ; rm -rf ~/.p10k.zsh
 shell-remove: ; cd bin; ./uninstall.sh
