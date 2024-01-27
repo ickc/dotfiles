@@ -30,7 +30,7 @@ config:
 	find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;
 	rm -rf $(XDG_CONFIG_HOME)
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
-mpv: ; ln -sf input-$(MPV).conf mpv/input.conf
+mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf
 powerlevel10k: ; ln -sf $(PWD)/powerlevel10k/.p10k.zsh ~
 shell: ; cd bin; ./install.sh
 zim: ; ln -sf $(PWD)/$@/.zimrc ~
@@ -49,7 +49,7 @@ remove: \
 	shell-remove \
 	zim-remove
 conda-remove: ; cd config/conda; ./uninstall.sh
-mpv-remove: ; rm -rf mpv/shaders mpv/input.conf
+mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
 powerlevel-remove10k: ; rm -rf ~/.p10k.zsh
 shell-remove: ; cd bin; ./uninstall.sh
 zim-remove: ; rm -rf ~/.zimrc
@@ -68,7 +68,7 @@ update: \
 
 amethyst-update: amethyst/amethyst.yml
 joshuto-update: joshuto/
-mpv-update: mpv/shaders/
+mpv-update: config/mpv/shaders/
 
 # by default comment out all lines in amethyst.yml due to
 # https://github.com/ianyh/Amethyst/issues/1419
@@ -82,10 +82,10 @@ joshuto/:
 	joshuto_version_output="$$(joshuto --version)"; \
 	version_string="$${joshuto_version_output#*-}"; \
 	wget "https://github.com/kamiyaa/joshuto/archive/refs/tags/v$${version_string}.tar.gz" -O - | tar -xz --strip-components=2 -C $@ "joshuto-$${version_string}/config"
-mpv/shaders/:
-	cd mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
-	unzip mpv/Anime4K_v4.0.zip -d $@
-	rm mpv/Anime4K_v4.0.zip
+config/mpv/shaders/:
+	cd config/mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
+	unzip config/mpv/Anime4K_v4.0.zip -d $@
+	rm config/mpv/Anime4K_v4.0.zip
 
 # installing softwares #################################################
 
