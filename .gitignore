@@ -1,6 +1,5 @@
 *.log
 *.zip
-bin/.env
 config/btop/themes
 config/conda
 config/github-copilot/hosts.json
@@ -8,3 +7,6 @@ config/gpt4all.io
 config/jgit
 config/mpv/input.conf
 config/mpv/shaders
+config/zsh/.env
+config/zsh/.zcompdump*
+config/zsh/.zsh_history

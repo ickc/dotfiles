@@ -467,4 +467,26 @@ if [[ $? == 0 ]]; then
     unset FZF_PATH FZF_SHARE
 fi
 
+# zim ##########################################################################
+
+# if zsh
+if [[ -n $ZSH_VERSION ]]; then
+
+    zstyle ':zim:zmodule' use 'degit'
+
+    # Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+    if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
+        source "${ZIM_HOME}/zimfw.zsh" init -q
+    fi
+
+    # ssh
+    zstyle ':zim:ssh' ids id_ed25519
+    # zsh-users/zsh-history-substring-search
+    bindkey "$terminfo[kcuu1]" history-substring-search-up
+    bindkey "$terminfo[kcud1]" history-substring-search-down
+
+    # Initialize modules.
+    source "${ZIM_HOME}/init.zsh"
+fi
+
 neofetch 2> /dev/null

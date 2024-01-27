@@ -241,6 +241,11 @@ if [[ (-n $NERSC_HOST || -n $JBCA_HOST) && -n $SCRATCH ]]; then
         PARALLEL_HOME="$XDG_CONFIG_HOME"/parallel \
         WGETRC="$XDG_CONFIG_HOME/wgetrc" \
         NUMBA_CACHE_DIR="$XDG_CACHE_HOME/numba"
+else
+    export XDG_CONFIG_HOME="$HOME/.config" \
+        XDG_CACHE_HOME="$HOME/.cache" \
+        XDG_DATA_HOME="$HOME/.local/share" \
+        XDG_STATE_HOME="$HOME/.local/state"
 fi
 # specific XDG related setup
 if [[ -n $NERSC_HOST ]]; then
@@ -254,6 +259,13 @@ elif [[ -n $BLACKETT_HOST ]]; then
         export CONDA_ENVS_PATH="/opt:$CONDA_ENVS_PATH" HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
     fi
 fi
+
+# zsh setup ############################################################
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh" \
+    HISTFILE="$XDG_STATE_HOME/zsh/history"
+
+[[ -e "$ZDOTDIR/.env" ]] && . "$ZDOTDIR/.env"
 
 # export all variables #################################################
 

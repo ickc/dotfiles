@@ -35,7 +35,7 @@ config:
 hyper: ; ln -sf $(PWD)/home/.hyper.js ~
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf
 powerlevel10k: ; ln -sf $(PWD)/home/.p10k.zsh ~
-shell: ; cd bin; ./install.sh
+shell: ; ln -sf $(PWD)/config/zsh/.zshenv ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~
 zim: ; ln -sf $(PWD)/home/.zimrc ~
 
 .PHONY: remove
@@ -60,7 +60,7 @@ config-remove: ; rm -f $(XDG_CONFIG_HOME)
 hyper-remove: ; rm -f ~/.hyper.js
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
 powerlevel10k-remove: ; rm -f ~/.p10k.zsh
-shell-remove: ; cd bin; ./uninstall.sh
+shell-remove: ; rm -rf ~/.bash_profile ~/.bashrc ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshenv ~/.zshrc
 zim-remove: ; rm -f ~/.zimrc
 
 # update dotfiles from upstream ########################################
@@ -144,7 +144,7 @@ uninstall: remove uninstall-software
 .PHONY: format
 format:
 	find . -type f \
-		\( -name '*.sh' -o -name env -o -name interactive \) \
+		\( -name '*.sh' -o -name .zshenv -o -name .zshrc -o -name .bash_profile -o -name .bashrc -o -name .env -o -name .zimrc \) \
 		\! -name preview_file.sh \
 		-exec shfmt \
 			--write \
