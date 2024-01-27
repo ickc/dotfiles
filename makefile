@@ -138,7 +138,15 @@ uninstall: remove uninstall-software
 .PHONY: format
 format:
 	find . -type f \
-		\( -name '*.sh' -o -name .zshenv -o -name .zshrc -o -name .bash_profile -o -name .bashrc -o -name .env -o -name .zimrc \) \
+		\( \
+			-name .bash_profile -o \
+			-name .bashrc -o \
+			-name .env -o \
+			-name .zimrc -o \
+			-name .zshenv -o \
+			-name .zshrc -o \
+			-name '*.sh' \
+		\) \
 		\! -name preview_file.sh \
 		-exec shfmt \
 			--write \
