@@ -13,6 +13,7 @@ MPV=fast
 all: \
 	conda \
 	config \
+	hyper \
 	mpv \
 	powerlevel10k \
 	shell \
@@ -20,6 +21,7 @@ all: \
 .PHONY: \
 	conda \
 	config \
+	hyper \
 	mpv \
 	powerlevel10k \
 	shell \
@@ -30,6 +32,7 @@ config:
 	find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;
 	rm -rf $(XDG_CONFIG_HOME)
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
+hyper: ; ln -sf $(PWD)/home/.hyper.js ~
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf
 powerlevel10k: ; ln -sf $(PWD)/home/.p10k.zsh ~
 shell: ; cd bin; ./install.sh
@@ -39,6 +42,7 @@ zim: ; ln -sf $(PWD)/home/.zimrc ~
 remove: \
 	conda-remove \
 	config-remove \
+	hyper-remove \
 	mpv-remove \
 	powerlevel10k-remove \
 	shell-remove \
@@ -46,16 +50,18 @@ remove: \
 .PHONY: \
 	conda-remove \
 	config-remove \
+	hyper-remove \
 	mpv-remove \
 	powerlevel10k-remove \
 	shell-remove \
 	zim-remove
 conda-remove: ; cd config/conda; ./uninstall.sh
 config-remove: ; rm -f $(XDG_CONFIG_HOME)
+hyper-remove: ; rm -f ~/.hyper.js
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
-powerlevel10k-remove: ; rm -rf ~/.p10k.zsh
+powerlevel10k-remove: ; rm -f ~/.p10k.zsh
 shell-remove: ; cd bin; ./uninstall.sh
-zim-remove: ; rm -rf ~/.zimrc
+zim-remove: ; rm -f ~/.zimrc
 
 # update dotfiles from upstream ########################################
 
