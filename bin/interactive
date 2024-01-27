@@ -451,4 +451,20 @@ fi
 # $PATH is not fully set in zshenv so we have to put it here
 command -v difft > /dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
 
+# fzf
+FZF_PATH="$(command -v fzf)"
+if [[ $? == 0 ]]; then
+    FZF_PATH="$(realpath "$FZF_PATH")"
+    FZF_SHARE="${FZF_PATH%/*}/../share/fzf"
+    # check shell is bash or zsh
+    if [[ -n $BASH_VERSION ]]; then
+        source "$FZF_SHARE"/shell/completion.bash
+        source "$FZF_SHARE"/shell/key-bindings.bash
+    elif [[ -n $ZSH_VERSION ]]; then
+        source "$FZF_SHARE"/shell/completion.zsh
+        source "$FZF_SHARE"/shell/key-bindings.zsh
+    fi
+    unset FZF_PATH FZF_SHARE
+fi
+
 neofetch 2> /dev/null
