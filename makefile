@@ -11,94 +11,47 @@ MPV=fast
 
 .PHONY: all
 all: \
-	alacritty \
-	amethyst \
 	conda \
-	git \
-	joshuto \
-	kitty \
+	config \
 	mpv \
-	neofetch \
 	powerlevel10k \
 	shell \
-	streamlink \
-	tmux \
-	wezterm \
 	zim
 .PHONY: \
-	alacritty \
-	amethyst \
 	conda \
-	git \
-	joshuto \
-	kitty \
+	config \
 	mpv \
-	neofetch \
 	powerlevel10k \
 	shell \
-	streamlink \
-	tmux \
-	wezterm \
 	zim
-alacritty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-amethyst: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 conda: ; cd conda; ./install.sh
-git: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-joshuto: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-kitty: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-mpv: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@; ln -sf input-$(MPV).conf mpv/input.conf
-neofetch: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
+config:
+	find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete
+	find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;
+	rm -rf $(XDG_CONFIG_HOME)
+	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
+mpv: ; ln -sf input-$(MPV).conf mpv/input.conf
 powerlevel10k: ; ln -sf $(PWD)/powerlevel10k/.p10k.zsh ~
 shell: ; cd bin; ./install.sh
-streamlink: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@  # https://streamlink.github.io/cli/config.html
-tmux: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
-wezterm: ; rm -rf $(XDG_CONFIG_HOME)/$@; ln -s $(PWD)/$@ $(XDG_CONFIG_HOME)/$@
 zim: ; ln -sf $(PWD)/$@/.zimrc ~
 
 .PHONY: remove
 remove: \
-	alacritty-remove \
-	amethyst-remove \
 	conda-remove \
-	git-remove \
-	joshuto-remove \
-	kitty-remove \
 	mpv-remove \
-	neofetch-remove \
 	powerlevel-remove10k \
 	shell-remove \
-	streamlink-remove \
-	tmux-remove \
-	wezterm-remove \
 	zim-remove
 .PHONY: \
-	alacritty-remove \
-	amethyst-remove \
 	conda-remove \
-	git-remove \
-	joshuto-remove \
-	kitty-remove \
 	mpv-remove \
-	neofetch-remove \
 	powerlevel-remove10k \
 	shell-remove \
-	streamlink-remove \
-	tmux-remove \
-	wezterm-remove \
 	zim-remove
-alacritty-remove: ; rm -rf $(XDG_CONFIG_HOME)/alacritty
-amethyst-remove: ; rm -rf $(XDG_CONFIG_HOME)/amethyst
 conda-remove: ; cd conda; ./uninstall.sh
-git-remove: ; rm -rf $(XDG_CONFIG_HOME)/git
-joshuto-remove: ; rm -rf $(XDG_CONFIG_HOME)/joshuto
-kitty-remove: ; rm -rf $(XDG_CONFIG_HOME)/kitty
-mpv-remove: ; rm -rf $(XDG_CONFIG_HOME)/mpv mpv/shaders mpv/input.conf
-neofetch-remove: ; rm -rf $(XDG_CONFIG_HOME)/neofetch
+mpv-remove: ; rm -rf mpv/shaders mpv/input.conf
 powerlevel-remove10k: ; rm -rf ~/.p10k.zsh
 shell-remove: ; cd bin; ./uninstall.sh
-streamlink-remove: ; rm -rf $(XDG_CONFIG_HOME)/streamlink
-tmux-remove: ; rm -rf $(XDG_CONFIG_HOME)/tmux
-wezterm-remove: ; rm -rf $(XDG_CONFIG_HOME)/wezterm
 zim-remove: ; rm -rf ~/.zimrc
 
 # update dotfiles from upstream ########################################
