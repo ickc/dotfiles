@@ -31,29 +31,29 @@ config:
 	rm -rf $(XDG_CONFIG_HOME)
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf
-powerlevel10k: ; ln -sf $(PWD)/powerlevel10k/.p10k.zsh ~
+powerlevel10k: ; ln -sf $(PWD)/home/.p10k.zsh ~
 shell: ; cd bin; ./install.sh
-zim: ; ln -sf $(PWD)/$@/.zimrc ~
+zim: ; ln -sf $(PWD)/home/.zimrc ~
 
 .PHONY: remove
 remove: \
 	conda-remove \
 	config-remove \
 	mpv-remove \
-	powerlevel-remove10k \
+	powerlevel10k-remove \
 	shell-remove \
 	zim-remove
 .PHONY: \
 	conda-remove \
 	config-remove \
 	mpv-remove \
-	powerlevel-remove10k \
+	powerlevel10k-remove \
 	shell-remove \
 	zim-remove
 conda-remove: ; cd config/conda; ./uninstall.sh
 config-remove: ; rm -f $(XDG_CONFIG_HOME)
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
-powerlevel-remove10k: ; rm -rf ~/.p10k.zsh
+powerlevel10k-remove: ; rm -rf ~/.p10k.zsh
 shell-remove: ; cd bin; ./uninstall.sh
 zim-remove: ; rm -rf ~/.zimrc
 
