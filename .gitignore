@@ -1,4 +1,10 @@
+*.log
 *.zip
 bin/.env
-config/mpv/shaders
+config/btop/themes
+config/conda
+config/github-copilot/hosts.json
+config/gpt4all.io
+config/jgit
 config/mpv/input.conf
+config/mpv/shaders

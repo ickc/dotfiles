@@ -1,0 +1,147 @@
+# ~/.config/wtf/config.yml
+wtf:
+  # 12 x 3
+  # grid:
+  #   columns: [32, 32, 32, 32, 90]
+  #   rows: [10, 10, 10, 4, 4, 90]
+  refreshInterval: 1
+  mods:
+    # weather ##################################################################
+    prettyweather:
+      title: 🌤
+      enabled: true
+      city: "53.387949546071155,-2.1347633883155868"
+      position:
+          left: 0
+          top: 0
+          height: 4
+          width: 3
+      refreshInterval: 5m
+      unit: "m"
+      view: FQ
+      language: "en"
+    weather:
+      # From http://bulk.openweathermap.org/sample/city.list.json.gz
+      cityids:
+      - 2636882 # Stockport
+      - 2643123 # Manchester
+      - 1819729 # Hong Kong
+      colors:
+        current: "lightblue"
+      enabled: true
+      position:
+        left: 0
+        top: 4
+        height: 2
+        width: 1
+      refreshInterval: 15m
+    # clocks ###################################################################
+    clocks:
+      title: 🕰
+      colors:
+        rows:
+          even: "lightblue"
+          odd: "white"
+      enabled: true
+      locations:
+        Berkeley: "America/Los Angeles"
+        Hong Kong: "Asia/Hong Kong"
+        London: "Europe/London"
+      position:
+        left: 0
+        top: 6
+        height: 1
+        width: 1
+      refreshInterval: 60
+      sort: "chronological"
+      type: "clocks"
+      timeFormat: "03:04pm MST(-07)"
+    # misc #####################################################################
+    power:
+      enabled: true
+      position:
+        left: 0
+        top: 7
+        height: 1
+        width: 1
+      refreshInterval: 15
+      title: "🔋"
+    resources:
+      title: 💻
+      type: resourceusage
+      enabled: true
+      position:
+        left: 0
+        top: 8
+        height: 2
+        width: 1
+      refreshInterval: 1
+      graphIcon: ▒  # ░▒▓
+    # news #####################################################################
+    feedreader-manchester:
+      title: Manchester Evening News
+      enabled: true
+      feeds:
+      - https://www.manchestereveningnews.co.uk/news/?service=rss
+      # feedLimit: 8
+      position:
+        left: 1
+        top: 4
+        width: 2
+        height: 2
+      refreshInterval: 14400
+      type: feedreader
+    feedreader-nytimes:
+      title: NYTimes
+      enabled: true
+      feeds:
+      - https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml
+      # feedLimit: 8
+      position:
+        left: 1
+        top: 6
+        width: 2
+        height: 2
+      refreshInterval: 14400
+      type: feedreader
+    feedreader-BBC:
+      title: BBC UK
+      type: feedreader
+      enabled: true
+      feeds:
+      - http://feeds.bbci.co.uk/news/uk/rss.xml
+      # feedLimit: 8
+      position:
+        left: 1
+        top: 8
+        width: 2
+        height: 2
+      refreshInterval: 14400
+    hackernews:
+      type: hackernews
+      enabled: true
+      numberOfStories: 22
+      position:
+        left: 1
+        top: 10
+        width: 2
+        height: 2
+      storyType: top
+      refreshInterval: 900
+    cmdrunner:
+      type: cmdrunner
+      title: Baby dates
+      cmd: "python3"
+      args:
+        - "-c"
+        - |
+          from datetime import date as D
+          w = (D.today() - D(2022, 11, 15)).days / 7
+          print(f"{w:.1f} weeks old\n{40. - w:.1f} weeks due")
+      enabled: true
+      position:
+        left: 0
+        top: 10
+        width: 1
+        height: 2
+      refreshInterval: 0.5d
