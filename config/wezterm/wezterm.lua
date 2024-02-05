@@ -11,4 +11,7 @@ config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 config.font = wezterm.font "JetBrainsMono Nerd Font"
 
+-- https://github.com/wez/wezterm/issues/3032
+config.front_end = "OpenGL"
+
 return config
