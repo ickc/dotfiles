@@ -1,4 +1,6 @@
-if ( "`uname -s`" == Linux ) then
-  setenv SHELL "$HOME/.local/bin/zsh"
-  [[ -e "$SHELL" ]] && exec "$SHELL" -l
+set path = (/opt/local/bin ~/.local/bin $path)
+set _SHELL=`command -v zsh`
+if ($status == 0) then
+    setenv SHELL "$_SHELL"
+    exec "$SHELL" -l
 endif
