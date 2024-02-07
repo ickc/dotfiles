@@ -162,5 +162,14 @@ format:
 todo:
 	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
 
+# TODO: delete this after migration of ZDOTDIR
+migrate:
+	if [[ -n "$$HISTFILE" ]]; then \
+		rm -f ~/.zcompdump*; \
+		mkdir -p "$$(dirname "$$HISTFILE")"; \
+		[[ -f ~/.zsh_history ]] && mv -f ~/.zsh_history "$$HISTFILE"; \
+		[[ -f ~/.zhistory ]] && mv -f ~/.zhistory "$$HISTFILE"; \
+	fi
+
 print-%:
 	$(info $* = $($*))
