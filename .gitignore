@@ -10,3 +10,4 @@ config/mpv/shaders
 config/zsh/.env
 config/zsh/.zcompdump*
 config/zsh/.zsh_history
+config/fish/fish_variables
