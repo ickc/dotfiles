@@ -26,9 +26,11 @@ all: \
 	shell
 conda: ; cd config/conda; ./install.sh
 config:
-	find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete
-	find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;
-	rm -rf $(XDG_CONFIG_HOME)
+	if [[ -d $(XDG_CONFIG_HOME) ]]; then \
+		find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete; \
+		find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;; \
+		rm -rf $(XDG_CONFIG_HOME); \
+	fi
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
 hyper: ; ln -sf $(PWD)/home/.hyper.js ~
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf
