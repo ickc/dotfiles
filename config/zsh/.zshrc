@@ -5,6 +5,7 @@
 export __PROMPT_THEME="${__PROMPT_THEME:-powerlevel10k}"
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
+# shellcheck disable=SC2028
 echo -n "\033]0;${__HOST%%.*}\007"
 
 # helpers ######################################################################
@@ -154,9 +155,11 @@ if [[ $__PROMPT_THEME == powerlevel10k ]]; then
     # Initialization code that may require console input (password prompts, [y/n]
     # confirmations, etc.) must go above this block; everything else may go below.
     if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$USER.zsh" ]]; then
+        # shellcheck disable=SC1090
         source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$USER.zsh"
     fi
     # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+    # shellcheck disable=SC1090
     [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 fi
 
@@ -188,7 +191,9 @@ ml_conda() {
     # it allows you to put the conda function available without letting it
     # changing your PATH
     local __PATH__="$PATH"
+    # shellcheck disable=SC1091
     . "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+    # shellcheck disable=SC1091
     . "$__CONDA_PREFIX/etc/profile.d/mamba.sh"
     export PATH="$__PATH__"
 }
@@ -204,12 +209,17 @@ mu_conda() {
 
 ml_basher() {
     path_prepend "$BASHER_ROOT/cellar/bin"
+    # shellcheck disable=SC1090
     . "$BASHER_ROOT/lib/include.$BASHER_SHELL"
+    # shellcheck disable=SC1090
     . "$BASHER_ROOT/completions/basher.$BASHER_SHELL"
     if [[ -n $ZSH_VERSION ]]; then
+        # shellcheck disable=SC2206
         fpath=("$BASHER_ROOT/cellar/completions/zsh/compsys" $fpath)
+        # shellcheck disable=SC1090
         for f in $(command ls "$BASHER_ROOT/cellar/completions/zsh/compctl"); do source "$BASHER_ROOT/cellar/completions/zsh/compctl/$f"; done
     elif [[ -n $BASH_VERSION ]]; then
+        # shellcheck disable=SC1090
         for f in $(command ls "$BASHER_ROOT/cellar/completions/bash"); do source "$BASHER_ROOT/cellar/completions/bash/$f"; done
     fi
     path_append_all "$BASHER_ROOT"
@@ -218,6 +228,7 @@ ml_basher() {
 
 # sman
 ml_s() {
+    # shellcheck disable=SC1091
     . "$HOME/.sman/sman.rc"
 }
 
@@ -266,6 +277,7 @@ if [[ -n $NERSC_HOST ]]; then
         # to remove PATH editing, sqs alias, PYTHONSTARTUP, PYTHONUSERBASE
         # manual edit /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
         # to fix zsh error
+        # shellcheck disable=SC1091
         . /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
     }
 
@@ -284,6 +296,7 @@ elif [[ -n $BLACKETT_HOST ]]; then
         }
     fi
     ml_intel() {
+        # shellcheck disable=SC1091
         . "$CVMFS_ROOT/opt/intel/oneapi/setvars.sh"
     }
 elif [[ -n $JBCA_HOST && -n $SCRATCH ]]; then
@@ -294,6 +307,7 @@ else
     case "$__HOST" in
         simons1)
             ml_host() {
+                # shellcheck disable=SC1091
                 . /usr/share/modules/init/zsh
                 module use --append /mnt/so1/shared/modules/
             }
@@ -308,6 +322,7 @@ else
             ;;
         soukdev1)
             ml_intel() {
+                # shellcheck disable=SC1091
                 . /opt/intel/oneapi/setvars.sh
             }
             ml_toast_gnu() {
@@ -463,10 +478,14 @@ if [[ $? == 0 ]]; then
     FZF_SHARE="${FZF_PATH%/*}/../share/fzf"
     # check shell is bash or zsh
     if [[ -n $BASH_VERSION ]]; then
+        # shellcheck disable=SC1091
         source "$FZF_SHARE"/shell/completion.bash
+        # shellcheck disable=SC1091
         source "$FZF_SHARE"/shell/key-bindings.bash
     elif [[ -n $ZSH_VERSION ]]; then
+        # shellcheck disable=SC1091
         source "$FZF_SHARE"/shell/completion.zsh
+        # shellcheck disable=SC1091
         source "$FZF_SHARE"/shell/key-bindings.zsh
     fi
     unset FZF_PATH FZF_SHARE
@@ -481,16 +500,20 @@ if [[ -n $ZSH_VERSION ]]; then
 
     # Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
     if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
+        # shellcheck disable=SC1091
         source "${ZIM_HOME}/zimfw.zsh" init -q
     fi
 
     # ssh
     zstyle ':zim:ssh' ids id_ed25519
     # zsh-users/zsh-history-substring-search
-    bindkey "$terminfo[kcuu1]" history-substring-search-up
-    bindkey "$terminfo[kcud1]" history-substring-search-down
+    # shellcheck disable=SC2154
+    bindkey "${terminfo[kcuu1]}" history-substring-search-up
+    # shellcheck disable=SC2154
+    bindkey "${terminfo[kcud1]}" history-substring-search-down
 
     # Initialize modules.
+    # shellcheck disable=SC1091
     source "${ZIM_HOME}/init.zsh"
 fi
 
