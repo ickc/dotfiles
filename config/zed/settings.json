@@ -7,7 +7,6 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "theme": "Gruvbox Light Soft",
-  "ui_font_size": 16,
-  "buffer_font_size": 16
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "theme": "Gruvbox Light Soft"
 }
