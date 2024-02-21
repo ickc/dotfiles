@@ -11,6 +11,8 @@ $sudo\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
 $git_branch\
+$git_commit\
+$git_state\
 $git_status\
 [](fg:color_aqua bg:color_blue)\
 $c\
@@ -104,6 +106,15 @@ truncation_symbol = "…/"
 symbol = ""
 style = "bg:color_aqua"
 format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
+
+[git_commit]
+style = "bg:color_aqua"
+tag_disabled = false
+format = '[  $hash$tag ]($style)'
+tag_symbol = " 󰓹 "
+
+[git_state]
+style = "bg:color_aqua"
 
 [git_status]
 style = "bg:color_aqua"
