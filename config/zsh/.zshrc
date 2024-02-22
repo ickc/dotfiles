@@ -6,7 +6,7 @@ export __PROMPT_THEME="${__PROMPT_THEME:-powerlevel10k}"
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 # shellcheck disable=SC2028
-echo -n "\033]0;${__HOST%%.*}\007"
+echo -ne "\033]0;${__HOST%%.*}\007"
 
 # helpers ######################################################################
 
