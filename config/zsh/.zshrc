@@ -491,6 +491,11 @@ if [[ $? == 0 ]]; then
     unset FZF_PATH FZF_SHARE
 fi
 
+# starship
+if [[ $BASH_VERSION ]]; then
+    eval "$(starship init bash)"
+fi
+
 # zim ##########################################################################
 
 # if zsh
