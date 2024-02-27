@@ -33,7 +33,7 @@ config:
 	fi
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
 hyper: ; ln -sf $(PWD)/home/.hyper.js ~
-mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf
+mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true
 powerlevel10k: ; ln -sf $(PWD)/home/.p10k.zsh ~
 shell: ; ln -sf $(PWD)/config/zsh/.zshenv ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.login ~
 
