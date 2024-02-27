@@ -8,7 +8,7 @@
 # CONDARC ##############################################################
 
 # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
-export CONDARC="$HOME/git/source/dotfiles/conda/.condarc"
+export CONDARC="$HOME/git/source/dotfiles/config/conda/.condarc"
 
 # __OSTYPE detection ###################################################
 
