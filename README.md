@@ -2,7 +2,7 @@
 
 my public dotfiles
 
-Put non-public env var into `bin/.env`.
+Put non-public env var into `config/zsh/.env`.
 
 # Dependencies
 
@@ -19,9 +19,9 @@ cd ~/git/source
 git clone git@github.com:ickc/dotfiles.git ||
 git clone https://github.com/ickc/dotfiles.git
 cd dotfiles
-. bin/env
-. bin/interactive
+. config/zsh/.zshenv
+. config/zsh/.zshrc
 make uninstall && make install && make
-. bin/env
-. bin/interactive
+. config/zsh/.zshenv
+. config/zsh/.zshrc
 ```
