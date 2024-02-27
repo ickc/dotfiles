@@ -53,7 +53,7 @@ remove: \
 	powerlevel10k-remove \
 	shell-remove
 conda-remove: ; cd config/conda; ./uninstall.sh
-config-remove: ; rm -f $(XDG_CONFIG_HOME)
+config-remove: ; rm -f $(XDG_CONFIG_HOME) || true
 hyper-remove: ; rm -f ~/.hyper.js
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
 powerlevel10k-remove: ; rm -f ~/.p10k.zsh
