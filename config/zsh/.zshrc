@@ -476,17 +476,19 @@ FZF_PATH="$(command -v fzf)"
 if [[ $? == 0 ]]; then
     FZF_PATH="$(realpath "$FZF_PATH")"
     FZF_SHARE="${FZF_PATH%/*}/../share/fzf"
+    # sometimes it is put inside a "shell" subdirectory
+    [[ -d $FZF_SHARE/shell ]] && FZF_SHARE="$FZF_SHARE/shell"
     # check shell is bash or zsh
     if [[ -n $BASH_VERSION ]]; then
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/shell/completion.bash
+        source "$FZF_SHARE"/completion.bash
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/shell/key-bindings.bash
+        source "$FZF_SHARE"/key-bindings.bash
     elif [[ -n $ZSH_VERSION ]]; then
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/shell/completion.zsh
+        source "$FZF_SHARE"/completion.zsh
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/shell/key-bindings.zsh
+        source "$FZF_SHARE"/key-bindings.zsh
     fi
     unset FZF_PATH FZF_SHARE
 fi
