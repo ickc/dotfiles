@@ -28,7 +28,7 @@ esac
 # set HOSTNAME by hostname if undefined
 if [[ -z $HOSTNAME ]]; then
     # be careful that different implementation of hostname has different options
-    HOSTNAME="$(hostname -f)"
+    HOSTNAME="$(hostname -f 2>/dev/null || hostname)"
     export HOSTNAME
 fi
 
