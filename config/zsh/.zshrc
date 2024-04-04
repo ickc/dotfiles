@@ -2,7 +2,7 @@
 
 # * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
 # * use `__PROMPT_THEME=[starship|powerlevel10k]` to set the prompt
-export __PROMPT_THEME="${__PROMPT_THEME:-powerlevel10k}"
+export __PROMPT_THEME="${__PROMPT_THEME:-starship}"
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 # shellcheck disable=SC2028
