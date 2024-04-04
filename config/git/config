@@ -1,0 +1,12 @@
+[user]
+        name = Kolen Cheung
+        email = christian.kolen@gmail.com
+[pull]
+        rebase = false
+[filter "lfs"]
+        process = git-lfs filter-process
+        required = true
+        clean = git-lfs clean -- %f
+        smudge = git-lfs smudge -- %f
+[credential]
+        helper = store
