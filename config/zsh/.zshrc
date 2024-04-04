@@ -481,15 +481,17 @@ if [[ $? == 0 ]]; then
     # check shell is bash or zsh
     if [[ -n $BASH_VERSION ]]; then
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/completion.bash
+        [[ -f "$FZF_SHARE"/completion.bash ]] && source "$FZF_SHARE"/completion.bash
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/key-bindings.bash
+        [[ -f "$FZF_SHARE"/key-bindings.bash ]] && source "$FZF_SHARE"/key-bindings.bash
     elif [[ -n $ZSH_VERSION ]]; then
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/completion.zsh
+        [[ -f "$FZF_SHARE"/completion.zsh ]] && source "$FZF_SHARE"/completion.zsh
         # shellcheck disable=SC1091
-        source "$FZF_SHARE"/key-bindings.zsh
+        [[ -f "$FZF_SHARE"/key-bindings.zsh ]] && source "$FZF_SHARE"/key-bindings.zsh
     fi
+    # OpenSUSE
+    [[ -f /etc/zsh_completion.d/fzf-key-bindings ]] && source /etc/zsh_completion.d/fzf-key-bindings
     unset FZF_PATH FZF_SHARE
 fi
 
