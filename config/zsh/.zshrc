@@ -526,4 +526,8 @@ if [[ -n $ZSH_VERSION ]]; then
     source "${ZIM_HOME}/init.zsh"
 fi
 
-neofetch 2> /dev/null
+if command -v fastfetch &>/dev/null; then
+    fastfetch
+elif command -v neofetch &>/dev/null; then
+    neofetch
+fi
