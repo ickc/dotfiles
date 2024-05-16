@@ -242,6 +242,7 @@ ml_eza() {
 
 ml_lsd() {
     alias ls=lsd
+    alias tree="lsd --tree"
 }
 
 ml_ls() {
