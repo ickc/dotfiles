@@ -195,6 +195,18 @@ throw-screen-4:
 # throw-space-<screen-number>:
 #   mod: mod1
 #   key: i
+throw-space-1:
+  mod: mod2
+  key: 1
+throw-space-2:
+  mod: mod2
+  key: 2
+throw-space-3:
+  mod: mod2
+  key: 3
+throw-space-4:
+  mod: mod2
+  key: 4
 
 # Select tall layout
 select-tall-layout:
