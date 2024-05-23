@@ -72,7 +72,7 @@ update: \
 	mpv-update
 
 amethyst-update: amethyst/amethyst.yml
-joshuto-update: joshuto/
+joshuto-update: config/joshuto/
 mpv-update: config/mpv/shaders/
 
 # by default comment out all lines in amethyst.yml due to
@@ -81,7 +81,7 @@ amethyst/amethyst.yml:
 	mkdir -p $(@D)
 	wget https://github.com/ianyh/Amethyst/raw/development/.amethyst.sample.yml -O $@
 	sed -i '/^\s*#/!{/^$$/!s/^/# /}' $@
-joshuto/:
+config/joshuto/:
 	rm -rf $@
 	mkdir -p $@
 	joshuto_version_output="$$(joshuto --version | head -n 1)"; \
