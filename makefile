@@ -84,7 +84,7 @@ amethyst/amethyst.yml:
 joshuto/:
 	rm -rf $@
 	mkdir -p $@
-	joshuto_version_output="$$(joshuto --version)"; \
+	joshuto_version_output="$$(joshuto --version | head -n 1)"; \
 	version_string="$${joshuto_version_output#*-}"; \
 	wget "https://github.com/kamiyaa/joshuto/archive/refs/tags/v$${version_string}.tar.gz" -O - | tar -xz --strip-components=2 -C $@ "joshuto-$${version_string}/config"
 config/mpv/shaders/:
