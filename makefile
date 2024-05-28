@@ -137,7 +137,7 @@ zim-uninstall:
 .PHONY: uninstall
 uninstall: remove uninstall-software
 
-.PHONY: format
+.PHONY: format check
 format:
 	find . -type f \
 		\( \
@@ -156,6 +156,24 @@ format:
 			--indent 4 \
 			--case-indent \
 			--space-redirects \
+			{} +
+check:
+	find . -type f \
+		\( \
+			-name .bash_profile -o \
+			-name .bashrc -o \
+			-name .env -o \
+			-name .zimrc -o \
+			-name .zshenv -o \
+			-name .zshrc -o \
+			-name '*.sh' \
+		\) \
+		\! -name preview_file.sh \
+		-exec shellcheck \
+			--norc \
+			--enable=all \
+			--shell=bash \
+			--severity=warning \
 			{} +
 
 .PHONY: todo
