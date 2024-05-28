@@ -174,7 +174,7 @@ check:
 			--norc \
 			--enable=all \
 			--shell=bash \
-			--severity=info \
+			--severity=style \
 			{} +
 
 .PHONY: todo
