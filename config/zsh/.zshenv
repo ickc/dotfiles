@@ -337,6 +337,7 @@ fi
 if [[ -n $__PREFIX ]]; then
     for i in mosh-server tmux exa eza lsd; do
         j="$__PREFIX/$i"
+        # shellcheck disable=SC2139
         [[ -f $j ]] && alias $i="$j"
     done
 fi

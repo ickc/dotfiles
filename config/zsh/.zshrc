@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
+# shellcheck source=config/zsh/.zshenv
 
 # * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
 # * use `__PROMPT_THEME=[starship|powerlevel10k]` to set the prompt
 export __PROMPT_THEME="${__PROMPT_THEME:-starship}"
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
-# shellcheck disable=SC2028
-echo -ne "\033]0;${__HOST%%.*}\007"
+printf "\033]0;%s\007" "${__HOST%%.*}"
 
 # helpers ######################################################################
 
@@ -216,7 +216,7 @@ ml_basher() {
     # shellcheck disable=SC1090
     . "$BASHER_ROOT/completions/basher.$BASHER_SHELL"
     if [[ -n $ZSH_VERSION ]]; then
-        # shellcheck disable=SC2206
+        # shellcheck disable=SC2206,SC2128
         fpath=("$BASHER_ROOT/cellar/completions/zsh/compsys" $fpath)
         # shellcheck disable=SC1090
         for f in $(command ls "$BASHER_ROOT/cellar/completions/zsh/compctl"); do source "$BASHER_ROOT/cellar/completions/zsh/compctl/$f"; done
@@ -354,7 +354,7 @@ else
             ml_toast_gnu() {
                 TOAST_PREFIX="$SCRATCH/local/toast-gnu"
                 conda activate "$TOAST_PREFIX/conda"
-                [[ $__UNAME == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
+                [[ $__OSTYPE == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
                 ld_library_path_prepend "$TOAST_PREFIX/compile/lib"
                 pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.8/site-packages"
                 path_prepend "$TOAST_PREFIX/compile/bin:$TOAST_PREFIX/conda/bin"
@@ -494,6 +494,7 @@ if [[ $? == 0 ]]; then
         [[ -f "$FZF_SHARE"/key-bindings.zsh ]] && source "$FZF_SHARE"/key-bindings.zsh
     fi
     # OpenSUSE
+    # shellcheck disable=SC1091
     [[ -f /etc/zsh_completion.d/fzf-key-bindings ]] && source /etc/zsh_completion.d/fzf-key-bindings
     unset FZF_PATH FZF_SHARE
 fi
