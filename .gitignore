@@ -11,6 +11,7 @@ config/mpv/shaders
 config/zed/*
 !config/zed/settings.json
 config/zsh/.env
+config/zsh/.zcompcache
 config/zsh/.zcompdump*
 config/zsh/.zsh_history
 fishd.*
