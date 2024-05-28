@@ -263,7 +263,6 @@ fi
 # zsh setup ############################################################
 
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-[[ -n $ZSH_VERSION ]] && export HISTFILE="$XDG_STATE_HOME/zsh/history"
 
 [[ -e "$ZDOTDIR/.env" ]] && . "$ZDOTDIR/.env"
 
