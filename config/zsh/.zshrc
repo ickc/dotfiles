@@ -497,8 +497,8 @@ if [[ $? == 0 ]]; then
 fi
 
 # starship
-if [[ $BASH_VERSION ]]; then
-    eval "$(starship init bash)"
+if [[ -n $BASH_VERSION ]]; then
+    command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
 fi
 
 # zim ##########################################################################
