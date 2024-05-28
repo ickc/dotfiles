@@ -242,6 +242,7 @@ ml_eza() {
 
 ml_lsd() {
     alias ls=lsd
+    alias tree="lsd --tree"
 }
 
 ml_ls() {
@@ -377,10 +378,10 @@ ml_clean() {
 
     [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on NERSC
-    type exa > /dev/null 2>&1 && ml_exa
-    type eza > /dev/null 2>&1 && ml_eza
+    command -v exa > /dev/null 2>&1 && ml_exa
+    command -v eza > /dev/null 2>&1 && ml_eza
     # note that this prefers lsd over exa
-    type lsd > /dev/null 2>&1 && ml_lsd
+    command -v lsd > /dev/null 2>&1 && ml_lsd
 }
 
 ml() {
@@ -398,7 +399,7 @@ ml() {
     [[ -d "$HOME/.basher" ]] && ml_basher
     [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
-    type ml_host &> /dev/null && ml_host
+    command -v ml_host > /dev/null 2>&1 && ml_host
 
     ml_clean
 }
@@ -496,8 +497,9 @@ if [[ $? == 0 ]]; then
 fi
 
 # starship
-if [[ $BASH_VERSION ]]; then
-    eval "$(starship init bash)"
+if [[ -n $BASH_VERSION ]]; then
+    command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
+    command -v zellij > /dev/null 2>&1 && eval "$(zellij setup --generate-completion bash)"
 fi
 
 # zim ##########################################################################
@@ -526,8 +528,8 @@ if [[ -n $ZSH_VERSION ]]; then
     source "${ZIM_HOME}/init.zsh"
 fi
 
-if command -v fastfetch &>/dev/null; then
+if command -v fastfetch > /dev/null 2>&1; then
     fastfetch
-elif command -v neofetch &>/dev/null; then
+elif command -v neofetch > /dev/null 2>&1; then
     neofetch
 fi

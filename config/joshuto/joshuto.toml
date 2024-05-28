@@ -1,10 +1,12 @@
 numbered_command = false
 
+mouse_support = true
 focus_on_create = true
 use_trash = true
 watch_files = true
 xdg_open = false
 xdg_open_fork = false
+case_insensitive_ext = false
 
 custom_commands = []
 
@@ -23,7 +25,7 @@ show_icons = true
 # none, absolute, relative
 line_number_style = "none"
 
-# size, mtime, user, gourp, perm. can be combined with |. 
+# size, mtime, user, gourp, perm. can be combined with |.
 # `none` to disable, `all` to enable all
 # all and none can't be combined with other options
 linemode = "size"
