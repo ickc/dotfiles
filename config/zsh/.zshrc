@@ -378,10 +378,10 @@ ml_clean() {
 
     [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on NERSC
-    type exa > /dev/null 2>&1 && ml_exa
-    type eza > /dev/null 2>&1 && ml_eza
+    command -v exa > /dev/null 2>&1 && ml_exa
+    command -v eza > /dev/null 2>&1 && ml_eza
     # note that this prefers lsd over exa
-    type lsd > /dev/null 2>&1 && ml_lsd
+    command -v lsd > /dev/null 2>&1 && ml_lsd
 }
 
 ml() {
@@ -399,7 +399,7 @@ ml() {
     [[ -d "$HOME/.basher" ]] && ml_basher
     [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
-    type ml_host > /dev/null 2>&1 && ml_host
+    command -v ml_host > /dev/null 2>&1 && ml_host
 
     ml_clean
 }
