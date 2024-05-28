@@ -139,6 +139,7 @@ path_append_all() {
 
 # this remove ~/.local/bin from PATH
 remove_home_local_bin_from_PATH() {
+    # shellcheck disable=SC2312
     PATH="$(echo "$PATH" | tr ":" "\n" | grep -v "$HOME/.local/bin" | tr "\n" ":")"
     export PATH
 }
@@ -501,7 +502,9 @@ fi
 
 # starship
 if [[ -n $BASH_VERSION ]]; then
+    # shellcheck disable=SC2312
     command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
+    # shellcheck disable=SC2312
     command -v zellij > /dev/null 2>&1 && eval "$(zellij setup --generate-completion bash)"
 fi
 

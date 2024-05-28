@@ -119,6 +119,7 @@ fi
 
 case "$__HOST" in
     perlmutter | datatran)
+        # shellcheck disable=SC2249
         case "$__HOST" in
             perlmutter)
                 SCRATCH="/pscratch/sd/${USER:0:1}/$USER"
@@ -128,12 +129,12 @@ case "$__HOST" in
                 # . activate && echo $CONDA_PREFIX
                 # __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
                 ;;
-            datatran)
+                # datatran)
                 # TODO: update by running
                 # module load python...
                 # . activate && echo $CONDA_PREFIX
                 # __CONDA_PREFIX=/global/common/datatran2/usg/python/Miniconda3-latest-Linux-x86_64
-                ;;
+                # ;;
         esac
         __CONDA_PREFIX="/global/u2/${USER:0:1}/$USER/.mambaforge"
         PROJ_ROOT=/global/cfs/cdirs
@@ -265,6 +266,7 @@ fi
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 [[ -n $ZSH_VERSION ]] && export HISTFILE="$XDG_STATE_HOME/zsh/history"
 
+# shellcheck disable=SC1091
 [[ -e "$ZDOTDIR/.env" ]] && . "$ZDOTDIR/.env"
 
 # export all variables #################################################
@@ -288,15 +290,19 @@ fi
 # c.f. https://stackoverflow.com/a/23378780/5769446
 case "$__OSTYPE" in
     darwin)
+        # shellcheck disable=SC2312
         __NCPU="$(sysctl -n hw.physicalcpu_max)"
         ;;
     linux)
+        # shellcheck disable=SC2312
         __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
         ;;
     bsd)
+        # shellcheck disable=SC2312
         __NCPU="$(sysctl -n hw.ncpu)"
         ;;
     *)
+        # shellcheck disable=SC2312
         __NCPU="$(getconf _NPROCESSORS_ONLN 2> /dev/null || getconf NPROCESSORS_ONLN 2> /dev/null || echo 1)"
         ;;
 esac
@@ -328,6 +334,7 @@ elif [[ -n $BLACKETT_HOST ]]; then
         __PREFIX=/opt/local/bin
     fi
 else
+    # shellcheck disable=SC2249
     case "$__HOST" in
         gordita)
             __PREFIX="$HOME/mambaforge/envs/system39-conda-forge/bin"
