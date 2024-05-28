@@ -8,8 +8,7 @@ if [[ $- == *i* ]]; then
     if [[ $0 == -bash ]]; then
         # shellcheck disable=SC1091
         [[ -e "${HOME}/.config/zsh/.zshrc" ]] && . "${HOME}/.config/zsh/.zshrc" > /dev/null 2>&1
-        _SHELL="$(command -v zsh)"
-        if [[ $? -eq 0 ]]; then
+        if _SHELL="$(command -v zsh)"; then
             export SHELL="${_SHELL}"
             exec "${SHELL}" -l
         fi

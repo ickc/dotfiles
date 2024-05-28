@@ -345,7 +345,7 @@ if [[ -n ${__PREFIX} ]]; then
     for i in mosh-server tmux exa eza lsd; do
         j="${__PREFIX}/${i}"
         # shellcheck disable=SC2139
-        [[ -f ${j} ]] && alias ${i}="${j}"
+        [[ -f ${j} ]] && alias "${i}"="${j}"
     done
 fi
 
@@ -361,7 +361,7 @@ if [[ -n ${BASHER_ROOT} ]]; then
     export BASHER_PACKAGES_PATH="${BASHER_PREFIX}/packages"
     if [[ -n ${ZSH_VERSION} ]]; then
         export BASHER_SHELL=zsh
-    elif [ -n "${BASH_VERSION}" ]; then
+    elif [[ -n "${BASH_VERSION}" ]]; then
         export BASHER_SHELL=bash
     fi
 fi

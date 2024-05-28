@@ -476,8 +476,7 @@ fi
 command -v difft > /dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
 
 # fzf
-FZF_PATH="$(command -v fzf)"
-if [[ $? == 0 ]]; then
+if FZF_PATH="$(command -v fzf)"; then
     FZF_PATH="$(realpath "${FZF_PATH}")"
     FZF_SHARE="${FZF_PATH%/*}/../share/fzf"
     # sometimes it is put inside a "shell" subdirectory
@@ -497,8 +496,9 @@ if [[ $? == 0 ]]; then
     # OpenSUSE
     # shellcheck disable=SC1091
     [[ -f /etc/zsh_completion.d/fzf-key-bindings ]] && source /etc/zsh_completion.d/fzf-key-bindings
-    unset FZF_PATH FZF_SHARE
+    unset FZF_SHARE
 fi
+unset FZF_PATH
 
 # starship
 if [[ -n ${BASH_VERSION} ]]; then
