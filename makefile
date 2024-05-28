@@ -173,7 +173,7 @@ check:
 			--norc \
 			--enable=all \
 			--shell=bash \
-			--severity=warning \
+			--severity=info \
 			{} +
 
 .PHONY: todo
