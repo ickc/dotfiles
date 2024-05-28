@@ -499,6 +499,7 @@ fi
 # starship
 if [[ -n $BASH_VERSION ]]; then
     command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
+    command -v zellij > /dev/null 2>&1 && eval "$(zellij setup --generate-completion bash)"
 fi
 
 # zim ##########################################################################
