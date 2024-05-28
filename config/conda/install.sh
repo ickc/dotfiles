@@ -4,5 +4,5 @@ DEFAULT_THREADS="$(getconf _NPROCESSORS_ONLN 2> /dev/null || getconf NPROCESSORS
 export DEFAULT_THREADS
 
 while IFS= read -r line; do
-    eval echo "\"$line\""
+    eval echo "\"${line}\""
 done < condarc.yml > .condarc

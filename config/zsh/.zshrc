@@ -12,18 +12,18 @@ printf "\033]0;%s\007" "${__HOST%%.*}"
 
 # * any path-like variables should be remember and reset using this machanism
 # keeping the original PATH for cleaning environments
-export __PATH="${__PATH:-$PATH}" \
-    __MANPATH="${__MANPATH:-$MANPATH}" \
-    __INFOPATH="${__INFOPATH:-$INFOPATH}" \
-    __PYTHONPATH="${__PYTHONPATH:-$PYTHONPATH}" \
-    __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-$LD_LIBRARY_PATH}"
+export __PATH="${__PATH:-${PATH}}" \
+    __MANPATH="${__MANPATH:-${MANPATH}}" \
+    __INFOPATH="${__INFOPATH:-${INFOPATH}}" \
+    __PYTHONPATH="${__PYTHONPATH:-${PYTHONPATH}}" \
+    __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-${LD_LIBRARY_PATH}}"
 # reset PATH every time a new interactive shell is started
 # berfore any paths are added to it
-[[ -n $__PATH ]] && export PATH="$__PATH"
-[[ -n $__MANPATH ]] && export MANPATH="$__MANPATH"
-[[ -n $__INFOPATH ]] && export INFOPATH="$__INFOPATH"
-[[ -n $__PYTHONPATH ]] && export PYTHONPATH="$__PYTHONPATH"
-[[ -n $__LD_LIBRARY_PATH ]] && export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH"
+[[ -n ${__PATH} ]] && export PATH="${__PATH}"
+[[ -n ${__MANPATH} ]] && export MANPATH="${__MANPATH}"
+[[ -n ${__INFOPATH} ]] && export INFOPATH="${__INFOPATH}"
+[[ -n ${__PYTHONPATH} ]] && export PYTHONPATH="${__PYTHONPATH}"
+[[ -n ${__LD_LIBRARY_PATH} ]] && export LD_LIBRARY_PATH="${__LD_LIBRARY_PATH}"
 
 printerr() {
     printf '%s\n' "$@" >&2
@@ -31,7 +31,7 @@ printerr() {
 
 path_prepend() {
     if [[ -d $1 ]]; then
-        case ":$PATH:" in
+        case ":${PATH}:" in
             *":$1:"*) : ;;
             *) export PATH="${1}${PATH:+:${PATH}}" ;;
         esac
@@ -40,7 +40,7 @@ path_prepend() {
 
 path_append() {
     if [[ -d $1 ]]; then
-        case ":$PATH:" in
+        case ":${PATH}:" in
             *":$1:"*) : ;;
             *) export PATH="${PATH:+${PATH}:}${1}" ;;
         esac
@@ -49,7 +49,7 @@ path_append() {
 
 pythonpath_prepend() {
     if [[ -d $1 ]]; then
-        case ":$PYTHONPATH:" in
+        case ":${PYTHONPATH}:" in
             *":$1:"*) : ;;
             *) export PYTHONPATH="${1}${PYTHONPATH:+:${PYTHONPATH}}" ;;
         esac
@@ -58,7 +58,7 @@ pythonpath_prepend() {
 
 pythonpath_append() {
     if [[ -d $1 ]]; then
-        case ":$PYTHONPATH:" in
+        case ":${PYTHONPATH}:" in
             *":$1:"*) : ;;
             *) export PYTHONPATH="${PYTHONPATH:+${PYTHONPATH}:}${1}" ;;
         esac
@@ -67,7 +67,7 @@ pythonpath_append() {
 
 ld_library_path_prepend() {
     if [[ -d $1 ]]; then
-        case ":$LD_LIBRARY_PATH:" in
+        case ":${LD_LIBRARY_PATH}:" in
             *":$1:"*) : ;;
             *) export LD_LIBRARY_PATH="${1}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" ;;
         esac
@@ -76,7 +76,7 @@ ld_library_path_prepend() {
 
 ld_library_path_append() {
     if [[ -d $1 ]]; then
-        case ":$LD_LIBRARY_PATH:" in
+        case ":${LD_LIBRARY_PATH}:" in
             *":$1:"*) : ;;
             *) export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:+${LD_LIBRARY_PATH}:}${1}" ;;
         esac
@@ -85,7 +85,7 @@ ld_library_path_append() {
 
 TERMINFO_DIRS_append() {
     if [[ -d $1 ]]; then
-        case ":$TERMINFO_DIRS:" in
+        case ":${TERMINFO_DIRS}:" in
             *":$1:"*) : ;;
             *) export TERMINFO_DIRS="${TERMINFO_DIRS:+${TERMINFO_DIRS}:}${1}" ;;
         esac
@@ -96,19 +96,19 @@ TERMINFO_DIRS_append() {
 # modifies PATH, MANPATH, INFOPATH
 path_prepend_all() {
     if [[ -d "$1/bin" ]]; then
-        case ":$PATH:" in
+        case ":${PATH}:" in
             *":$1/bin:"*) : ;;
             *) export PATH="${1}/bin${PATH:+:${PATH}}" ;;
         esac
     fi
     if [[ -d "$1/share/man" ]]; then
-        case ":$MANPATH:" in
+        case ":${MANPATH}:" in
             *":$1/share/man:"*) : ;;
             *) export MANPATH="${1}/share/man${MANPATH:+:${MANPATH}}" ;;
         esac
     fi
     if [[ -d "$1/share/info" ]]; then
-        case ":$INFOPATH:" in
+        case ":${INFOPATH}:" in
             *":$1/share/info:"*) : ;;
             *) export INFOPATH="${1}/share/info${INFOPATH:+:${INFOPATH}}" ;;
         esac
@@ -118,19 +118,19 @@ path_prepend_all() {
 # TODO: fix this on FreeBSD such as bolo
 path_append_all() {
     if [[ -d "$1/bin" ]]; then
-        case ":$PATH:" in
+        case ":${PATH}:" in
             *":$1/bin:"*) : ;;
             *) export PATH="${PATH:+${PATH}:}${1}/bin" ;;
         esac
     fi
     if [[ -d "$1/share/man" ]]; then
-        case ":$MANPATH:" in
+        case ":${MANPATH}:" in
             *":$1/share/man:"*) : ;;
             *) export MANPATH="${MANPATH:+${MANPATH}:}${1}/share/man" ;;
         esac
     fi
     if [[ -d "$1/share/info" ]]; then
-        case ":$INFOPATH:" in
+        case ":${INFOPATH}:" in
             *":$1/share/info:"*) : ;;
             *) export INFOPATH="${INFOPATH:+${INFOPATH}:}${1}/share/info" ;;
         esac
@@ -140,24 +140,24 @@ path_append_all() {
 # this remove ~/.local/bin from PATH
 remove_home_local_bin_from_PATH() {
     # shellcheck disable=SC2312
-    PATH="$(echo "$PATH" | tr ":" "\n" | grep -v "$HOME/.local/bin" | tr "\n" ":")"
+    PATH="$(echo "${PATH}" | tr ":" "\n" | grep -v "${HOME}/.local/bin" | tr "\n" ":")"
     export PATH
 }
 
 # Powerlevel10k ################################################################
 
 # fallback to starship if not in zsh
-if [[ $__PROMPT_THEME == powerlevel10k && -z $ZSH_VERSION ]]; then
+if [[ ${__PROMPT_THEME} == powerlevel10k && -z ${ZSH_VERSION} ]]; then
     __PROMPT_THEME=starship
 fi
 
-if [[ $__PROMPT_THEME == powerlevel10k ]]; then
+if [[ ${__PROMPT_THEME} == powerlevel10k ]]; then
     # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
     # Initialization code that may require console input (password prompts, [y/n]
     # confirmations, etc.) must go above this block; everything else may go below.
-    if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$USER.zsh" ]]; then
+    if [[ -r "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${USER}.zsh" ]]; then
         # shellcheck disable=SC1090
-        source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-$USER.zsh"
+        source "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${USER}.zsh"
     fi
     # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
     # shellcheck disable=SC1090
@@ -174,11 +174,11 @@ fi
 
 ml_brew() {
     # adapted from `brew shellenv`
-    path_prepend "$HOMEBREW_PREFIX/sbin"
-    path_prepend_all "$HOMEBREW_PREFIX"
-    path_prepend_all "$HOMEBREW_PREFIX/opt/ruby"
+    path_prepend "${HOMEBREW_PREFIX}/sbin"
+    path_prepend_all "${HOMEBREW_PREFIX}"
+    path_prepend_all "${HOMEBREW_PREFIX}/opt/ruby"
     # shellcheck disable=SC2206
-    fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
+    fpath=("${HOMEBREW_PREFIX}/share/zsh/site-functions" ${fpath})
 }
 
 # macports
@@ -193,16 +193,16 @@ ml_conda() {
     # * this source the conda functions but not changing the PATH directly
     # it allows you to put the conda function available without letting it
     # changing your PATH
-    local __PATH__="$PATH"
+    local __PATH__="${PATH}"
     # shellcheck disable=SC1091
-    . "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+    . "${__CONDA_PREFIX}/etc/profile.d/conda.sh"
     # shellcheck disable=SC1091
-    . "$__CONDA_PREFIX/etc/profile.d/mamba.sh"
-    export PATH="$__PATH__"
+    . "${__CONDA_PREFIX}/etc/profile.d/mamba.sh"
+    export PATH="${__PATH__}"
 }
 
 mu_conda() {
-    # from "$__CONDA_PREFIX/etc/profile.d/conda.sh"
+    # from "${__CONDA_PREFIX}/etc/profile.d/conda.sh"
     unset CONDA_EXE
     unset CONDA_PYTHON_EXE
     unset CONDA_SHLVL
@@ -211,28 +211,28 @@ mu_conda() {
 }
 
 ml_basher() {
-    path_prepend "$BASHER_ROOT/cellar/bin"
+    path_prepend "${BASHER_ROOT}/cellar/bin"
     # shellcheck disable=SC1090
-    . "$BASHER_ROOT/lib/include.$BASHER_SHELL"
+    . "${BASHER_ROOT}/lib/include.${BASHER_SHELL}"
     # shellcheck disable=SC1090
-    . "$BASHER_ROOT/completions/basher.$BASHER_SHELL"
-    if [[ -n $ZSH_VERSION ]]; then
+    . "${BASHER_ROOT}/completions/basher.${BASHER_SHELL}"
+    if [[ -n ${ZSH_VERSION} ]]; then
         # shellcheck disable=SC2206,SC2128
-        fpath=("$BASHER_ROOT/cellar/completions/zsh/compsys" $fpath)
+        fpath=("${BASHER_ROOT}/cellar/completions/zsh/compsys" ${fpath})
         # shellcheck disable=SC1090
-        for f in $(command ls "$BASHER_ROOT/cellar/completions/zsh/compctl"); do source "$BASHER_ROOT/cellar/completions/zsh/compctl/$f"; done
-    elif [[ -n $BASH_VERSION ]]; then
+        for f in $(command ls "${BASHER_ROOT}/cellar/completions/zsh/compctl"); do source "${BASHER_ROOT}/cellar/completions/zsh/compctl/${f}"; done
+    elif [[ -n ${BASH_VERSION} ]]; then
         # shellcheck disable=SC1090
-        for f in $(command ls "$BASHER_ROOT/cellar/completions/bash"); do source "$BASHER_ROOT/cellar/completions/bash/$f"; done
+        for f in $(command ls "${BASHER_ROOT}/cellar/completions/bash"); do source "${BASHER_ROOT}/cellar/completions/bash/${f}"; done
     fi
-    path_append_all "$BASHER_ROOT"
-    path_append_all "$BASHER_PREFIX"
+    path_append_all "${BASHER_ROOT}"
+    path_append_all "${BASHER_PREFIX}"
 }
 
 # sman
 ml_s() {
     # shellcheck disable=SC1091
-    . "$HOME/.sman/sman.rc"
+    . "${HOME}/.sman/sman.rc"
 }
 
 ml_exa() {
@@ -253,24 +253,24 @@ ml_ls() {
 }
 
 ml_cg() {
-    path_append_all "$CARGO_PREFIX"
+    path_append_all "${CARGO_PREFIX}"
 }
 
 ml_ghcup() {
     # See `cat ~/.ghcup/env`.
-    path_append_all "$HOME/.cabal"
-    path_append_all "$HOME/.ghcup"
+    path_append_all "${HOME}/.cabal"
+    path_append_all "${HOME}/.ghcup"
 }
 
 ml_jetbrains() {
-    path_append "$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+    path_append "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts"
 }
 
 # hosts ========================================================================
 
-if [[ -n $NERSC_HOST ]]; then
+if [[ -n ${NERSC_HOST} ]]; then
     ml_host() {
-        path_prepend_all "$PBCOMMON/local"
+        path_prepend_all "${PBCOMMON}/local"
     }
 
     ml_toast() {
@@ -287,12 +287,12 @@ if [[ -n $NERSC_HOST ]]; then
 
     ml_toast_conda() {
         TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
-        conda activate "$TOAST_PREFIX"
+        conda activate "${TOAST_PREFIX}"
     }
-elif [[ -n $BLACKETT_HOST ]]; then
-    if [[ -n $BLACKETT_CVMFS_ENV ]]; then
+elif [[ -n ${BLACKETT_HOST} ]]; then
+    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
         ml_host() {
-            path_prepend_all "$CVMFS_ROOT/usr"
+            path_prepend_all "${CVMFS_ROOT}/usr"
         }
     else
         ml_host() {
@@ -301,14 +301,14 @@ elif [[ -n $BLACKETT_HOST ]]; then
     fi
     ml_intel() {
         # shellcheck disable=SC1091
-        . "$CVMFS_ROOT/opt/intel/oneapi/setvars.sh"
+        . "${CVMFS_ROOT}/opt/intel/oneapi/setvars.sh"
     }
-elif [[ -n $JBCA_HOST && -n $SCRATCH ]]; then
+elif [[ -n ${JBCA_HOST} && -n ${SCRATCH} ]]; then
     ml_host() {
-        path_prepend_all "$SCRATCH/.local"
+        path_prepend_all "${SCRATCH}/.local"
     }
 else
-    case "$__HOST" in
+    case "${__HOST}" in
         simons1)
             ml_host() {
                 # shellcheck disable=SC1091
@@ -321,7 +321,7 @@ else
             ;;
         gordita)
             ml_host() {
-                [[ $__HOST == gordita ]] && path_prepend_all "$HOME/.linux.local"
+                [[ ${__HOST} == gordita ]] && path_prepend_all "${HOME}/.linux.local"
             }
             ;;
         soukdev1)
@@ -331,10 +331,10 @@ else
             }
             ml_toast_gnu() {
                 TOAST_PREFIX="/opt/cmb/toast-gnu"
-                conda activate "$TOAST_PREFIX/conda"
-                ld_library_path_prepend "$TOAST_PREFIX/compile/lib"
-                pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.10/site-packages"
-                path_prepend "$TOAST_PREFIX/compile/bin:$TOAST_PREFIX/conda/bin"
+                conda activate "${TOAST_PREFIX}/conda"
+                ld_library_path_prepend "${TOAST_PREFIX}/compile/lib"
+                pythonpath_prepend "${TOAST_PREFIX}/compile/lib/python3.10/site-packages"
+                path_prepend "${TOAST_PREFIX}/compile/bin:${TOAST_PREFIX}/conda/bin"
             }
 
             ml_toast_conda() {
@@ -353,12 +353,12 @@ else
             ;;
         *)
             ml_toast_gnu() {
-                TOAST_PREFIX="$SCRATCH/local/toast-gnu"
-                conda activate "$TOAST_PREFIX/conda"
-                [[ $__OSTYPE == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
-                ld_library_path_prepend "$TOAST_PREFIX/compile/lib"
-                pythonpath_prepend "$TOAST_PREFIX/compile/lib/python3.8/site-packages"
-                path_prepend "$TOAST_PREFIX/compile/bin:$TOAST_PREFIX/conda/bin"
+                TOAST_PREFIX="${SCRATCH}/local/toast-gnu"
+                conda activate "${TOAST_PREFIX}/conda"
+                [[ ${__OSTYPE} == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
+                ld_library_path_prepend "${TOAST_PREFIX}/compile/lib"
+                pythonpath_prepend "${TOAST_PREFIX}/compile/lib/python3.8/site-packages"
+                path_prepend "${TOAST_PREFIX}/compile/bin:${TOAST_PREFIX}/conda/bin"
             }
 
             ml_toast_conda() {
@@ -372,14 +372,14 @@ fi
 
 ml_clean() {
     # special case, may generalize something like this to any FreeBSD?
-    if [[ $__HOST == bolo ]]; then
+    if [[ ${__HOST} == bolo ]]; then
         remove_home_local_bin_from_PATH
     fi
 
     # * load minimal environment for interactive use
-    path_prepend_all "$HOME/.local"
+    path_prepend_all "${HOME}/.local"
 
-    [[ -f "$HOME/.sman/sman.rc" ]] && ml_s
+    [[ -f "${HOME}/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on NERSC
     command -v exa > /dev/null 2>&1 && ml_exa
     command -v eza > /dev/null 2>&1 && ml_eza
@@ -388,19 +388,19 @@ ml_clean() {
 }
 
 ml() {
-    if [[ $__HOST == bolo ]]; then
+    if [[ ${__HOST} == bolo ]]; then
         remove_home_local_bin_from_PATH
     fi
 
     # * load all installed environments
     # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
     ml_ghcup
-    [[ -n $HOMEBREW_PREFIX ]] && ml_brew
-    [[ $__OSTYPE == darwin ]] && ml_port
-    [[ -n $__CONDA_PREFIX ]] && ml_conda
-    [[ -n $CARGO_PREFIX ]] && ml_cg
-    [[ -d "$HOME/.basher" ]] && ml_basher
-    [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
+    [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
+    [[ ${__OSTYPE} == darwin ]] && ml_port
+    [[ -n ${__CONDA_PREFIX} ]] && ml_conda
+    [[ -n ${CARGO_PREFIX} ]] && ml_cg
+    [[ -d "${HOME}/.basher" ]] && ml_basher
+    [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
     command -v ml_host > /dev/null 2>&1 && ml_host
 
@@ -408,28 +408,28 @@ ml() {
 }
 
 mu() {
-    if [[ -n $__PATH ]]; then
-        export PATH="$__PATH"
+    if [[ -n ${__PATH} ]]; then
+        export PATH="${__PATH}"
     else
         unset PATH
     fi
-    if [[ -n $__MANPATH ]]; then
-        export MANPATH="$__MANPATH"
+    if [[ -n ${__MANPATH} ]]; then
+        export MANPATH="${__MANPATH}"
     else
         unset MANPATH
     fi
-    if [[ -n $__INFOPATH ]]; then
-        export INFOPATH="$__INFOPATH"
+    if [[ -n ${__INFOPATH} ]]; then
+        export INFOPATH="${__INFOPATH}"
     else
         unset INFOPATH
     fi
-    if [[ -n $__PYTHONPATH ]]; then
-        export PYTHONPATH="$__PYTHONPATH"
+    if [[ -n ${__PYTHONPATH} ]]; then
+        export PYTHONPATH="${__PYTHONPATH}"
     else
         unset PYTHONPATH
     fi
-    if [[ -n $__LD_LIBRARY_PATH ]]; then
-        export LD_LIBRARY_PATH="$__LD_LIBRARY_PATH"
+    if [[ -n ${__LD_LIBRARY_PATH} ]]; then
+        export LD_LIBRARY_PATH="${__LD_LIBRARY_PATH}"
     else
         unset LD_LIBRARY_PATH
     fi
@@ -439,18 +439,18 @@ mu() {
 }
 
 mkdir_xdg() {
-    [[ -n $XDG_DATA_HOME ]] && mkdir -p "$XDG_DATA_HOME"
-    [[ -n $XDG_STATE_HOME ]] && mkdir -p "$XDG_STATE_HOME"
-    [[ -n $XDG_CONFIG_HOME ]] && mkdir -p "$XDG_CONFIG_HOME"
-    [[ -n $XDG_CACHE_HOME ]] && mkdir -p "$XDG_CACHE_HOME"
+    [[ -n ${XDG_DATA_HOME} ]] && mkdir -p "${XDG_DATA_HOME}"
+    [[ -n ${XDG_STATE_HOME} ]] && mkdir -p "${XDG_STATE_HOME}"
+    [[ -n ${XDG_CONFIG_HOME} ]] && mkdir -p "${XDG_CONFIG_HOME}"
+    [[ -n ${XDG_CACHE_HOME} ]] && mkdir -p "${XDG_CACHE_HOME}"
     # see https://docs.astropy.org/en/stable/config/index.html#getting-started
-    [[ ! -d "$XDG_CONFIG_HOME/astropy" ]] && mkdir -p "$XDG_CONFIG_HOME/astropy"
-    [[ ! -d "$XDG_CACHE_HOME/astropy" ]] && mkdir -p "$XDG_CACHE_HOME/astropy"
+    [[ ! -d "${XDG_CONFIG_HOME}/astropy" ]] && mkdir -p "${XDG_CONFIG_HOME}/astropy"
+    [[ ! -d "${XDG_CACHE_HOME}/astropy" ]] && mkdir -p "${XDG_CACHE_HOME}/astropy"
 }
 
 # main #########################################################################
 
-if [[ -n $__CLEAN ]]; then
+if [[ -n ${__CLEAN} ]]; then
     ml_clean
 else
     ml
@@ -462,37 +462,37 @@ umask 022
 
 # for tmux to work properly on macOS
 # see https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
-if [[ $__OSTYPE == darwin && ! -d "$HOME/.local/share/terminfo" ]]; then
+if [[ ${__OSTYPE} == darwin && ! -d "${HOME}/.local/share/terminfo" ]]; then
     echo "Setting up terminfo for tmux on macOS" >&2
-    rm -f "$HOME/tmux-256color.src"
-    /opt/local/bin/infocmp -x tmux-256color > "$HOME/tmux-256color.src"
-    /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "$HOME/tmux-256color.src"
-    rm -f "$HOME/tmux-256color.src"
+    rm -f "${HOME}/tmux-256color.src"
+    /opt/local/bin/infocmp -x tmux-256color > "${HOME}/tmux-256color.src"
+    /usr/bin/tic -x -o "${HOME}/.local/share/terminfo" "${HOME}/tmux-256color.src"
+    rm -f "${HOME}/tmux-256color.src"
 fi
-[[ -d "$HOME/.local/share/terminfo" ]] && TERMINFO_DIRS_append "$HOME/.local/share/terminfo"
+[[ -d "${HOME}/.local/share/terminfo" ]] && TERMINFO_DIRS_append "${HOME}/.local/share/terminfo"
 
 # git external diff
-# $PATH is not fully set in zshenv so we have to put it here
+# ${PATH} is not fully set in zshenv so we have to put it here
 command -v difft > /dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
 
 # fzf
 FZF_PATH="$(command -v fzf)"
 if [[ $? == 0 ]]; then
-    FZF_PATH="$(realpath "$FZF_PATH")"
+    FZF_PATH="$(realpath "${FZF_PATH}")"
     FZF_SHARE="${FZF_PATH%/*}/../share/fzf"
     # sometimes it is put inside a "shell" subdirectory
-    [[ -d $FZF_SHARE/shell ]] && FZF_SHARE="$FZF_SHARE/shell"
+    [[ -d ${FZF_SHARE}/shell ]] && FZF_SHARE="${FZF_SHARE}/shell"
     # check shell is bash or zsh
-    if [[ -n $BASH_VERSION ]]; then
+    if [[ -n ${BASH_VERSION} ]]; then
         # shellcheck disable=SC1091
-        [[ -f "$FZF_SHARE"/completion.bash ]] && source "$FZF_SHARE"/completion.bash
+        [[ -f "${FZF_SHARE}"/completion.bash ]] && source "${FZF_SHARE}"/completion.bash
         # shellcheck disable=SC1091
-        [[ -f "$FZF_SHARE"/key-bindings.bash ]] && source "$FZF_SHARE"/key-bindings.bash
-    elif [[ -n $ZSH_VERSION ]]; then
+        [[ -f "${FZF_SHARE}"/key-bindings.bash ]] && source "${FZF_SHARE}"/key-bindings.bash
+    elif [[ -n ${ZSH_VERSION} ]]; then
         # shellcheck disable=SC1091
-        [[ -f "$FZF_SHARE"/completion.zsh ]] && source "$FZF_SHARE"/completion.zsh
+        [[ -f "${FZF_SHARE}"/completion.zsh ]] && source "${FZF_SHARE}"/completion.zsh
         # shellcheck disable=SC1091
-        [[ -f "$FZF_SHARE"/key-bindings.zsh ]] && source "$FZF_SHARE"/key-bindings.zsh
+        [[ -f "${FZF_SHARE}"/key-bindings.zsh ]] && source "${FZF_SHARE}"/key-bindings.zsh
     fi
     # OpenSUSE
     # shellcheck disable=SC1091
@@ -501,7 +501,7 @@ if [[ $? == 0 ]]; then
 fi
 
 # starship
-if [[ -n $BASH_VERSION ]]; then
+if [[ -n ${BASH_VERSION} ]]; then
     # shellcheck disable=SC2312
     command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
     # shellcheck disable=SC2312
@@ -511,7 +511,7 @@ fi
 # zim ##########################################################################
 
 # if zsh
-if [[ -n $ZSH_VERSION ]]; then
+if [[ -n ${ZSH_VERSION} ]]; then
 
     zstyle ':zim:zmodule' use 'degit'
 

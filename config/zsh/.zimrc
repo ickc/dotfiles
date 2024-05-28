@@ -3,9 +3,9 @@
 : # for shellcheck scope
 
 # shellcheck disable=SC2016
-zmodule romkatv/powerlevel10k --if '[[ $__PROMPT_THEME == powerlevel10k ]]'
+zmodule romkatv/powerlevel10k --if '[[ ${__PROMPT_THEME} == powerlevel10k ]]'
 # shellcheck disable=SC2016
-zmodule joke/zim-starship --if '[[ $__PROMPT_THEME == starship ]]'
+zmodule joke/zim-starship --if '[[ ${__PROMPT_THEME} == starship ]]'
 
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
