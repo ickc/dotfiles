@@ -176,6 +176,8 @@ ml_brew() {
     path_prepend "$HOMEBREW_PREFIX/sbin"
     path_prepend_all "$HOMEBREW_PREFIX"
     path_prepend_all "$HOMEBREW_PREFIX/opt/ruby"
+    # shellcheck disable=SC2206
+    fpath=("$HOMEBREW_PREFIX/share/zsh/site-functions" $fpath)
 }
 
 # macports
