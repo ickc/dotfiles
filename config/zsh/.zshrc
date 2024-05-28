@@ -399,7 +399,7 @@ ml() {
     [[ -d "$HOME/.basher" ]] && ml_basher
     [[ -d "$HOME/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
-    type ml_host &> /dev/null && ml_host
+    type ml_host > /dev/null 2>&1 && ml_host
 
     ml_clean
 }
@@ -527,8 +527,8 @@ if [[ -n $ZSH_VERSION ]]; then
     source "${ZIM_HOME}/init.zsh"
 fi
 
-if command -v fastfetch &> /dev/null; then
+if command -v fastfetch > /dev/null 2>&1; then
     fastfetch
-elif command -v neofetch &> /dev/null; then
+elif command -v neofetch > /dev/null 2>&1; then
     neofetch
 fi
