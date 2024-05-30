@@ -269,10 +269,6 @@ ml_jetbrains() {
 # hosts ========================================================================
 
 if [[ -n ${NERSC_HOST} ]]; then
-    ml_host() {
-        path_prepend_all "${PBCOMMON}/local"
-    }
-
     ml_toast() {
         module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
         # module use /global/common/software/cmb/cori/default/modulefiles

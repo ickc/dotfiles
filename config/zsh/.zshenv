@@ -135,8 +135,6 @@ case "${__HOST}" in
         # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
         # CFS=/global/cfs/cdirs
         CMN=/global/common/software
-        # common polar
-        export PBCOMMON="${CMN}/polar"
 
         # NERSC's home is a symbolic link, and vscode's git doesn't like that
         # see https://github.com/microsoft/vscode/issues/5970
