@@ -134,9 +134,9 @@ case "${__HOST}" in
         __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
         # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
         # CFS=/global/cfs/cdirs
-        COMMON_ROOT=/global/common/software
+        CMN=/global/common/software
         # common polar
-        export PBCOMMON="${COMMON_ROOT}/polar"
+        export PBCOMMON="${CMN}/polar"
 
         # NERSC's home is a symbolic link, and vscode's git doesn't like that
         # see https://github.com/microsoft/vscode/issues/5970
@@ -248,7 +248,7 @@ fi
 # specific XDG related setup
 if [[ -n ${NERSC_HOST} ]]; then
     # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
-    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${COMMON_ROOT}/polar/.conda/envs"
+    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/.conda/envs"
     # doesn't work, see https://github.com/conda/conda/issues/10719
     # export CONDA_PKGS_DIRS="$(find /usr/common/software/python -maxdepth 2 -mindepth 2 -type d -name pkgs | sort -r | tr '\n' ':')${XDG_CACHE_HOME}/conda/pkgs"
 elif [[ -n ${BLACKETT_HOST} ]]; then
