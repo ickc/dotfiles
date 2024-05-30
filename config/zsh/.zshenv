@@ -23,6 +23,27 @@ case "${OSTYPE}" in
         ;;
 esac
 
+# c.f. https://stackoverflow.com/a/23378780/5769446
+case "${__OSTYPE}" in
+    darwin)
+        # shellcheck disable=SC2312
+        __NCPU="$(sysctl -n hw.physicalcpu_max)"
+        ;;
+    linux)
+        # shellcheck disable=SC2312
+        __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+        ;;
+    freebsd)
+        # shellcheck disable=SC2312
+        __NCPU="$(sysctl -n hw.ncpu)"
+        ;;
+    *)
+        # shellcheck disable=SC2312
+        __NCPU="$(getconf _NPROCESSORS_ONLN 2> /dev/null || getconf NPROCESSORS_ONLN 2> /dev/null || echo 1)"
+        ;;
+esac
+export __OSTYPE __NCPU
+
 # __HOST detection #####################################################
 
 if [[ -n ${NERSC_HOST} ]]; then
@@ -91,6 +112,7 @@ else
         *) __HOST="${HOSTNAME}" ;;
     esac
 fi
+export __HOST
 
 # XDG setup ############################################################
 
@@ -99,11 +121,13 @@ fi
 # https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
 # https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
 
-export XDG_CONFIG_HOME="${HOME}/.config" \
+export \
+    XDG_CONFIG_HOME="${HOME}/.config" \
     XDG_DATA_HOME="${HOME}/.local/share" \
     XDG_STATE_HOME="${HOME}/.local/state"
 
-export CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
+export \
+    CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
     IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
     JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
     MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
@@ -129,7 +153,7 @@ case "${__HOST}" in
         __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
         # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
         # CFS=/global/cfs/cdirs
-        CMN=/global/common/software
+        export CMN=/global/common/software
 
         # NERSC's home is a symbolic link, and vscode's git doesn't like that
         # see https://github.com/microsoft/vscode/issues/5970
@@ -137,7 +161,7 @@ case "${__HOST}" in
         # fixed in https://github.com/microsoft/vscode/issues/5970#issuecomment-1631398758
         # HOME="$(realpath ~)"
         # export HOME
-        CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
+        export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
         ;;
     centaurus | fornax)
         # TODO: nowhere else I can call it SCRATCH
@@ -151,9 +175,8 @@ case "${__HOST}" in
     simons1)
         SCRATCH="/mnt/so1/users/${USER}"
         __CONDA_PREFIX=${SCRATCH}/.mambaforge
-        CFS=/mnt/physicsso
-        WWW_DIR="/mnt/so1/public_html/${USER}"
-        export WWW_DIR
+        export CFS=/mnt/physicsso
+        export WWW_DIR="/mnt/so1/public_html/${USER}"
         ;;
     sirius7)
         SCRATCH="/nvme/scratch/${USER}"
@@ -166,8 +189,7 @@ case "${__HOST}" in
         ;;
     bolo)
         SCRATCH="/tank/scratch/${USER}"
-        HOME="/home/${USER}"
-        export HOME
+        export HOME="/home/${USER}"
         ;;
     lpc-mini)
         SCRATCH=/scratch
@@ -184,10 +206,10 @@ case "${__HOST}" in
             command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
             unset conda_prefix
         elif [[ -n ${BLACKETT_HOST} ]]; then
-            CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
+            export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
             if [[ ${BLACKETT_HOST} == vm77 ]]; then
-                CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
-                HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
+                export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
+                export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
             fi
             export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
                 XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
@@ -203,7 +225,7 @@ case "${__HOST}" in
             # simons1 is not PRINCETON_HOST!
             SCRATCH="/n/lowrie-scratch/${USER}"
             __CONDA_PREFIX=${SCRATCH}/.mambaforge
-            CFS=/n/lowrie-scratch
+            export CFS=/n/lowrie-scratch
         elif [[ -n ${SO_HOST} ]]; then
             SCRATCH="/so/scratch/${USER}"
             __CONDA_PREFIX="${HOME}/.mambaforge"
@@ -216,6 +238,8 @@ case "${__HOST}" in
         fi
         ;;
 esac
+[[ -n ${SCRATCH} ]] && export SCRATCH
+[[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
 
 # as SCRATCH is subjected to be purged, only put cache here
 if [[ (-n ${NERSC_HOST} || -n ${JBCA_HOST}) && -n ${SCRATCH} ]]; then
@@ -253,47 +277,21 @@ elif [[ -z ${HOMEBREW_PREFIX} ]]; then
         unset homebrew_prefix
     fi
 fi
+export HOMEBREW_PREFIX
 
 # export all variables #################################################
 
-[[ -n ${SCRATCH} ]] && export SCRATCH
-export __OSTYPE __HOST CONDA_ENVS_PATH
 if [[ -n ${HOMEBREW_PREFIX} ]]; then
-    export HOMEBREW_PREFIX \
-        HOMEBREW_NO_ANALYTICS=1 \
+    export HOMEBREW_NO_ANALYTICS=1 \
         HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
         HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
-    [[ -n ${HOMEBREW_CURL_PATH} ]] && export HOMEBREW_CURL_PATH
 fi
-[[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
-[[ -n ${CFS} ]] && export CFS
 if [[ -n ${BLACKETT_HOST} && -d /opt/rh/rust-toolset-7/root/usr ]]; then
     export CARGO_PREFIX=/opt/rh/rust-toolset-7/root/usr
 elif [[ -d "${HOME}/.cargo" ]]; then
     export CARGO_PREFIX="${HOME}/.cargo"
 fi
-
-# c.f. https://stackoverflow.com/a/23378780/5769446
-case "${__OSTYPE}" in
-    darwin)
-        # shellcheck disable=SC2312
-        __NCPU="$(sysctl -n hw.physicalcpu_max)"
-        ;;
-    linux)
-        # shellcheck disable=SC2312
-        __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
-        ;;
-    freebsd)
-        # shellcheck disable=SC2312
-        __NCPU="$(sysctl -n hw.ncpu)"
-        ;;
-    *)
-        # shellcheck disable=SC2312
-        __NCPU="$(getconf _NPROCESSORS_ONLN 2> /dev/null || getconf NPROCESSORS_ONLN 2> /dev/null || echo 1)"
-        ;;
-esac
 export \
-    __NCPU \
     EDITOR=nano \
     GOBIN="${HOME}/go/bin" \
     GOPATH="${HOME}/go" \
