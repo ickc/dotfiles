@@ -141,8 +141,9 @@ case "${__HOST}" in
         # NERSC's home is a symbolic link, and vscode's git doesn't like that
         # see https://github.com/microsoft/vscode/issues/5970
         # so we resolve to the realpath here
-        HOME="$(realpath ~)"
-        export HOME
+        # fixed in https://github.com/microsoft/vscode/issues/5970#issuecomment-1631398758
+        # HOME="$(realpath ~)"
+        # export HOME
         ;;
     centaurus | fornax)
         # TODO: nowhere else I can call it SCRATCH
