@@ -279,7 +279,7 @@ elif [[ -z ${HOMEBREW_PREFIX} ]]; then
 fi
 export HOMEBREW_PREFIX
 
-# export all variables #################################################
+# export variables #####################################################
 
 if [[ -n ${HOMEBREW_PREFIX} ]]; then
     export HOMEBREW_NO_ANALYTICS=1 \
