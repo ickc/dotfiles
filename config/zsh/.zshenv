@@ -119,24 +119,20 @@ fi
 
 case "${__HOST}" in
     perlmutter | datatran)
-        # shellcheck disable=SC2249
-        case "${__HOST}" in
-            perlmutter)
-                SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
-
-                # TODO: update by running
-                # module load python...
-                # . activate && echo ${CONDA_PREFIX}
-                # __CONDA_PREFIX=/global/common/software/nersc/cori-2022q1/sw/python/3.9-anaconda-2021.11
-                ;;
-                # datatran)
-                # TODO: update by running
-                # module load python...
-                # . activate && echo ${CONDA_PREFIX}
-                # __CONDA_PREFIX=/global/common/datatran2/usg/python/Miniconda3-latest-Linux-x86_64
-                # ;;
-        esac
-        __CONDA_PREFIX="/global/u2/${USER:0:1}/${USER}/.mambaforge"
+        # TODO: update by running
+        # module load python; . activate && echo ${CONDA_PREFIX}
+        # or scan everything:
+        #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [ -x "$dir/mamba" ] && [ -x "$dir/conda" ] && [ -x "$dir/activate" ] && echo "$dir"; done' sh {} + 2>/dev/null
+        # e.g.
+        # /global/common/software/lsst/gitlab/td_env-prod/stable/conda
+        # /global/common/software/lsst/gitlab/td_env-dev/dev/conda
+        # /global/common/software/lsst/gitlab/desc-stack-weekly/weekly-latest/conda
+        # /global/common/software/lsst/gitlab/desc-python-prod/prod
+        # /global/common/software/lsst/gitlab/desc-forecasts-int/prod/py
+        # /global/common/software/lsst/gitlab/desc-python-dev/dev
+        # /global/common/software/sobs/perlmutter/conda_base
+        __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
+        # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
         PROJ_ROOT=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
         # common polar
