@@ -52,6 +52,7 @@ export __NCPU
 
 # __HOST detection #####################################################
 
+# define *_HOST for different computing sites
 # also set env var here if possible
 # priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
 
@@ -200,7 +201,7 @@ fi
 # set XDG_CACHE_HOME ###################################################
 
 # as SCRATCH is subjected to be purged, only put cache here
-if [[ -n ${NERSC_HOST} && -n ${SCRATCH} ]]; then
+if [[ (-n ${NERSC_HOST} || -n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
