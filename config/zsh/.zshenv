@@ -50,12 +50,6 @@ else
             export BLACKETT_HOST BLACKETT_CVMFS_ENV=1
             __HOST="${BLACKETT_HOST}"
             ;;
-        dtn0?.nersc.gov)
-            # permutter has NERSC_HOST defined at this stage, but not dtn
-            NERSC_HOST=datatran
-            export NERSC_HOST
-            __HOST=datatran
-            ;;
         *.simonsobs.org)
             SO_HOST="${HOSTNAME%%.*}"
             export SO_HOST
