@@ -260,26 +260,26 @@ export \
 # this is needed to make sure mosh can see mosh-server not from PATH
 # this is to avoid can't find tmux after `mu`
 if [[ ${__OSTYPE} == darwin ]]; then
-    __PREFIX=/opt/local/bin
+    __PREFIX=/opt/local
 elif [[ -n ${NERSC_HOST} || -n ${PRINCETON_HOST} ]]; then
-    __PREFIX="${HOME}/.local/bin"
+    __PREFIX="${HOME}/.local"
 elif [[ -n ${BLACKETT_HOST} ]]; then
     if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-        __PREFIX="${CVMFS_ROOT}/usr/bin"
+        __PREFIX="${CVMFS_ROOT}/usr"
     else
-        __PREFIX=/opt/local/bin
+        __PREFIX=/opt/local
     fi
 else
     # shellcheck disable=SC2249
     case "${__HOST}" in
         gordita)
-            __PREFIX="${HOME}/mambaforge/envs/system39-conda-forge/bin"
+            __PREFIX="${HOME}/mambaforge/envs/system39-conda-forge"
             ;;
     esac
 fi
 if [[ -n ${__PREFIX} ]]; then
     for i in mosh-server tmux exa eza lsd; do
-        j="${__PREFIX}/${i}"
+        j="${__PREFIX}/bin/${i}"
         # shellcheck disable=SC2139
         [[ -f ${j} ]] && alias "${i}"="${j}"
     done
