@@ -53,6 +53,7 @@ export __NCPU
 # __HOST detection #####################################################
 
 # also set env var here if possible
+# priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
 
 if [[ -n ${NERSC_HOST} ]]; then
     __HOST="${NERSC_HOST}"
@@ -184,14 +185,14 @@ elif [[ -n ${BLACKETT_HOST} ]]; then
     if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
         SCRATCH="${_CONDOR_SCRATCH_DIR}"
     fi
+elif [[ -n ${SO_HOST} ]]; then
+    SCRATCH="/so/scratch/${USER}"
+    __CONDA_PREFIX="${HOME}/.mambaforge"
 elif [[ -n ${PRINCETON_HOST} ]]; then
     # simons1 is not PRINCETON_HOST!
     SCRATCH="/n/lowrie-scratch/${USER}"
     __CONDA_PREFIX=${SCRATCH}/.mambaforge
     export CFS=/n/lowrie-scratch
-elif [[ -n ${SO_HOST} ]]; then
-    SCRATCH="/so/scratch/${USER}"
-    __CONDA_PREFIX="${HOME}/.mambaforge"
 fi
 [[ -n ${SCRATCH} ]] && export SCRATCH
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
