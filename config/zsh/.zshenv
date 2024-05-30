@@ -116,7 +116,7 @@ case "${__HOST}" in
         # TODO: update by running
         # module load python; . activate && echo ${CONDA_PREFIX}
         # or scan everything:
-        #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [ -x "$dir/mamba" ] && [ -x "$dir/conda" ] && [ -x "$dir/activate" ] && echo "$dir"; done' sh {} + 2>/dev/null
+        #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [ -x "${dir}/mamba" ] && [ -x "${dir}/conda" ] && [ -x "${dir}/activate" ] && echo "${dir}"; done' sh {} + 2>/dev/null
         # e.g.
         # /global/common/software/lsst/gitlab/td_env-prod/stable/conda
         # /global/common/software/lsst/gitlab/td_env-dev/dev/conda
@@ -355,7 +355,7 @@ if [[ -n ${BASHER_ROOT} ]]; then
     export BASHER_PACKAGES_PATH="${BASHER_PREFIX}/packages"
     if [[ -n ${ZSH_VERSION} ]]; then
         export BASHER_SHELL=zsh
-    elif [[ -n "${BASH_VERSION}" ]]; then
+    elif [[ -n ${BASH_VERSION} ]]; then
         export BASHER_SHELL=bash
     fi
 fi
