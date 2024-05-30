@@ -99,11 +99,6 @@ else
             export SO_HOST
             __HOST="${SO_HOST}"
             ;;
-        *.jb.man.ac.uk)
-            JBCA_HOST="${HOSTNAME%%.*}"
-            export JBCA_HOST
-            __HOST="${JBCA_HOST}"
-            ;;
         *.princeton.edu)
             # seems like nobel is load balanced and it can lands on different __HOST here...
             PRINCETON_HOST="${HOSTNAME%%.*}"
@@ -119,13 +114,6 @@ else
             export CFS=/mnt/physicsso
             export WWW_DIR="/mnt/so1/public_html/${USER}"
             ;;
-        # TODO: check `hostname --fqdn` on these hosts
-        centaurus | fornax)
-            JBCA_HOST="${HOSTNAME}"
-            export JBCA_HOST
-            __HOST="${JBCA_HOST}"
-            __CONDA_PREFIX="${HOME}/.mambaforge"
-            ;;
         gordita.physics.berkeley.edu)
             BOLO_HOST=gordita
             export BOLO_HOST
@@ -139,12 +127,6 @@ else
             __HOST="${BOLO_HOST}"
             SCRATCH="/tank/scratch/${USER}"
             export HOME="/home/${USER}"
-            ;;
-        lpc-mini) __HOST=lpc-mini ;;
-        sirius7)
-            __HOST="${HOSTNAME}"
-            SCRATCH="/nvme/scratch/${USER}"
-            __CONDA_PREFIX="${SCRATCH}/.mambaforge"
             ;;
         *)
             __HOST="${HOSTNAME}"
@@ -210,12 +192,6 @@ elif [[ -n ${PRINCETON_HOST} ]]; then
 elif [[ -n ${SO_HOST} ]]; then
     SCRATCH="/so/scratch/${USER}"
     __CONDA_PREFIX="${HOME}/.mambaforge"
-elif [[ -z ${JBCA_HOST} ]]; then
-    SCRATCH="${SCRATCH:-/scratch}"
-
-    conda_prefix="${HOME}/.mambaforge"
-    command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
-    unset conda_prefix
 fi
 [[ -n ${SCRATCH} ]] && export SCRATCH
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
@@ -223,7 +199,7 @@ fi
 # set XDG_CACHE_HOME ###################################################
 
 # as SCRATCH is subjected to be purged, only put cache here
-if [[ (-n ${NERSC_HOST} || -n ${JBCA_HOST}) && -n ${SCRATCH} ]]; then
+if [[ -n ${NERSC_HOST} && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
@@ -285,7 +261,7 @@ export \
 # this is to avoid can't find tmux after `mu`
 if [[ ${__OSTYPE} == darwin ]]; then
     __PREFIX=/opt/local/bin
-elif [[ -n ${NERSC_HOST} || -n ${PRINCETON_HOST} || (-n ${JBCA_HOST} && -n ${SCRATCH}) ]]; then
+elif [[ -n ${NERSC_HOST} || -n ${PRINCETON_HOST} ]]; then
     __PREFIX="${HOME}/.local/bin"
 elif [[ -n ${BLACKETT_HOST} ]]; then
     if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then

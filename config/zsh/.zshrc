@@ -299,10 +299,6 @@ elif [[ -n ${BLACKETT_HOST} ]]; then
         # shellcheck disable=SC1091
         . "${CVMFS_ROOT}/opt/intel/oneapi/setvars.sh"
     }
-elif [[ -n ${JBCA_HOST} && -n ${SCRATCH} ]]; then
-    ml_host() {
-        path_prepend_all "${SCRATCH}/.local"
-    }
 else
     case "${__HOST}" in
         simons1)
