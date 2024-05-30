@@ -92,6 +92,24 @@ else
     esac
 fi
 
+# XDG setup ############################################################
+
+# see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
+# https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
+# https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
+
+export XDG_CONFIG_HOME="${HOME}/.config" \
+    XDG_DATA_HOME="${HOME}/.local/share" \
+    XDG_STATE_HOME="${HOME}/.local/state"
+
+export CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
+    IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
+    JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
+    MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
+    PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
+    WGETRC="${XDG_CONFIG_HOME}/wgetrc"
+
 # set __HOST-specific env var ##########################################
 
 case "${__HOST}" in
@@ -119,6 +137,7 @@ case "${__HOST}" in
         # fixed in https://github.com/microsoft/vscode/issues/5970#issuecomment-1631398758
         # HOME="$(realpath ~)"
         # export HOME
+        CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
         ;;
     centaurus | fornax)
         # TODO: nowhere else I can call it SCRATCH
@@ -165,6 +184,11 @@ case "${__HOST}" in
             command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
             unset conda_prefix
         elif [[ -n ${BLACKETT_HOST} ]]; then
+            CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
+            if [[ ${BLACKETT_HOST} == vm77 ]]; then
+                CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
+                HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
+            fi
             export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
                 XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
             if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
@@ -193,42 +217,15 @@ case "${__HOST}" in
         ;;
 esac
 
-# XDG setup ############################################################
-
-# see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
-# https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
-# https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
-
-# general XDG related setup: add all systems that we want to setup XDG away from the default
 # as SCRATCH is subjected to be purged, only put cache here
 if [[ (-n ${NERSC_HOST} || -n ${JBCA_HOST}) && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
 fi
-export XDG_CONFIG_HOME="${HOME}/.config" \
-    XDG_DATA_HOME="${HOME}/.local/share" \
-    XDG_STATE_HOME="${HOME}/.local/state"
-
-export CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
-    CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
+export CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
-    IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
-    JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
-    MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
-    PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
-    WGETRC="${XDG_CONFIG_HOME}/wgetrc" \
     NUMBA_CACHE_DIR="${XDG_CACHE_HOME}/numba"
-# specific XDG related setup
-if [[ -n ${NERSC_HOST} ]]; then
-    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
-elif [[ -n ${BLACKETT_HOST} ]]; then
-    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
-    if [[ ${BLACKETT_HOST} == vm77 ]]; then
-        export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}" HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
-    fi
-fi
 
 # zsh setup ############################################################
 
@@ -260,12 +257,13 @@ fi
 # export all variables #################################################
 
 [[ -n ${SCRATCH} ]] && export SCRATCH
-export __OSTYPE __HOST
+export __OSTYPE __HOST CONDA_ENVS_PATH
 if [[ -n ${HOMEBREW_PREFIX} ]]; then
     export HOMEBREW_PREFIX \
         HOMEBREW_NO_ANALYTICS=1 \
         HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
         HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+    [[ -n ${HOMEBREW_CURL_PATH} ]] && export HOMEBREW_CURL_PATH
 fi
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
 [[ -n ${CFS} ]] && export CFS
