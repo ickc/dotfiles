@@ -52,8 +52,25 @@ export __NCPU
 
 # __HOST detection #####################################################
 
+# also set env var here if possible
+
 if [[ -n ${NERSC_HOST} ]]; then
     __HOST="${NERSC_HOST}"
+    # TODO: update by running
+    # module load python; . activate && echo ${CONDA_PREFIX}
+    # or scan everything:
+    #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [ -x "${dir}/mamba" ] && [ -x "${dir}/conda" ] && [ -x "${dir}/activate" ] && echo "${dir}"; done' sh {} + 2>/dev/null
+    # e.g.
+    # /global/common/software/lsst/gitlab/td_env-prod/stable/conda
+    # /global/common/software/lsst/gitlab/td_env-dev/dev/conda
+    # /global/common/software/lsst/gitlab/desc-stack-weekly/weekly-latest/conda
+    # /global/common/software/lsst/gitlab/desc-python-prod/prod
+    # /global/common/software/lsst/gitlab/desc-forecasts-int/prod/py
+    # /global/common/software/lsst/gitlab/desc-python-dev/dev
+    # /global/common/software/sobs/perlmutter/conda_base
+    __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
+    # CFS=/global/cfs/cdirs
+    export CMN=/global/common/software
 else
     # set HOSTNAME by hostname if undefined
     if [[ -z ${HOSTNAME} ]]; then
@@ -97,30 +114,56 @@ else
             PRINCETON_HOST="${HOSTNAME}"
             export PRINCETON_HOST
             __HOST="${PRINCETON_HOST}"
+            SCRATCH="/mnt/so1/users/${USER}"
+            __CONDA_PREFIX=${SCRATCH}/.mambaforge
+            export CFS=/mnt/physicsso
+            export WWW_DIR="/mnt/so1/public_html/${USER}"
             ;;
         # TODO: check `hostname --fqdn` on these hosts
         centaurus | fornax)
             JBCA_HOST="${HOSTNAME}"
             export JBCA_HOST
             __HOST="${JBCA_HOST}"
+            __CONDA_PREFIX="${HOME}/.mambaforge"
             ;;
         gordita.physics.berkeley.edu)
             BOLO_HOST=gordita
             export BOLO_HOST
             __HOST="${BOLO_HOST}"
+            SCRATCH="/scratch2/${USER}"
+            __CONDA_PREFIX="${HOME}/mambaforge"
             ;;
         bolo.berkeley.edu)
             BOLO_HOST=bolo
             export BOLO_HOST
             __HOST="${BOLO_HOST}"
+            SCRATCH="/tank/scratch/${USER}"
+            export HOME="/home/${USER}"
             ;;
         lpc-mini) __HOST=lpc-mini ;;
-        *) __HOST="${HOSTNAME}" ;;
+        sirius7)
+            __HOST="${HOSTNAME}"
+            SCRATCH="/nvme/scratch/${USER}"
+            __CONDA_PREFIX="${SCRATCH}/.mambaforge"
+            ;;
+        *)
+            __HOST="${HOSTNAME}"
+            if [[ ${__OSTYPE} == darwin ]]; then
+                SCRATCH="${SCRATCH:-${HOME}/scratch}"
+
+                conda_prefix="${HOME}/.mambaforge"
+                command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
+                unset conda_prefix
+            fi
+            ;;
     esac
 fi
 export __HOST
 
 # XDG setup ############################################################
+
+# __HOST-specific env var may depends on these,
+# but XDG_CACHE_HOME is set later as that depends on __HOST
 
 # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
@@ -140,109 +183,44 @@ export \
     PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
     WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
-# set __HOST-specific env var ##########################################
+# set remaining __HOST-specific env var ################################
 
-case "${__HOST}" in
-    perlmutter | datatran)
-        # TODO: update by running
-        # module load python; . activate && echo ${CONDA_PREFIX}
-        # or scan everything:
-        #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [ -x "${dir}/mamba" ] && [ -x "${dir}/conda" ] && [ -x "${dir}/activate" ] && echo "${dir}"; done' sh {} + 2>/dev/null
-        # e.g.
-        # /global/common/software/lsst/gitlab/td_env-prod/stable/conda
-        # /global/common/software/lsst/gitlab/td_env-dev/dev/conda
-        # /global/common/software/lsst/gitlab/desc-stack-weekly/weekly-latest/conda
-        # /global/common/software/lsst/gitlab/desc-python-prod/prod
-        # /global/common/software/lsst/gitlab/desc-forecasts-int/prod/py
-        # /global/common/software/lsst/gitlab/desc-python-dev/dev
-        # /global/common/software/sobs/perlmutter/conda_base
-        __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
-        # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
-        # CFS=/global/cfs/cdirs
-        export CMN=/global/common/software
+if [[ -n ${NERSC_HOST} ]]; then
+    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
+elif [[ -n ${BLACKETT_HOST} ]]; then
+    export \
+        CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
+        XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
+    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
+        __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
+    elif [[ ${BLACKETT_HOST} == vm77 ]]; then
+        __CONDA_PREFIX=/opt/miniforge3
+        export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
+        export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
+    fi
+    if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
+        SCRATCH="${_CONDOR_SCRATCH_DIR}"
+    fi
+elif [[ -n ${PRINCETON_HOST} ]]; then
+    # simons1 is not PRINCETON_HOST!
+    SCRATCH="/n/lowrie-scratch/${USER}"
+    __CONDA_PREFIX=${SCRATCH}/.mambaforge
+    export CFS=/n/lowrie-scratch
+elif [[ -n ${SO_HOST} ]]; then
+    SCRATCH="/so/scratch/${USER}"
+    __CONDA_PREFIX="${HOME}/.mambaforge"
+elif [[ -z ${JBCA_HOST} ]]; then
+    SCRATCH="${SCRATCH:-/scratch}"
 
-        # NERSC's home is a symbolic link, and vscode's git doesn't like that
-        # see https://github.com/microsoft/vscode/issues/5970
-        # so we resolve to the realpath here
-        # fixed in https://github.com/microsoft/vscode/issues/5970#issuecomment-1631398758
-        # HOME="$(realpath ~)"
-        # export HOME
-        export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
-        ;;
-    centaurus | fornax)
-        # TODO: nowhere else I can call it SCRATCH
-        __CONDA_PREFIX="${HOME}/.mambaforge"
-        ;;
-    soukdev1)
-        # TODO: move to HDD later
-        SCRATCH="/mnt/scratch/${USER}"
-        __CONDA_PREFIX=/opt/mambaforge
-        ;;
-    simons1)
-        SCRATCH="/mnt/so1/users/${USER}"
-        __CONDA_PREFIX=${SCRATCH}/.mambaforge
-        export CFS=/mnt/physicsso
-        export WWW_DIR="/mnt/so1/public_html/${USER}"
-        ;;
-    sirius7)
-        SCRATCH="/nvme/scratch/${USER}"
-        __CONDA_PREFIX="${SCRATCH}/.mambaforge"
-        ;;
-    gordita)
-        SCRATCH="/scratch2/${USER}"
-        __CONDA_PREFIX="${HOME}/mambaforge"
-        ;;
-    bolo)
-        SCRATCH="/tank/scratch/${USER}"
-        export HOME="/home/${USER}"
-        ;;
-    lpc-mini)
-        SCRATCH=/scratch
-        __CONDA_PREFIX=/opt/mambaforge
-        ;;
-    *)
-        # macOS catalina doesn't allow /scratch anymore
-        # on macOS, SCRATCH is ~/scratch, else /scratch
-        if [[ ${__OSTYPE} == darwin ]]; then
-            SCRATCH="${SCRATCH:-${HOME}/scratch}"
-
-            conda_prefix="${HOME}/.mambaforge"
-            command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
-            unset conda_prefix
-        elif [[ -n ${BLACKETT_HOST} ]]; then
-            export \
-                CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
-                XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
-            export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
-            if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-                __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
-            elif [[ ${BLACKETT_HOST} == vm77 ]]; then
-                __CONDA_PREFIX=/opt/miniforge3
-                export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
-                export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
-            fi
-            if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
-                SCRATCH="${_CONDOR_SCRATCH_DIR}"
-            fi
-        elif [[ -n ${PRINCETON_HOST} ]]; then
-            # simons1 is not PRINCETON_HOST!
-            SCRATCH="/n/lowrie-scratch/${USER}"
-            __CONDA_PREFIX=${SCRATCH}/.mambaforge
-            export CFS=/n/lowrie-scratch
-        elif [[ -n ${SO_HOST} ]]; then
-            SCRATCH="/so/scratch/${USER}"
-            __CONDA_PREFIX="${HOME}/.mambaforge"
-        elif [[ -z ${JBCA_HOST} ]]; then
-            SCRATCH="${SCRATCH:-/scratch}"
-
-            conda_prefix="${HOME}/.mambaforge"
-            command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
-            unset conda_prefix
-        fi
-        ;;
-esac
+    conda_prefix="${HOME}/.mambaforge"
+    command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
+    unset conda_prefix
+fi
 [[ -n ${SCRATCH} ]] && export SCRATCH
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
+
+# set XDG_CACHE_HOME ###################################################
 
 # as SCRATCH is subjected to be purged, only put cache here
 if [[ (-n ${NERSC_HOST} || -n ${JBCA_HOST}) && -n ${SCRATCH} ]]; then
