@@ -25,6 +25,9 @@ case "${OSTYPE}" in
         esac
         ;;
 esac
+export __OSTYPE
+
+# __NCPU detection #####################################################
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
 case "${__OSTYPE}" in
@@ -45,7 +48,7 @@ case "${__OSTYPE}" in
         __NCPU="$(getconf _NPROCESSORS_ONLN 2> /dev/null || getconf NPROCESSORS_ONLN 2> /dev/null || echo 1)"
         ;;
 esac
-export __OSTYPE __NCPU
+export __NCPU
 
 # __HOST detection #####################################################
 
