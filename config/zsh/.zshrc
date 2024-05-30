@@ -351,7 +351,7 @@ else
             ml_toast_gnu() {
                 TOAST_PREFIX="${SCRATCH}/local/toast-gnu"
                 conda activate "${TOAST_PREFIX}/conda"
-                [[ ${__OSTYPE} == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
+                [[ ${__OSTYPE} == darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
                 ld_library_path_prepend "${TOAST_PREFIX}/compile/lib"
                 pythonpath_prepend "${TOAST_PREFIX}/compile/lib/python3.8/site-packages"
                 path_prepend "${TOAST_PREFIX}/compile/bin:${TOAST_PREFIX}/conda/bin"

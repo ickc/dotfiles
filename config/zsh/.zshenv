@@ -10,12 +10,17 @@
 # set __OSTYPE as normalized OSTYPE
 # c.f. https://stackoverflow.com/a/18434831
 case "${OSTYPE}" in
-    solaris*) __OSTYPE=solaris ;;
-    darwin*) __OSTYPE=darwin ;;
     linux*) __OSTYPE=linux ;;
-    *bsd*) __OSTYPE=bsd ;;
-    msys*) __OSTYPE=msys ;;
-    *) __OSTYPE="${OSTYPE}" ;;
+    darwin*) __OSTYPE=darwin ;;
+    freebsd*) __OSTYPE=freebsd ;;
+    *)
+        case "$(uname -s)" in
+            Linux) __OSTYPE=linux ;;
+            Darwin) __OSTYPE=darwin ;;
+            FreeBSD) __OSTYPE=freebsd ;;
+            *) __OSTYPE=unknown ;;
+        esac
+        ;;
 esac
 
 # __HOST detection #####################################################
@@ -286,7 +291,7 @@ case "${__OSTYPE}" in
         # shellcheck disable=SC2312
         __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
         ;;
-    bsd)
+    freebsd)
         # shellcheck disable=SC2312
         __NCPU="$(sysctl -n hw.ncpu)"
         ;;
