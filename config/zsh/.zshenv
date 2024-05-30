@@ -133,7 +133,7 @@ case "${__HOST}" in
         # /global/common/software/sobs/perlmutter/conda_base
         __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
         # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
-        CFS=/global/cfs/cdirs
+        # CFS=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
         # common polar
         export PBCOMMON="${COMMON_ROOT}/polar"
