@@ -95,17 +95,20 @@ fi
 # HOMEBREW_PREFIX detection ############################################
 
 # set HOMEBREW_PREFIX if undefined and discovered
-if [[ -z ${HOMEBREW_PREFIX} ]]; then
+if [[ -n ${NERSC_HOST} ]]; then
+    HOMEBREW_PREFIX=/global/common/software/polar/opt/homebrew
+elif [[ -z ${HOMEBREW_PREFIX} ]]; then
     if [[ ${__OSTYPE} == darwin ]]; then
         for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
             command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
         done
+        unset homebrew_prefix
     elif [[ ${__OSTYPE} == linux ]]; then
         for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
             command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
         done
+        unset homebrew_prefix
     fi
-    unset homebrew_prefix
 fi
 
 # set __HOST-specific env var ##########################################
