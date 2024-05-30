@@ -133,7 +133,7 @@ case "${__HOST}" in
         # /global/common/software/sobs/perlmutter/conda_base
         __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
         # SCRATCH="/pscratch/sd/${USER:0:1}/${USER}"
-        PROJ_ROOT=/global/cfs/cdirs
+        CFS=/global/cfs/cdirs
         COMMON_ROOT=/global/common/software
         # common polar
         export PBCOMMON="${COMMON_ROOT}/polar"
@@ -157,7 +157,7 @@ case "${__HOST}" in
     simons1)
         SCRATCH="/mnt/so1/users/${USER}"
         __CONDA_PREFIX=${SCRATCH}/.mambaforge
-        PROJ_ROOT=/mnt/physicsso
+        CFS=/mnt/physicsso
         WWW_DIR="/mnt/so1/public_html/${USER}"
         export WWW_DIR
         ;;
@@ -204,7 +204,7 @@ case "${__HOST}" in
             # simons1 is not PRINCETON_HOST!
             SCRATCH="/n/lowrie-scratch/${USER}"
             __CONDA_PREFIX=${SCRATCH}/.mambaforge
-            PROJ_ROOT=/n/lowrie-scratch
+            CFS=/n/lowrie-scratch
         elif [[ -n ${SO_HOST} ]]; then
             SCRATCH="/so/scratch/${USER}"
             __CONDA_PREFIX="${HOME}/.mambaforge"
@@ -277,7 +277,7 @@ if [[ -n ${HOMEBREW_PREFIX} ]]; then
         HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
 fi
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
-[[ -n ${PROJ_ROOT} ]] && export PROJ_ROOT
+[[ -n ${CFS} ]] && export CFS
 if [[ -n ${BLACKETT_HOST} && -d /opt/rh/rust-toolset-7/root/usr ]]; then
     export CARGO_PREFIX=/opt/rh/rust-toolset-7/root/usr
 elif [[ -d "${HOME}/.cargo" ]]; then
