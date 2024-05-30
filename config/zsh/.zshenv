@@ -5,6 +5,9 @@
 # for non-compute system, SCRATCH can be undefined
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
+# shellcheck disable=SC1091
+[[ -e "${ZDOTDIR}/.env" ]] && . "${ZDOTDIR}/.env"
+
 # __OSTYPE detection ###################################################
 
 # set __OSTYPE as normalized OSTYPE
@@ -184,7 +187,6 @@ case "${__HOST}" in
         ;;
     gordita)
         SCRATCH="/scratch2/${USER}"
-
         __CONDA_PREFIX="${HOME}/mambaforge"
         ;;
     bolo)
@@ -193,7 +195,6 @@ case "${__HOST}" in
         ;;
     lpc-mini)
         SCRATCH=/scratch
-
         __CONDA_PREFIX=/opt/mambaforge
         ;;
     *)
@@ -206,17 +207,16 @@ case "${__HOST}" in
             command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
             unset conda_prefix
         elif [[ -n ${BLACKETT_HOST} ]]; then
-            export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
-            if [[ ${BLACKETT_HOST} == vm77 ]]; then
-                export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
-                export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
-            fi
-            export CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
+            export \
+                CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
                 XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+            export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
             if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
                 __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
-            else
+            elif [[ ${BLACKETT_HOST} == vm77 ]]; then
                 __CONDA_PREFIX=/opt/miniforge3
+                export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
+                export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
             fi
             if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
                 SCRATCH="${_CONDOR_SCRATCH_DIR}"
@@ -255,9 +255,6 @@ export CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
 
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 [[ -n ${ZSH_VERSION} ]] && export HISTFILE="${XDG_STATE_HOME}/zsh/history"
-
-# shellcheck disable=SC1091
-[[ -e "${ZDOTDIR}/.env" ]] && . "${ZDOTDIR}/.env"
 
 # HOMEBREW_PREFIX detection ############################################
 
