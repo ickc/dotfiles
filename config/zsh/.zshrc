@@ -320,23 +320,6 @@ else
                 [[ ${__HOST} == gordita ]] && path_prepend_all "${HOME}/.linux.local"
             }
             ;;
-        soukdev1)
-            ml_intel() {
-                # shellcheck disable=SC1091
-                . /opt/intel/oneapi/setvars.sh
-            }
-            ml_toast_gnu() {
-                TOAST_PREFIX="/opt/cmb/toast-gnu"
-                conda activate "${TOAST_PREFIX}/conda"
-                ld_library_path_prepend "${TOAST_PREFIX}/compile/lib"
-                pythonpath_prepend "${TOAST_PREFIX}/compile/lib/python3.10/site-packages"
-                path_prepend "${TOAST_PREFIX}/compile/bin:${TOAST_PREFIX}/conda/bin"
-            }
-
-            ml_toast_conda() {
-                conda activate /opt/cmb/toast-conda
-            }
-            ;;
         kolen-server)
             ml_cuda() {
                 path_append /usr/local/cuda-11
