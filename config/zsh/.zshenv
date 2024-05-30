@@ -214,37 +214,34 @@ esac
 
 # XDG setup ############################################################
 
+# see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
+# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
+# https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
+# https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
+
 # general XDG related setup: add all systems that we want to setup XDG away from the default
+# as SCRATCH is subjected to be purged, only put cache here
 if [[ (-n ${NERSC_HOST} || -n ${JBCA_HOST}) && -n ${SCRATCH} ]]; then
-    # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
-    # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
-    # https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
-    # https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
-    export XDG_CONFIG_HOME="${SCRATCH}/.local/config" \
-        XDG_CACHE_HOME="${SCRATCH}/.local/cache" \
-        XDG_DATA_HOME="${SCRATCH}/.local/share" \
-        XDG_STATE_HOME="${SCRATCH}/.local/state"
-    export CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
-        CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
-        CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
-        IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
-        JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
-        MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
-        PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
-        WGETRC="${XDG_CONFIG_HOME}/wgetrc" \
-        NUMBA_CACHE_DIR="${XDG_CACHE_HOME}/numba"
+    export XDG_CACHE_HOME="${SCRATCH}/.cache"
 else
-    export XDG_CONFIG_HOME="${HOME}/.config" \
-        XDG_CACHE_HOME="${HOME}/.cache" \
-        XDG_DATA_HOME="${HOME}/.local/share" \
-        XDG_STATE_HOME="${HOME}/.local/state"
+    export XDG_CACHE_HOME="${HOME}/.cache"
 fi
+export XDG_CONFIG_HOME="${HOME}/.config" \
+    XDG_DATA_HOME="${HOME}/.local/share" \
+    XDG_STATE_HOME="${HOME}/.local/state"
+
+export CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
+    CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
+    CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
+    IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
+    JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
+    MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
+    PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
+    WGETRC="${XDG_CONFIG_HOME}/wgetrc" \
+    NUMBA_CACHE_DIR="${XDG_CACHE_HOME}/numba"
 # specific XDG related setup
 if [[ -n ${NERSC_HOST} ]]; then
-    # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
-    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/.conda/envs"
-    # doesn't work, see https://github.com/conda/conda/issues/10719
-    # export CONDA_PKGS_DIRS="$(find /usr/common/software/python -maxdepth 2 -mindepth 2 -type d -name pkgs | sort -r | tr '\n' ':')${XDG_CACHE_HOME}/conda/pkgs"
+    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
 elif [[ -n ${BLACKETT_HOST} ]]; then
     export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
     if [[ ${BLACKETT_HOST} == vm77 ]]; then
