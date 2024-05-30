@@ -83,6 +83,15 @@ ld_library_path_append() {
     fi
 }
 
+conda_envs_path_prepend() {
+    if [[ -d $1 ]]; then
+        case ":${CONDA_ENVS_PATH}:" in
+            *":$1:"*) : ;;
+            *) export CONDA_ENVS_PATH="${1}${CONDA_ENVS_PATH:+:${CONDA_ENVS_PATH}}" ;;
+        esac
+    fi
+}
+
 TERMINFO_DIRS_append() {
     if [[ -d $1 ]]; then
         case ":${TERMINFO_DIRS}:" in
@@ -199,6 +208,17 @@ ml_conda() {
     # shellcheck disable=SC1091
     . "${__CONDA_PREFIX}/etc/profile.d/mamba.sh"
     export PATH="${__PATH__}"
+
+    if [[ -n ${NERSC_HOST} ]]; then
+        conda_envs_path_prepend "${CMN}/polar/opt/conda/envs"
+    elif [[ -n ${BLACKETT_HOST} ]]; then
+        conda_envs_path_prepend "${CVMFS_ROOT}/opt"
+        conda_envs_path_prepend "${CVMFS_ROOT}/conda"
+        conda_envs_path_prepend "${CVMFS_ROOT}/pmpm"
+        if [[ ${BLACKETT_HOST} == vm77 ]]; then
+            conda_envs_path_append /opt
+        fi
+    fi
 }
 
 mu_conda() {

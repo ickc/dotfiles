@@ -53,7 +53,6 @@ export __NCPU
 # __HOST detection #####################################################
 
 # define *_HOST for different computing sites
-# also set env var here if possible
 # priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
 
 if [[ -n ${NERSC_HOST} ]]; then
@@ -85,6 +84,8 @@ else
             BLACKETT_HOST="${HOSTNAME%%.*}"
             export BLACKETT_HOST
             __HOST="${BLACKETT_HOST}"
+            __CONDA_PREFIX=/opt/miniforge3
+            export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
             ;;
         *.tier2.hep.manchester.ac.uk)
             BLACKETT_HOST="${HOSTNAME%%.*}"
@@ -142,7 +143,28 @@ else
             ;;
     esac
 fi
+# set general *_HOST env var here
+if [[ -n ${BLACKETT_HOST} ]]; then
+    export \
+        CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
+        XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
+        __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
+    fi
+    if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
+        SCRATCH="${_CONDOR_SCRATCH_DIR}"
+    fi
+elif [[ -n ${SO_HOST} ]]; then
+    SCRATCH="/so/scratch/${USER}"
+    __CONDA_PREFIX="${HOME}/.mambaforge"
+elif [[ -n ${PRINCETON_HOST} && ${PRINCETON_HOST} != simons1 ]]; then
+    SCRATCH="/n/lowrie-scratch/${USER}"
+    __CONDA_PREFIX=${SCRATCH}/.mambaforge
+    export CFS=/n/lowrie-scratch
+fi
 export __HOST
+[[ -n ${SCRATCH} ]] && export SCRATCH
+[[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
 
 # XDG setup ############################################################
 
@@ -158,57 +180,23 @@ export \
     XDG_CONFIG_HOME="${HOME}/.config" \
     XDG_DATA_HOME="${HOME}/.local/share" \
     XDG_STATE_HOME="${HOME}/.local/state"
-
-export \
-    CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
-    IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
-    JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
-    MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
-    PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
-    WGETRC="${XDG_CONFIG_HOME}/wgetrc"
-
-# set remaining __HOST-specific env var ################################
-
-if [[ -n ${NERSC_HOST} ]]; then
-    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CMN}/polar/opt/conda/envs"
-elif [[ -n ${BLACKETT_HOST} ]]; then
-    export \
-        CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
-        XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
-    export CONDA_ENVS_PATH="${CONDA_ENVS_PATH}:${CVMFS_ROOT}/opt:${CVMFS_ROOT}/pmpm:${CVMFS_ROOT}/conda"
-    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-        __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
-    elif [[ ${BLACKETT_HOST} == vm77 ]]; then
-        __CONDA_PREFIX=/opt/miniforge3
-        export CONDA_ENVS_PATH="/opt:${CONDA_ENVS_PATH}"
-        export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
-    fi
-    if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
-        SCRATCH="${_CONDOR_SCRATCH_DIR}"
-    fi
-elif [[ -n ${SO_HOST} ]]; then
-    SCRATCH="/so/scratch/${USER}"
-    __CONDA_PREFIX="${HOME}/.mambaforge"
-elif [[ -n ${PRINCETON_HOST} ]]; then
-    # simons1 is not PRINCETON_HOST!
-    SCRATCH="/n/lowrie-scratch/${USER}"
-    __CONDA_PREFIX=${SCRATCH}/.mambaforge
-    export CFS=/n/lowrie-scratch
-fi
-[[ -n ${SCRATCH} ]] && export SCRATCH
-[[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
-
-# set XDG_CACHE_HOME ###################################################
-
 # as SCRATCH is subjected to be purged, only put cache here
 if [[ (-n ${NERSC_HOST} || -n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
 fi
-export CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
+
+export \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
-    NUMBA_CACHE_DIR="${XDG_CACHE_HOME}/numba"
+    CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
+    CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
+    IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
+    JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
+    MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
+    NUMBA_CACHE_DIR="${XDG_CACHE_HOME}/numba" \
+    PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
+    WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
 # zsh setup ############################################################
 
