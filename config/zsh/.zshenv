@@ -25,13 +25,13 @@ esac
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
 case "${__OSTYPE}" in
-    darwin)
-        # shellcheck disable=SC2312
-        __NCPU="$(sysctl -n hw.physicalcpu_max)"
-        ;;
     linux)
         # shellcheck disable=SC2312
         __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
+        ;;
+    darwin)
+        # shellcheck disable=SC2312
+        __NCPU="$(sysctl -n hw.physicalcpu_max)"
         ;;
     freebsd)
         # shellcheck disable=SC2312
