@@ -92,25 +92,6 @@ else
     esac
 fi
 
-# HOMEBREW_PREFIX detection ############################################
-
-# set HOMEBREW_PREFIX if undefined and discovered
-if [[ -n ${NERSC_HOST} ]]; then
-    HOMEBREW_PREFIX=/global/common/software/polar/opt/homebrew
-elif [[ -z ${HOMEBREW_PREFIX} ]]; then
-    if [[ ${__OSTYPE} == darwin ]]; then
-        for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
-            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-        done
-        unset homebrew_prefix
-    elif [[ ${__OSTYPE} == linux ]]; then
-        for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
-            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-        done
-        unset homebrew_prefix
-    fi
-fi
-
 # set __HOST-specific env var ##########################################
 
 case "${__HOST}" in
@@ -256,6 +237,25 @@ export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 
 # shellcheck disable=SC1091
 [[ -e "${ZDOTDIR}/.env" ]] && . "${ZDOTDIR}/.env"
+
+# HOMEBREW_PREFIX detection ############################################
+
+# set HOMEBREW_PREFIX if undefined and discovered
+if [[ -n ${NERSC_HOST} ]]; then
+    HOMEBREW_PREFIX=/global/common/software/polar/opt/homebrew
+elif [[ -z ${HOMEBREW_PREFIX} ]]; then
+    if [[ ${__OSTYPE} == darwin ]]; then
+        for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
+            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
+        done
+        unset homebrew_prefix
+    elif [[ ${__OSTYPE} == linux ]]; then
+        for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
+            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
+        done
+        unset homebrew_prefix
+    fi
+fi
 
 # export all variables #################################################
 
