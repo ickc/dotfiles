@@ -5,11 +5,6 @@
 # for non-compute system, SCRATCH can be undefined
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
-# CONDARC ##############################################################
-
-# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
-export CONDARC="${HOME}/git/source/dotfiles/config/conda/.condarc"
-
 # __OSTYPE detection ###################################################
 
 # set __OSTYPE as normalized OSTYPE
@@ -346,6 +341,11 @@ fi
 
 command -v squeue > /dev/null 2>&1 &&
     alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
+
+# CONDARC ##############################################################
+
+# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
+export CONDARC="${HOME}/git/source/dotfiles/config/conda/.condarc"
 
 # basher ###############################################################
 
