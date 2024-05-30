@@ -20,16 +20,15 @@ esac
 
 # __HOST detection #####################################################
 
-# set HOSTNAME by hostname if undefined
-if [[ -z ${HOSTNAME} ]]; then
-    # be careful that different implementation of hostname has different options
-    HOSTNAME="$(hostname -f 2> /dev/null || hostname)"
-    export HOSTNAME
-fi
-
 if [[ -n ${NERSC_HOST} ]]; then
     __HOST="${NERSC_HOST}"
 else
+    # set HOSTNAME by hostname if undefined
+    if [[ -z ${HOSTNAME} ]]; then
+        # be careful that different implementation of hostname has different options
+        HOSTNAME="$(hostname -f 2> /dev/null || hostname)"
+        export HOSTNAME
+    fi
     case "${HOSTNAME}" in
         vm77.tier2.hep.manchester.ac.uk)
             BLACKETT_HOST="${HOSTNAME%%.*}"
