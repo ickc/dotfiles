@@ -204,6 +204,7 @@ ml_brew() {
     path_prepend "${HOMEBREW_PREFIX}/sbin"
     path_prepend_all "${HOMEBREW_PREFIX}"
     path_prepend_all "${HOMEBREW_PREFIX}/opt/ruby"
+    # TODO
     # shellcheck disable=SC2206
     fpath=("${HOMEBREW_PREFIX}/share/zsh/site-functions" ${fpath})
 }
@@ -256,6 +257,7 @@ ml_basher() {
     # shellcheck disable=SC1090
     . "${BASHER_ROOT}/completions/basher.${BASHER_SHELL}"
     if [[ -n ${ZSH_VERSION} ]]; then
+        # TODO
         # shellcheck disable=SC2206,SC2128
         fpath=("${BASHER_ROOT}/cellar/completions/zsh/compsys" ${fpath})
         # shellcheck disable=SC1090
@@ -474,6 +476,7 @@ fi
 # the parent directories should protect it already
 umask 022
 
+# TODO
 # for tmux to work properly on macOS
 # see https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
 if [[ ${__OSTYPE} == darwin && ! -d "${HOME}/.local/share/terminfo" ]]; then
@@ -524,7 +527,6 @@ fi
 
 # zim ##########################################################################
 
-# if zsh
 if [[ -n ${ZSH_VERSION} ]]; then
 
     zstyle ':zim:zmodule' use 'degit'
