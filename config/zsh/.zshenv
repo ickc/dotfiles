@@ -55,6 +55,7 @@ export __NCPU
 # define *_HOST for different computing sites
 # priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
 
+# host-specific
 if [[ -n ${NERSC_HOST} ]]; then
     __HOST="${NERSC_HOST}"
     # TODO: update by running
@@ -143,7 +144,7 @@ else
             ;;
     esac
 fi
-# set general *_HOST env var here
+# site-specific
 if [[ -n ${BLACKETT_HOST} ]]; then
     export \
         CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
