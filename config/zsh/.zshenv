@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # These variables should exist on all systems:
-# SCRATCH, __CONDA_PREFIX
+# __CONDA_PREFIX
+# __PREFERRED_SHELL
+# SCRATCH
 # for non-compute system, SCRATCH can be undefined
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
@@ -54,8 +56,12 @@ export __NCPU
 # __HOST detection #####################################################
 # depends on __OSTYPE
 
+# default to zsh unless overridden otherwise
+__PREFERRED_SHELL=zsh
+
 # priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
 if [[ -n ${NERSC_HOST} ]]; then
+    __PREFERRED_SHELL=bash
     __HOST="${NERSC_HOST}"
     # TODO: update by running
     # module load python; . activate && echo ${CONDA_PREFIX}
@@ -164,7 +170,7 @@ else
     fi
     [[ -n ${SCRATCH} ]] && export SCRATCH
 fi
-export __HOST
+export __HOST __PREFERRED_SHELL
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
 
 # XDG setup ############################################################

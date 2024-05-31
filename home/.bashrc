@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-: # for shellcheck scope
-# shellcheck disable=SC1091
+# shellcheck source=config/zsh/.zshenv
 [[ -e "${HOME}/.config/zsh/.zshenv" ]] && . "${HOME}/.config/zsh/.zshenv"
 if [[ $- == *i* ]]; then
     # if $0 is -bash, then it means I cannot chsh to zsh, so we start zsh manually
-    if [[ $0 == -bash ]]; then
+    if [[ $0 == -bash && ${__PREFERRED_SHELL} == zsh ]]; then
         # shellcheck disable=SC1091
         [[ -e "${HOME}/.config/zsh/.zshrc" ]] && . "${HOME}/.config/zsh/.zshrc" > /dev/null 2>&1
         if _SHELL="$(command -v zsh)"; then
