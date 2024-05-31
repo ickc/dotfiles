@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# These variables must exist on all systems
+# These variables should exist on all systems:
 # SCRATCH, __CONDA_PREFIX
 # for non-compute system, SCRATCH can be undefined
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
@@ -28,6 +28,7 @@ esac
 export __OSTYPE
 
 # __NCPU detection #####################################################
+# depends on __OSTYPE
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
 case "${__OSTYPE}" in
@@ -51,11 +52,9 @@ esac
 export __NCPU
 
 # __HOST detection #####################################################
+# depends on __OSTYPE
 
-# define *_HOST for different computing sites
 # priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
-
-# host-specific
 if [[ -n ${NERSC_HOST} ]]; then
     __HOST="${NERSC_HOST}"
     # TODO: update by running
@@ -80,57 +79,58 @@ else
         HOSTNAME="$(hostname -f 2> /dev/null || hostname)"
         export HOSTNAME
     fi
+    # host-specific
+    # define *_HOST for different computing sites
     case "${HOSTNAME}" in
         vm77.tier2.hep.manchester.ac.uk)
-            BLACKETT_HOST="${HOSTNAME%%.*}"
-            export BLACKETT_HOST
+            export \
+                BLACKETT_HOST="${HOSTNAME%%.*}" \
+                HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
             __HOST="${BLACKETT_HOST}"
             __CONDA_PREFIX=/opt/miniforge3
-            export HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
             ;;
         *.tier2.hep.manchester.ac.uk)
-            BLACKETT_HOST="${HOSTNAME%%.*}"
-            export BLACKETT_HOST BLACKETT_CVMFS_ENV=1
+            export \
+                BLACKETT_CVMFS_ENV=1 \
+                BLACKETT_HOST="${HOSTNAME%%.*}"
             __HOST="${BLACKETT_HOST}"
             ;;
         cvmfs-uploader*.gridpp.rl.ac.uk)
-            BLACKETT_HOST="${HOSTNAME%%.*}"
-            export BLACKETT_HOST BLACKETT_CVMFS_ENV=1
+            export \
+                BLACKETT_CVMFS_ENV=1 \
+                BLACKETT_HOST="${HOSTNAME%%.*}"
             __HOST="${BLACKETT_HOST}"
             ;;
         *.simonsobs.org)
-            SO_HOST="${HOSTNAME%%.*}"
-            export SO_HOST
+            export SO_HOST="${HOSTNAME%%.*}"
             __HOST="${SO_HOST}"
             ;;
         *.princeton.edu)
             # seems like nobel is load balanced and it can lands on different __HOST here...
-            PRINCETON_HOST="${HOSTNAME%%.*}"
-            export PRINCETON_HOST
+            export PRINCETON_HOST="${HOSTNAME%%.*}"
             __HOST="${PRINCETON_HOST}"
             ;;
         simons1)
-            PRINCETON_HOST="${HOSTNAME}"
-            export PRINCETON_HOST
+            export \
+                CFS=/mnt/physicsso \
+                PRINCETON_HOST="${HOSTNAME}" \
+                WWW_DIR="/mnt/so1/public_html/${USER}"
             __HOST="${PRINCETON_HOST}"
             SCRATCH="/mnt/so1/users/${USER}"
             __CONDA_PREFIX=${SCRATCH}/.mambaforge
-            export CFS=/mnt/physicsso
-            export WWW_DIR="/mnt/so1/public_html/${USER}"
             ;;
         gordita.physics.berkeley.edu)
-            BOLO_HOST=gordita
-            export BOLO_HOST
+            export BOLO_HOST=gordita
             __HOST="${BOLO_HOST}"
             SCRATCH="/scratch2/${USER}"
             __CONDA_PREFIX="${HOME}/mambaforge"
             ;;
         bolo.berkeley.edu)
-            BOLO_HOST=bolo
-            export BOLO_HOST
+            export \
+                BOLO_HOST=bolo \
+                HOME="/home/${USER}"
             __HOST="${BOLO_HOST}"
             SCRATCH="/tank/scratch/${USER}"
-            export HOME="/home/${USER}"
             ;;
         *)
             __HOST="${HOSTNAME}"
@@ -143,34 +143,32 @@ else
             fi
             ;;
     esac
-fi
-# site-specific
-if [[ -n ${BLACKETT_HOST} ]]; then
-    export \
-        CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
-        XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
-    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-        __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
+    # site-specific
+    if [[ -n ${BLACKETT_HOST} ]]; then
+        export \
+            CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
+            XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
+        if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
+            __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
+        fi
+        if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
+            SCRATCH="${_CONDOR_SCRATCH_DIR}"
+        fi
+    elif [[ -n ${SO_HOST} ]]; then
+        SCRATCH="/so/scratch/${USER}"
+        __CONDA_PREFIX="${HOME}/.mambaforge"
+    elif [[ -n ${PRINCETON_HOST} && ${PRINCETON_HOST} != simons1 ]]; then
+        SCRATCH="/n/lowrie-scratch/${USER}"
+        __CONDA_PREFIX=${SCRATCH}/.mambaforge
+        export CFS=/n/lowrie-scratch
     fi
-    if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
-        SCRATCH="${_CONDOR_SCRATCH_DIR}"
-    fi
-elif [[ -n ${SO_HOST} ]]; then
-    SCRATCH="/so/scratch/${USER}"
-    __CONDA_PREFIX="${HOME}/.mambaforge"
-elif [[ -n ${PRINCETON_HOST} && ${PRINCETON_HOST} != simons1 ]]; then
-    SCRATCH="/n/lowrie-scratch/${USER}"
-    __CONDA_PREFIX=${SCRATCH}/.mambaforge
-    export CFS=/n/lowrie-scratch
+    [[ -n ${SCRATCH} ]] && export SCRATCH
 fi
 export __HOST
-[[ -n ${SCRATCH} ]] && export SCRATCH
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
 
 # XDG setup ############################################################
-
-# __HOST-specific env var may depends on these,
-# but XDG_CACHE_HOME is set later as that depends on __HOST
+# depends on __HOST detection
 
 # see https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 # https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html
@@ -181,7 +179,7 @@ export \
     XDG_CONFIG_HOME="${HOME}/.config" \
     XDG_DATA_HOME="${HOME}/.local/share" \
     XDG_STATE_HOME="${HOME}/.local/state"
-# as SCRATCH is subjected to be purged, only put cache here
+# as SCRATCH is subjected to be purged, only put cache in SCRATCH in sites
 if [[ (-n ${NERSC_HOST} || -n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 else
@@ -190,7 +188,6 @@ fi
 
 export \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
-    CONDA_ENVS_PATH="${XDG_DATA_HOME}/conda/envs" \
     CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
     IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
     JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
@@ -199,119 +196,101 @@ export \
     PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
     WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
-# zsh setup ############################################################
-
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-[[ -n ${ZSH_VERSION} ]] && export HISTFILE="${XDG_STATE_HOME}/zsh/history"
-
 # HOMEBREW_PREFIX detection ############################################
+# depends on __HOST detection
 
 # set HOMEBREW_PREFIX if undefined and discovered
-if [[ -z ${NERSC_HOST} && -z ${HOMEBREW_PREFIX} ]]; then
-    if [[ ${__OSTYPE} == darwin ]]; then
-        for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
-            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-        done
-        unset homebrew_prefix
-    elif [[ ${__OSTYPE} == linux ]]; then
-        for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
-            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-        done
-        unset homebrew_prefix
+if [[ -z ${NERSC_HOST} ]]; then
+    if [[ -z ${HOMEBREW_PREFIX} ]]; then
+        if [[ ${__OSTYPE} == darwin ]]; then
+            for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
+                command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
+            done
+            unset homebrew_prefix
+        elif [[ ${__OSTYPE} == linux ]]; then
+            for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
+                command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
+            done
+            unset homebrew_prefix
+        fi
+    fi
+    if [[ -n ${HOMEBREW_PREFIX} ]]; then
+        export \
+            HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
+            HOMEBREW_NO_ANALYTICS=1 \
+            HOMEBREW_PREFIX \
+            HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
     fi
 fi
-export HOMEBREW_PREFIX
 
 # export variables #####################################################
+# depends on XDG setup
 
-if [[ -n ${HOMEBREW_PREFIX} ]]; then
-    export HOMEBREW_NO_ANALYTICS=1 \
-        HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
-        HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+# shell
+if [[ -n ${ZSH_VERSION} ]]; then
+    export \
+        BASHER_SHELL=zsh \
+        HISTFILE="${XDG_STATE_HOME}/zsh/history" \
+        ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+elif [[ -n ${BASH_VERSION} ]]; then
+    export BASHER_SHELL=bash
 fi
+# basher
+export BASHER_ROOT="${HOME}/.basher"
+export BASHER_PREFIX="${BASHER_ROOT}/cellar"
+export BASHER_PACKAGES_PATH="${BASHER_PREFIX}/packages"
+
+# cargo
 if [[ -n ${BLACKETT_HOST} && -d /opt/rh/rust-toolset-7/root/usr ]]; then
     export CARGO_PREFIX=/opt/rh/rust-toolset-7/root/usr
 elif [[ -d "${HOME}/.cargo" ]]; then
     export CARGO_PREFIX="${HOME}/.cargo"
 fi
+# go
+if [[ -d "${HOME}/go" ]]; then
+    export \
+        GOBIN="${HOME}/go/bin" \
+        GOPATH="${HOME}/go"
+fi
+
+# simple & misc.
 export \
+    CONDARC="${HOME}/git/source/dotfiles/config/conda/.condarc" \
     EDITOR=nano \
-    GOBIN="${HOME}/go/bin" \
-    GOPATH="${HOME}/go" \
     LANG=en_US.UTF-8 \
     MAKEFLAGS="-j${__NCPU}" \
     SMAN_APPEND_HISTORY=false \
     SMAN_EXEC_CONFIRM=false \
     SMAN_SNIPPET_DIR="${HOME}/git/source/sman-snippets" \
-    ZIM_HOME=~/.zim
+    ZIM_HOME="${HOME}/.zim"
 
 # alias ################################################################
 
 # set alias (putting this in "interactive" does not help)
 # this is needed to make sure mosh can see mosh-server not from PATH
 # this is to avoid can't find tmux after `mu`
-if [[ ${__OSTYPE} == darwin ]]; then
-    __PREFIX=/opt/local
-elif [[ -n ${NERSC_HOST} || -n ${PRINCETON_HOST} ]]; then
+if [[ -n ${NERSC_HOST} ]]; then
+    :
+elif [[ -n ${PRINCETON_HOST} ]]; then
     __PREFIX="${HOME}/.local"
+elif [[ ${__OSTYPE} == darwin ]]; then
+    __PREFIX=/opt/local
 elif [[ -n ${BLACKETT_HOST} ]]; then
     if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
         __PREFIX="${CVMFS_ROOT}/usr"
     else
         __PREFIX=/opt/local
     fi
-else
-    # shellcheck disable=SC2249
-    case "${__HOST}" in
-        gordita)
-            __PREFIX="${HOME}/mambaforge/envs/system39-conda-forge"
-            ;;
-    esac
+elif [[ -n ${BOLO_HOST} && ${BOLO_HOST} == gordita ]]; then
+    __PREFIX="${HOME}/mambaforge/envs/system39-conda-forge"
 fi
 if [[ -n ${__PREFIX} ]]; then
-    for i in mosh-server tmux exa eza lsd; do
+    for i in mosh-server tmux; do
         j="${__PREFIX}/bin/${i}"
         # shellcheck disable=SC2139
-        [[ -f ${j} ]] && alias "${i}"="${j}"
+        [[ -x ${j} ]] && alias "${i}"="${j}"
     done
+    unset __PREFIX i j
 fi
 
-command -v squeue > /dev/null 2>&1 &&
-    alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
-
-# CONDARC ##############################################################
-
-# https://conda.io/projects/conda/en/latest/user-guide/configuration/use-condarc.html#searching-for-condarc
-export CONDARC="${HOME}/git/source/dotfiles/config/conda/.condarc"
-
-# basher ###############################################################
-
-BASHER_ROOT="${HOME}/.basher"
-if [[ -n ${BASHER_ROOT} ]]; then
-    export BASHER_ROOT \
-        BASHER_PREFIX="${BASHER_ROOT}/cellar"
-    export BASHER_PACKAGES_PATH="${BASHER_PREFIX}/packages"
-    if [[ -n ${ZSH_VERSION} ]]; then
-        export BASHER_SHELL=zsh
-    elif [[ -n ${BASH_VERSION} ]]; then
-        export BASHER_SHELL=bash
-    fi
-fi
-
-# functions ############################################################
-
-# https://stackoverflow.com/a/30547074/5769446
-startsudo() {
-    sudo -v
-    (while true; do
-        sudo -v
-        sleep 50
-    done) &
-    SUDO_PID="$!"
-    trap stopsudo SIGINT SIGTERM
-}
-stopsudo() {
-    kill "${SUDO_PID}"
-    trap - SIGINT SIGTERM
-    sudo -k
-}
+alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'

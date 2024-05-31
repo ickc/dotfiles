@@ -8,6 +8,24 @@ export __PROMPT_THEME="${__PROMPT_THEME:-starship}"
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 printf "\033]0;%s\007" "${__HOST%%.*}"
 
+# functions ############################################################
+
+# https://stackoverflow.com/a/30547074/5769446
+startsudo() {
+    sudo -v
+    (while true; do
+        sudo -v
+        sleep 50
+    done) &
+    SUDO_PID="$!"
+    trap stopsudo SIGINT SIGTERM
+}
+stopsudo() {
+    kill "${SUDO_PID}"
+    trap - SIGINT SIGTERM
+    sudo -k
+}
+
 # helpers ######################################################################
 
 # * any path-like variables should be remember and reset using this machanism
@@ -209,6 +227,7 @@ ml_conda() {
     . "${__CONDA_PREFIX}/etc/profile.d/mamba.sh"
     export PATH="${__PATH__}"
 
+    conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
     if [[ -n ${NERSC_HOST} ]]; then
         conda_envs_path_prepend "${CMN}/polar/opt/conda/envs"
     elif [[ -n ${BLACKETT_HOST} ]]; then
