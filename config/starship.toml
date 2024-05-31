@@ -32,7 +32,7 @@ $time\
 $cmd_duration\
 $status\
 [ ](fg:color_bg1)\
-$line_break$character"""
+$line_break$shell"""
 
 palette = 'gruvbox_dark'
 
@@ -198,11 +198,8 @@ disabled = false
 [line_break]
 disabled = false
 
-[character]
+[shell]
+bash_indicator = ''
+fish_indicator = '󰈺'
+zsh_indicator = '󱉸'
 disabled = false
-success_symbol = '[](bold fg:color_green)'
-error_symbol = '[](bold fg:color_red)'
-vimcmd_symbol = '[](bold fg:color_green)'
-vimcmd_replace_one_symbol = '[](bold fg:color_purple)'
-vimcmd_replace_symbol = '[](bold fg:color_purple)'
-vimcmd_visual_symbol = '[](bold fg:color_yellow)'
