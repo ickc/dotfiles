@@ -110,7 +110,7 @@ conda_envs_path_prepend() {
     fi
 }
 
-TERMINFO_DIRS_append() {
+terminfo_dirs_append() {
     if [[ -d $1 ]]; then
         case ":${TERMINFO_DIRS}:" in
             *":$1:"*) : ;;
@@ -483,7 +483,7 @@ if [[ ${__OSTYPE} == darwin && ! -d "${HOME}/.local/share/terminfo" ]]; then
     /usr/bin/tic -x -o "${HOME}/.local/share/terminfo" "${HOME}/tmux-256color.src"
     rm -f "${HOME}/tmux-256color.src"
 fi
-[[ -d "${HOME}/.local/share/terminfo" ]] && TERMINFO_DIRS_append "${HOME}/.local/share/terminfo"
+[[ -d "${HOME}/.local/share/terminfo" ]] && terminfo_dirs_append "${HOME}/.local/share/terminfo"
 
 # git external diff
 # ${PATH} is not fully set in zshenv so we have to put it here
