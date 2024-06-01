@@ -85,8 +85,6 @@ style = "bg:color_orange fg:color_fg0"
 format = '[$ssh_symbol$hostname]($style)'
 
 [sudo]
-symbol = ''
-format = '[ $symbol]($style)'
 disabled = false
 style = "bg:color_orange fg:color_fg0"
 
