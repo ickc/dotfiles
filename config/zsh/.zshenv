@@ -195,6 +195,7 @@ fi
 export \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
     CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
+    INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc \
     IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
     JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
     MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
