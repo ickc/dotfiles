@@ -66,7 +66,7 @@ if [[ -n ${NERSC_HOST} ]]; then
     # TODO: update by running
     # module load python; . activate && echo ${CONDA_PREFIX}
     # or scan everything:
-    #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [ -x "${dir}/mamba" ] && [ -x "${dir}/conda" ] && [ -x "${dir}/activate" ] && echo "${dir}"; done' sh {} + 2>/dev/null
+    #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [[ -x "${dir}/mamba" ]] && [[ -x "${dir}/conda" ]] && [[ -x "${dir}/activate" ]] && echo "${dir}"; done' sh {} + 2>/dev/null
     # e.g.
     # /global/common/software/lsst/gitlab/td_env-prod/stable/conda
     # /global/common/software/lsst/gitlab/td_env-dev/dev/conda
@@ -195,7 +195,7 @@ fi
 export \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
     CONDA_PKGS_DIRS="${XDG_CACHE_HOME}/conda/pkgs" \
-    INPUTRC="$XDG_CONFIG_HOME"/readline/inputrc \
+    INPUTRC="${XDG_CONFIG_HOME}"/readline/inputrc \
     IPYTHONDIR="${XDG_CONFIG_HOME}"/jupyter \
     JUPYTER_CONFIG_DIR="${XDG_CONFIG_HOME}"/jupyter \
     MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
