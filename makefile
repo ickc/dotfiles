@@ -150,7 +150,10 @@ format:
 			-name '*.sh' \
 		\) \
 		\! -name preview_file.sh \
-		-exec sed -i -E 's/\$$([a-zA-Z_][a-zA-Z0-9_]*)/$${\1}/g' {} + \
+		-exec sed -i -E \
+			-e 's/\$$([a-zA-Z_][a-zA-Z0-9_]*)/$${\1}/g' \
+			-e 's/([^[])\[ ([^]]+) \]/\1[[ \2 ]]/g' \
+			{} + \
 		-exec shfmt \
 			--write \
 			--simplify \
