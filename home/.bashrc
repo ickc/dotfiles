@@ -1,5 +1,44 @@
 #!/usr/bin/env bash
 
+auto_ssh_agent() {
+    # modified from https://github.com/zimfw/ssh/blob/master/init.zsh
+
+    # Check if ssh-agent is already running
+    ssh-add -l &> /dev/null
+    if [[ $? -eq 2 ]]; then
+        # Unable to contact the authentication agent
+
+        # Load stored agent connection info
+        ssh_env="${HOME}/.ssh-agent"
+        if [[ ! -r ${ssh_env} ]]; then
+            # Start agent and store agent connection info
+            (
+                umask 066
+                ssh-agent > "${ssh_env}"
+            )
+        fi
+        # shellcheck disable=SC1090
+        source "${ssh_env}" > /dev/null
+
+        # there's a chance that the stored process has been killed
+        ssh-add -l &> /dev/null
+        if [[ $? -eq 2 ]]; then
+            # generate a new one
+            (
+                umask 066
+                ssh-agent > "${ssh_env}"
+            )
+            # shellcheck disable=SC1090
+            source "${ssh_env}" > /dev/null
+        fi
+    fi
+    # Load identities
+    ssh-add -l &> /dev/null
+    if [[ $? -eq 1 ]]; then
+        ssh-add 2> /dev/null
+    fi
+}
+
 # shellcheck source=config/zsh/.zshenv
 [[ -e "${HOME}/.config/zsh/.zshenv" ]] && . "${HOME}/.config/zsh/.zshenv"
 if [[ $- == *i* ]]; then
@@ -15,5 +54,10 @@ if [[ $- == *i* ]]; then
     else
         # shellcheck disable=SC1091
         [[ -e "${HOME}/.config/zsh/.zshrc" ]] && . "${HOME}/.config/zsh/.zshrc"
+
+        # Set up ssh-agent
+        if command -v ssh-agent > /dev/null; then
+            auto_ssh_agent
+        fi
     fi
 fi
