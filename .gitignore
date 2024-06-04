@@ -6,6 +6,8 @@ config/fish/fish_variables
 config/github-copilot/hosts.json
 config/gpt4all.io
 config/jgit
+config/jupyter/profile_default/history.sqlite
+config/jupyter/profile_default/startup/README
 config/mpv/input.conf
 config/mpv/shaders
 config/zed/*
