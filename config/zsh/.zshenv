@@ -164,9 +164,9 @@ else
         SCRATCH="/so/scratch/${USER}"
         __CONDA_PREFIX="${HOME}/.mambaforge"
     elif [[ -n ${PRINCETON_HOST} && ${PRINCETON_HOST} != simons1 ]]; then
-        SCRATCH="/n/lowrie-scratch/${USER}"
-        __CONDA_PREFIX=${SCRATCH}/.mambaforge
         export CFS=/n/lowrie-scratch
+        SCRATCH="${CFS}/${USER}"
+        __CONDA_PREFIX=${HOME}/.mambaforge
     fi
     [[ -n ${SCRATCH} ]] && export SCRATCH
 fi
