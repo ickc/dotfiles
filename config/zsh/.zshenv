@@ -111,11 +111,6 @@ else
             export SO_HOST="${HOSTNAME%%.*}"
             __HOST="${SO_HOST}"
             ;;
-        *.princeton.edu)
-            # seems like nobel is load balanced and it can lands on different __HOST here...
-            export PRINCETON_HOST="${HOSTNAME%%.*}"
-            __HOST="${PRINCETON_HOST}"
-            ;;
         simons1)
             export \
                 CFS=/mnt/physicsso \
@@ -163,10 +158,6 @@ else
     elif [[ -n ${SO_HOST} ]]; then
         SCRATCH="/so/scratch/${USER}"
         __CONDA_PREFIX="${HOME}/.mambaforge"
-    elif [[ -n ${PRINCETON_HOST} && ${PRINCETON_HOST} != simons1 ]]; then
-        export CFS=/n/lowrie-scratch
-        SCRATCH="${CFS}/${USER}"
-        __CONDA_PREFIX=${HOME}/.mambaforge
     fi
     [[ -n ${SCRATCH} ]] && export SCRATCH
 fi
