@@ -110,15 +110,6 @@ conda_envs_path_prepend() {
     fi
 }
 
-terminfo_dirs_append() {
-    if [[ -d $1 ]]; then
-        case ":${TERMINFO_DIRS}:" in
-            *":$1:"*) : ;;
-            *) export TERMINFO_DIRS="${TERMINFO_DIRS:+${TERMINFO_DIRS}:}${1}" ;;
-        esac
-    fi
-}
-
 # variants of the above with $1 as the prefix only
 # modifies PATH, MANPATH, INFOPATH
 path_prepend_all() {
@@ -475,18 +466,6 @@ fi
 # even if this doesn't mask the world readability
 # the parent directories should protect it already
 umask 022
-
-# TODO
-# for tmux to work properly on macOS
-# see https://gpanders.com/blog/the-definitive-guide-to-using-tmux-256color-on-macos/
-if [[ ${__OSTYPE} == darwin && ! -d "${HOME}/.local/share/terminfo" ]]; then
-    echo "Setting up terminfo for tmux on macOS" >&2
-    rm -f "${HOME}/tmux-256color.src"
-    /opt/local/bin/infocmp -x tmux-256color > "${HOME}/tmux-256color.src"
-    /usr/bin/tic -x -o "${HOME}/.local/share/terminfo" "${HOME}/tmux-256color.src"
-    rm -f "${HOME}/tmux-256color.src"
-fi
-[[ -d "${HOME}/.local/share/terminfo" ]] && terminfo_dirs_append "${HOME}/.local/share/terminfo"
 
 # git external diff
 # ${PATH} is not fully set in zshenv so we have to put it here
