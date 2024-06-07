@@ -4,6 +4,4 @@ channel_priority: strict
 channels:
   - conda-forge
 create_default_packages:
-  - conda
-  - mamba
   - pip
