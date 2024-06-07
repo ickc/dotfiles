@@ -301,6 +301,10 @@ ml_jetbrains() {
 # hosts ========================================================================
 
 if [[ -n ${NERSC_HOST} ]]; then
+    ml_host() {
+        # https://docs.nersc.gov/current/#ongoing-issues
+        module load fast-mkl-amd
+    }
     ml_toast() {
         module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
         # module use /global/common/software/cmb/cori/default/modulefiles
