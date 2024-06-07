@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # These variables should exist on all systems:
-# __CONDA_PREFIX
+# MAMBA_ROOT_PREFIX
 # __PREFERRED_SHELL
 # SCRATCH
 # for non-compute system, SCRATCH can be undefined
@@ -75,7 +75,7 @@ if [[ -n ${NERSC_HOST} ]]; then
     # /global/common/software/lsst/gitlab/desc-forecasts-int/prod/py
     # /global/common/software/lsst/gitlab/desc-python-dev/dev
     # /global/common/software/sobs/perlmutter/conda_base
-    __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
+    MAMBA_ROOT_PREFIX=/global/common/software/sobs/perlmutter/conda_base
     # CFS=/global/cfs/cdirs
     export CMN=/global/common/software
 else
@@ -93,7 +93,7 @@ else
                 BLACKETT_HOST="${HOSTNAME%%.*}" \
                 HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
             __HOST="${BLACKETT_HOST}"
-            __CONDA_PREFIX=/opt/miniforge3
+            MAMBA_ROOT_PREFIX=/opt/miniforge3
             ;;
         *.tier2.hep.manchester.ac.uk)
             export \
@@ -118,13 +118,13 @@ else
                 WWW_DIR="/mnt/so1/public_html/${USER}"
             __HOST="${PRINCETON_HOST}"
             SCRATCH="/mnt/so1/users/${USER}"
-            __CONDA_PREFIX=${SCRATCH}/.mambaforge
+            MAMBA_ROOT_PREFIX=${SCRATCH}/.mambaforge
             ;;
         gordita.physics.berkeley.edu)
             export BOLO_HOST=gordita
             __HOST="${BOLO_HOST}"
             SCRATCH="/scratch2/${USER}"
-            __CONDA_PREFIX="${HOME}/mambaforge"
+            MAMBA_ROOT_PREFIX="${HOME}/mambaforge"
             ;;
         bolo.berkeley.edu)
             export \
@@ -139,7 +139,7 @@ else
                 SCRATCH="${SCRATCH:-${HOME}/scratch}"
 
                 conda_prefix="${HOME}/.mambaforge"
-                command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
+                command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && MAMBA_ROOT_PREFIX="${conda_prefix}"
                 unset conda_prefix
             fi
             ;;
@@ -150,19 +150,19 @@ else
             CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
             XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
         if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-            __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
+            MAMBA_ROOT_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
         fi
         if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
             SCRATCH="${_CONDOR_SCRATCH_DIR}"
         fi
     elif [[ -n ${SO_HOST} ]]; then
         SCRATCH="/so/scratch/${USER}"
-        __CONDA_PREFIX="${HOME}/.mambaforge"
+        MAMBA_ROOT_PREFIX="${HOME}/.mambaforge"
     fi
     [[ -n ${SCRATCH} ]] && export SCRATCH
 fi
 export __HOST __PREFERRED_SHELL
-[[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
+[[ -n ${MAMBA_ROOT_PREFIX} ]] && export MAMBA_ROOT_PREFIX
 
 # XDG setup ############################################################
 # depends on __HOST detection
