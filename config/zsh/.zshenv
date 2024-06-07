@@ -124,7 +124,7 @@ else
             export BOLO_HOST=gordita
             __HOST="${BOLO_HOST}"
             SCRATCH="/scratch2/${USER}"
-            MAMBA_ROOT_PREFIX="${HOME}/mambaforge"
+            MAMBA_ROOT_PREFIX="${HOME}/.mambaforge"
             ;;
         bolo.berkeley.edu)
             export \

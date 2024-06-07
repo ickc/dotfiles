@@ -343,11 +343,6 @@ else
                 module load tod_stack_unstable
             }
             ;;
-        gordita)
-            ml_host() {
-                [[ ${__HOST} == gordita ]] && path_prepend_all "${HOME}/.linux.local"
-            }
-            ;;
         kolen-server)
             ml_cuda() {
                 path_append /usr/local/cuda-11
