@@ -237,23 +237,12 @@ fi
 export BASHER_ROOT="${HOME}/.basher"
 export BASHER_PREFIX="${BASHER_ROOT}/cellar"
 export BASHER_PACKAGES_PATH="${BASHER_PREFIX}/packages"
-
-# cargo
-if [[ -n ${BLACKETT_HOST} && -d /opt/rh/rust-toolset-7/root/usr ]]; then
-    export CARGO_PREFIX=/opt/rh/rust-toolset-7/root/usr
-elif [[ -d "${HOME}/.cargo" ]]; then
-    export CARGO_PREFIX="${HOME}/.cargo"
-fi
-# go
-if [[ -d "${HOME}/go" ]]; then
-    export \
-        GOBIN="${HOME}/go/bin" \
-        GOPATH="${HOME}/go"
-fi
-
-# simple & misc.
+# misc
 export \
+    CARGO_PREFIX="${HOME}/.cargo" \
     EDITOR=nano \
+    GOBIN="${HOME}/go/bin" \
+    GOPATH="${HOME}/go" \
     LANG=en_US.UTF-8 \
     MAKEFLAGS="-j${__NCPU}" \
     SMAN_APPEND_HISTORY=false \
