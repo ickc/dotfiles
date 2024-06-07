@@ -455,13 +455,13 @@ mu() {
 }
 
 mkdir_xdg() {
-    [[ -n ${XDG_DATA_HOME} ]] && mkdir -p "${XDG_DATA_HOME}"
-    [[ -n ${XDG_STATE_HOME} ]] && mkdir -p "${XDG_STATE_HOME}"
-    [[ -n ${XDG_CONFIG_HOME} ]] && mkdir -p "${XDG_CONFIG_HOME}"
-    [[ -n ${XDG_CACHE_HOME} ]] && mkdir -p "${XDG_CACHE_HOME}"
+    mkdir -p "${XDG_DATA_HOME}"
+    mkdir -p "${XDG_STATE_HOME}"
+    mkdir -p "${XDG_CONFIG_HOME}"
+    mkdir -p "${XDG_CACHE_HOME}"
     # see https://docs.astropy.org/en/stable/config/index.html#getting-started
-    [[ ! -d "${XDG_CONFIG_HOME}/astropy" ]] && mkdir -p "${XDG_CONFIG_HOME}/astropy"
-    [[ ! -d "${XDG_CACHE_HOME}/astropy" ]] && mkdir -p "${XDG_CACHE_HOME}/astropy"
+    mkdir -p "${XDG_CONFIG_HOME}/astropy"
+    mkdir -p "${XDG_CACHE_HOME}/astropy"
 }
 
 # main #########################################################################
