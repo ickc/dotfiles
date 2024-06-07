@@ -253,7 +253,6 @@ fi
 
 # simple & misc.
 export \
-    CONDARC="${HOME}/git/source/dotfiles/config/conda/.condarc" \
     EDITOR=nano \
     LANG=en_US.UTF-8 \
     MAKEFLAGS="-j${__NCPU}" \
