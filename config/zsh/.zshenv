@@ -289,5 +289,3 @@ if [[ -n ${__PREFIX} ]]; then
     done
     unset __PREFIX i j
 fi
-
-alias sqs='squeue -o "%16i %2t %9u %12j  %5D %.10l %.10M  %20V %15q %20S %14f %15R" --me'
