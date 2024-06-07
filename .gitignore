@@ -1,7 +1,6 @@
 *.log
 *.zip
 config/btop/themes
-config/conda
 config/fish/fish_variables
 config/github-copilot/hosts.json
 config/gpt4all.io

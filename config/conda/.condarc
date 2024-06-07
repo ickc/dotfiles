@@ -7,4 +7,3 @@ create_default_packages:
   - conda
   - mamba
   - pip
-default_threads: ${DEFAULT_THREADS}
