@@ -11,20 +11,17 @@ MPV=fast
 
 .PHONY: all
 all: \
-	conda \
 	config \
 	hyper \
 	mpv \
 	powerlevel10k \
 	shell
 .PHONY: \
-	conda \
 	config \
 	hyper \
 	mpv \
 	powerlevel10k \
 	shell
-conda: ; cd config/conda; ./install.sh
 config:
 	if [[ -d $(XDG_CONFIG_HOME) ]]; then \
 		find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete; \
@@ -39,20 +36,17 @@ shell: ; ln -sf $(PWD)/config/zsh/.zshenv ~; ln -sf $(PWD)/home/.bash_profile ~;
 
 .PHONY: remove
 remove: \
-	conda-remove \
 	config-remove \
 	hyper-remove \
 	mpv-remove \
 	powerlevel10k-remove \
 	shell-remove
 .PHONY: \
-	conda-remove \
 	config-remove \
 	hyper-remove \
 	mpv-remove \
 	powerlevel10k-remove \
 	shell-remove
-conda-remove: ; cd config/conda; ./uninstall.sh
 config-remove: ; rm -f $(XDG_CONFIG_HOME) || true
 hyper-remove: ; rm -f ~/.hyper.js
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
