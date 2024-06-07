@@ -387,14 +387,14 @@ fi
 #===============================================================================
 
 ml_clean() {
+    path_prepend_all "${HOME}/.local"
+
     # special case, may generalize something like this to any FreeBSD?
     if [[ ${__HOST} == bolo ]]; then
         remove_home_local_bin_from_PATH
     fi
 
     # * load minimal environment for interactive use
-    path_prepend_all "${HOME}/.local"
-
     [[ -f "${HOME}/.sman/sman.rc" ]] && ml_s
     # exa: only alias if exist. hash is incorrect on NERSC
     command -v exa > /dev/null 2>&1 && ml_exa
