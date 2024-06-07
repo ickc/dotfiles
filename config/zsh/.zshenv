@@ -260,32 +260,3 @@ export \
     SMAN_EXEC_CONFIRM=false \
     SMAN_SNIPPET_DIR="${HOME}/git/source/sman-snippets" \
     ZIM_HOME="${HOME}/.zim"
-
-# alias ################################################################
-
-# set alias (putting this in "interactive" does not help)
-# this is needed to make sure mosh can see mosh-server not from PATH
-# this is to avoid can't find tmux after `mu`
-if [[ -n ${NERSC_HOST} ]]; then
-    :
-elif [[ -n ${PRINCETON_HOST} ]]; then
-    __PREFIX="${HOME}/.local"
-elif [[ ${__OSTYPE} == darwin ]]; then
-    __PREFIX=/opt/local
-elif [[ -n ${BLACKETT_HOST} ]]; then
-    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-        __PREFIX="${CVMFS_ROOT}/usr"
-    else
-        __PREFIX=/opt/local
-    fi
-elif [[ -n ${BOLO_HOST} && ${BOLO_HOST} == gordita ]]; then
-    __PREFIX="${HOME}/mambaforge/envs/system39-conda-forge"
-fi
-if [[ -n ${__PREFIX} ]]; then
-    for i in mosh-server tmux; do
-        j="${__PREFIX}/bin/${i}"
-        # shellcheck disable=SC2139
-        [[ -x ${j} ]] && alias "${i}"="${j}"
-    done
-    unset __PREFIX i j
-fi
