@@ -1,6 +1,12 @@
+.coverage*
 .dmypy.json
 .DS_Store
 .idea/
 .ipynb_checkpoints/
+.jupyter/
+.mypy_cache/
 .obsidian/
+.pytest_cache/
 .vscode/
+*.egg-info/
+*.pyc
