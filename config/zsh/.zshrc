@@ -533,3 +533,9 @@ if command -v fastfetch > /dev/null 2>&1; then
 elif command -v neofetch > /dev/null 2>&1; then
     neofetch
 fi
+
+# alias ########################################################################
+
+if [[ ${__OSTYPE} == darwin && -f /Applications/JupyterLab.app/Contents/Resources/app/jlab ]]; then
+    alias jlab='bash /Applications/JupyterLab.app/Contents/Resources/app/jlab'
+fi
