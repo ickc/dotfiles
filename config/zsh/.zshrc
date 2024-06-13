@@ -298,6 +298,10 @@ ml_jetbrains() {
     path_append "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts"
 }
 
+ml_mactex() {
+    path_prepend /Library/TeX/texbin
+}
+
 # hosts ========================================================================
 
 if [[ -n ${NERSC_HOST} ]]; then
@@ -409,6 +413,10 @@ ml() {
     [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
     command -v ml_host > /dev/null 2>&1 && ml_host
+
+    if [[ ${__OSTYPE} == darwin && -d /Library/TeX/texbin ]]; then
+        ml_mactex
+    fi
 
     ml_clean
 }
