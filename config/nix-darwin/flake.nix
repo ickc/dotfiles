@@ -12,8 +12,82 @@
     configuration = { pkgs, ... }: {
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ ];
+      environment.systemPackages = with pkgs; [ 
+          bat
+          binutils
+          bottom
+          cmake
+          coreutils
+          darwin.iproute2mac
+          difftastic
+          diffutils
+          dua
+          duti
+          entr
+          epubcheck
+          exiftool
+          fastfetch
+          ffmpeg_7-full
+          findutils
+          fzf
+          gawk
+          gh
+          ghostscript
+          git
+          glances
+          gnugrep
+          gnumake
+          gnupatch
+          gnused
+          gnutar
+          go
+          go-task
+          graphviz
+          gron
+          gzip
+          highlight
+          html-tidy
+          htop
+          hyperfine
+          imagemagick
+          inetutils
+          iperf3
+          jq
+          julia-bin
+          less
+          libimobiledevice
+          lynx
+          mediainfo
+          mediainfo-gui
+          mosh
+          mpv
+          nano
+          neofetch
+          nmap
+          onefetch
+          opencc
+          pam-reattach
+          parallel
+          pdf2svg
+          potrace
+          ranger
+          rsync
+          shfmt
+          smartmontools
+          sshuttle
+          time
+          tmux
+          tree
+          units
+          unzip
+          w3m
+          wakeonlan
+          watch
+          wdiff
+          wget
+          which
+          wtf
+        ];
 
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
