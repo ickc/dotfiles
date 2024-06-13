@@ -27,7 +27,7 @@
           epubcheck
           exiftool
           fastfetch
-          ffmpeg_7-full
+          ffmpeg_7
           findutils
           fzf
           gawk
