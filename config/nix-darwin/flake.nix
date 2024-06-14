@@ -66,6 +66,7 @@
           lux
           lynx
           mactop
+          mas
           mediainfo
           mediainfo-gui
           memtester
