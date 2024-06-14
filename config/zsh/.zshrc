@@ -406,7 +406,6 @@ ml() {
     # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
     ml_ghcup
     [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
-    [[ ${__OSTYPE} == darwin ]] && ml_port
     [[ -n ${MAMBA_ROOT_PREFIX} ]] && ml_conda
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
     [[ -d "${HOME}/.basher" ]] && ml_basher
@@ -414,8 +413,13 @@ ml() {
 
     command -v ml_host > /dev/null 2>&1 && ml_host
 
-    if [[ ${__OSTYPE} == darwin && -d /Library/TeX/texbin ]]; then
-        ml_mactex
+    if [[ ${__OSTYPE} == darwin ]]; then
+        if [[ -d /Library/TeX/texbin ]]; then
+            ml_mactex
+        fi
+        if [[ -d /opt/local ]]; then
+            ml_port
+        fi
     fi
 
     ml_clean
