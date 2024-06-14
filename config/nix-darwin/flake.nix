@@ -16,6 +16,8 @@
           bat
           binutils
           bottom
+          btop
+          clang-tools
           cmake
           coreutils
           darwin.iproute2mac
@@ -26,6 +28,7 @@
           entr
           epubcheck
           exiftool
+          f3
           fastfetch
           ffmpeg_7
           findutils
@@ -42,6 +45,7 @@
           gnutar
           go
           go-task
+          gpsbabel
           graphviz
           gron
           gzip
@@ -50,34 +54,46 @@
           htop
           hyperfine
           imagemagick
+          imagemagick
           inetutils
           iperf3
+          joshuto
           jq
           julia-bin
           less
           libimobiledevice
+          lsd
           lux
           lynx
+          mactop
           mediainfo
           mediainfo-gui
+          memtester
+          minify
           mosh
           mpv
           nano
           neofetch
           nmap
           onefetch
+          openai-whisper-cpp
           opencc
           pam-reattach
           pandoc
           parallel
           pdf2svg
+          pixi
           potrace
+          qmk
           ranger
           rsync
           shellcheck
           shfmt
           smartmontools
           sshuttle
+          starship
+          streamlink
+          subversion
           time
           tmux
           tree
@@ -92,6 +108,7 @@
           wtf
           youtube-dl
           yt-dlp
+          zellij
         ];
 
       # Auto upgrade nix package and the daemon service.
