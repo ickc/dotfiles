@@ -56,6 +56,7 @@
           julia-bin
           less
           libimobiledevice
+          lux
           lynx
           mediainfo
           mediainfo-gui
@@ -67,11 +68,13 @@
           onefetch
           opencc
           pam-reattach
+          pandoc
           parallel
           pdf2svg
           potrace
           ranger
           rsync
+          shellcheck
           shfmt
           smartmontools
           sshuttle
@@ -87,6 +90,8 @@
           wget
           which
           wtf
+          youtube-dl
+          yt-dlp
         ];
 
       # Auto upgrade nix package and the daemon service.
