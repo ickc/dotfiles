@@ -134,6 +134,7 @@
         "Microsoft Outlook" = 985367838;
         "Motion" = 434290957;
         "MultiMarkdown Composer v4" = 1275176220;
+        "Notability" = 360593530;
         "Numbers" = 409203825;
         "OneDrive" = 823766827;
         "Pages" = 409201541;
