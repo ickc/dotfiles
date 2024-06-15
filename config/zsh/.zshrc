@@ -214,9 +214,9 @@ ml_conda() {
     # changing your PATH
     local __PATH__="${PATH}"
     # shellcheck disable=SC1091
-    . "${MAMBA_ROOT_PREFIX}/etc/profile.d/conda.sh"
+    . "${__CONDA_PREFIX}/etc/profile.d/conda.sh"
     # shellcheck disable=SC1091
-    . "${MAMBA_ROOT_PREFIX}/etc/profile.d/mamba.sh"
+    . "${__CONDA_PREFIX}/etc/profile.d/mamba.sh"
     export PATH="${__PATH__}"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
@@ -233,7 +233,7 @@ ml_conda() {
 }
 
 mu_conda() {
-    # from "${MAMBA_ROOT_PREFIX}/etc/profile.d/conda.sh"
+    # from "${__CONDA_PREFIX}/etc/profile.d/conda.sh"
     unset CONDA_EXE
     unset CONDA_PYTHON_EXE
     unset CONDA_SHLVL
@@ -406,7 +406,7 @@ ml() {
     # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
     ml_ghcup
     [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
-    [[ -n ${MAMBA_ROOT_PREFIX} ]] && ml_conda
+    [[ -n ${__CONDA_PREFIX} ]] && ml_conda
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
     [[ -d "${HOME}/.basher" ]] && ml_basher
     [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
