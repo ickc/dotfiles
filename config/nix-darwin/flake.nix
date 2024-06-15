@@ -112,6 +112,7 @@
         ];
       homebrew = {
         enable = true;
+        onActivation.cleanup = "zap";
         masApps = {
           "1Blocker" = 1365531024;
           "Amphetamine" = 937984704;
