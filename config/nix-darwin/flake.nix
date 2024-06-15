@@ -195,7 +195,6 @@
           "font-fontawesome"
           "font-gentium-plus"
           "font-han-nom-a"
-          "font-hanamina"
           "font-hasklug-nerd-font"
           "font-input"
           "font-jetbrains-mono-nerd-font"
