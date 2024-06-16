@@ -548,6 +548,11 @@ fi
 
 # alias ########################################################################
 
-if [[ ${__OSTYPE} == darwin && -f /Applications/JupyterLab.app/Contents/Resources/app/jlab ]]; then
-    alias jlab='bash /Applications/JupyterLab.app/Contents/Resources/app/jlab'
+if [[ ${__OSTYPE} == darwin ]]; then
+    if [[ -f /Applications/JupyterLab.app/Contents/Resources/app/jlab ]]; then
+        alias jlab='bash /Applications/JupyterLab.app/Contents/Resources/app/jlab'
+    fi
+    if [[ -e '/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code' ]]; then
+        alias code='/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin/code'
+    fi
 fi
