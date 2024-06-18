@@ -1,7 +1,3 @@
 allow_softlinks: false
 changeps1: false
 channel_priority: strict
-channels:
-  - conda-forge
-create_default_packages:
-  - pip
