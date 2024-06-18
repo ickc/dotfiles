@@ -307,7 +307,8 @@ ml_mactex() {
 if [[ -n ${NERSC_HOST} ]]; then
     ml_host() {
         # https://docs.nersc.gov/current/#ongoing-issues
-        module load fast-mkl-amd
+        [[ ${NERSC_HOST} == perlmutter ]] && module load fast-mkl-amd
+        path_prepend_all /global/homes/k/khcheung/micromamba/envs/system
     }
     ml_toast() {
         module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
