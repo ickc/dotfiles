@@ -219,6 +219,9 @@ ml_conda() {
     . "${__CONDA_PREFIX}/etc/profile.d/mamba.sh"
     export PATH="${__PATH__}"
 
+    # just put conda and mamba in the PATH
+    path_prepend "${__CONDA_PREFIX}/condabin"
+
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
     if [[ -n ${NERSC_HOST} ]]; then
         conda_envs_path_prepend "${CMN}/polar/opt/conda/envs"
