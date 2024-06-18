@@ -308,7 +308,8 @@ if [[ -n ${NERSC_HOST} ]]; then
     ml_host() {
         # https://docs.nersc.gov/current/#ongoing-issues
         [[ ${NERSC_HOST} == perlmutter ]] && module load fast-mkl-amd
-        path_prepend_all /global/homes/k/khcheung/micromamba/envs/system
+        path_prepend_all /global/common/software/polar/opt/system
+        path_prepend_all /global/common/software/polar/opt/local
     }
     ml_toast() {
         module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
