@@ -63,19 +63,7 @@ __PREFERRED_SHELL=zsh
 if [[ -n ${NERSC_HOST} ]]; then
     __PREFERRED_SHELL=bash
     __HOST="${NERSC_HOST}"
-    # TODO: update by running
-    # module load python; . activate && echo ${CONDA_PREFIX}
-    # or scan everything:
-    #  find /global/common/software -type d -name bin -exec sh -c 'for dir; do [[ -x "${dir}/mamba" ]] && [[ -x "${dir}/conda" ]] && [[ -x "${dir}/activate" ]] && echo "${dir}"; done' sh {} + 2>/dev/null
-    # e.g.
-    # /global/common/software/lsst/gitlab/td_env-prod/stable/conda
-    # /global/common/software/lsst/gitlab/td_env-dev/dev/conda
-    # /global/common/software/lsst/gitlab/desc-stack-weekly/weekly-latest/conda
-    # /global/common/software/lsst/gitlab/desc-python-prod/prod
-    # /global/common/software/lsst/gitlab/desc-forecasts-int/prod/py
-    # /global/common/software/lsst/gitlab/desc-python-dev/dev
-    # /global/common/software/sobs/perlmutter/conda_base
-    __CONDA_PREFIX=/global/common/software/sobs/perlmutter/conda_base
+    __CONDA_PREFIX=/global/common/software/polar/opt/miniforge3
     # CFS=/global/cfs/cdirs
     export CMN=/global/common/software
 else
