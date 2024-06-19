@@ -126,8 +126,9 @@ else
             if [[ ${__OSTYPE} == darwin ]]; then
                 SCRATCH="${SCRATCH:-${HOME}/scratch}"
 
-                conda_prefix="${HOME}/.mambaforge"
-                command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
+                for conda_prefix in "${HOME}/.mambaforge" /opt/miniforge3; do
+                    command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
+                done
                 unset conda_prefix
             fi
             ;;
