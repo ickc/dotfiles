@@ -15,13 +15,15 @@ all: \
 	hyper \
 	mpv \
 	powerlevel10k \
-	shell
+	shell \
+	taskfile
 .PHONY: \
 	config \
 	hyper \
 	mpv \
 	powerlevel10k \
-	shell
+	shell \
+	taskfile
 config:
 	if [[ -d $(XDG_CONFIG_HOME) ]]; then \
 		find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete; \
@@ -33,6 +35,7 @@ hyper: ; ln -sf $(PWD)/home/.hyper.js ~
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true
 powerlevel10k: ; ln -sf $(PWD)/home/.p10k.zsh ~
 shell: ; ln -sf $(PWD)/config/zsh/.zshenv ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~
+taskfile: ; ln -sf $(PWD)/home/Taskfile.yml ~
 
 .PHONY: remove
 remove: \
@@ -40,18 +43,21 @@ remove: \
 	hyper-remove \
 	mpv-remove \
 	powerlevel10k-remove \
-	shell-remove
+	shell-remove \
+	taskfile-remove
 .PHONY: \
 	config-remove \
 	hyper-remove \
 	mpv-remove \
 	powerlevel10k-remove \
-	shell-remove
+	shell-remove \
+	taskfile-remove
 config-remove: ; rm -f $(XDG_CONFIG_HOME) || true
 hyper-remove: ; rm -f ~/.hyper.js
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf
 powerlevel10k-remove: ; rm -f ~/.p10k.zsh
 shell-remove: ; rm -rf ~/.bash_profile ~/.bashrc ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshenv ~/.zshrc
+taskfile-remove: ; rm -f ~/Taskfile.yml
 
 # update dotfiles from upstream ########################################
 
