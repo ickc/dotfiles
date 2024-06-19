@@ -232,6 +232,9 @@ ml_conda() {
         if [[ ${BLACKETT_HOST} == vm77 ]]; then
             conda_envs_path_append /opt
         fi
+    elif [[ $__OSTYPE == darwin ]]; then
+        conda_envs_path_prepend /opt/conda/envs
+        conda_envs_path_prepend ~/.mambaforge/envs
     fi
 }
 
