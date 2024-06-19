@@ -1,0 +1,8 @@
+version: '3'
+tasks:
+  format-nix:
+    desc: Format all nix files in the project
+    dir: '{{.USER_WORKING_DIR}}'
+    cmds:
+      - |
+        find . -name '*.nix' -exec nixfmt {} +
