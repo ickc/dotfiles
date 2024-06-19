@@ -169,6 +169,7 @@
               "Vinegar" = 1591303229;
               "Xcode" = 497799835;
             };
+            brews = [ "llama.cpp" ];
             casks = [
               "accordance"
               "adobe-creative-cloud"
