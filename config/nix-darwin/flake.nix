@@ -74,7 +74,7 @@
           mpv
           nano
           neofetch
-          nixfmt
+          nixfmt-rfc-style
           nmap
           onefetch
           openai-whisper-cpp
