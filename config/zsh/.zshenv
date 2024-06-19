@@ -122,8 +122,9 @@ else
             SCRATCH="/tank/scratch/${USER}"
             ;;
         *)
+            # this should be systems I have sudo access to
             __HOST="${HOSTNAME}"
-            SCRATCH="${SCRATCH:-${HOME}/scratch}"
+            SCRATCH="${SCRATCH:-/var/scratch/${USER}}"
 
             for conda_prefix in "${HOME}/.mambaforge" "${HOME}/.miniforge3" /opt/miniforge3; do
                 command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
