@@ -10,6 +10,8 @@ config/jupyter/*
 !config/jupyter/jupyter_lab_config.py
 config/mpv/input.conf
 config/mpv/shaders
+config/parallel/*
+!/config/parallel/will-cite
 config/zed/*
 !config/zed/settings.json
 config/zsh/.env
