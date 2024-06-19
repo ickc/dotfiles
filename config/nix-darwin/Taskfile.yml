@@ -1,0 +1,7 @@
+version: '3'
+
+tasks:
+  update:mas:
+    desc: 'List all installed apps from the Mac App Store in nix flake format.'
+    cmds:
+      - ./mas2nix.py flake.nix
