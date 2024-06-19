@@ -413,7 +413,7 @@ ml() {
     # * load all installed environments
     # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
     ml_ghcup
-    # [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
+    [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
     [[ -n ${__CONDA_PREFIX} ]] && ml_conda
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
     [[ -d "${HOME}/.basher" ]] && ml_basher
