@@ -247,6 +247,10 @@ mu_conda() {
     unset _CE_M
 }
 
+ml_pixi() {
+    path_prepend_all "${PIXI_HOME}"
+}
+
 ml_basher() {
     path_prepend "${BASHER_ROOT}/cellar/bin"
     # shellcheck disable=SC1090
@@ -415,6 +419,7 @@ ml() {
     ml_ghcup
     [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
     [[ -n ${__CONDA_PREFIX} ]] && ml_conda
+    [[ -n ${PIXI_HOME} ]] && ml_pixi
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
     [[ -d "${HOME}/.basher" ]] && ml_basher
     [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
