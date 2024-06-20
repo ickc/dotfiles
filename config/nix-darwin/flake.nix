@@ -21,7 +21,6 @@
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
             bat
-            binutils
             bottom
             btop
             clang-tools
