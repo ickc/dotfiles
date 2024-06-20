@@ -1,3 +1,4 @@
+.aider.*
 *.log
 *.zip
 config/bottom/bottom.toml
