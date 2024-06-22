@@ -260,6 +260,7 @@
               "obsidian"
               "r"
               "raindropio"
+              "rectangle"
               "rstudio"
               "sdformatter"
               "signal"
