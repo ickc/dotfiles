@@ -271,7 +271,7 @@
               "visual-studio-code"
               "vlc"
               "wezterm"
-              "whatsapp-beta"
+              "whatsapp"
               "windscribe"
               "xquartz"
               "yattee"
