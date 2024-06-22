@@ -289,7 +289,14 @@
           nix.settings.experimental-features = "nix-command flakes";
 
           # Create /etc/zshrc that loads the nix-darwin environment.
-          programs.zsh.enable = true; # default shell on catalina
+          programs.zsh = {
+            enable = true; # default shell on catalina
+            enableBashCompletion = false;
+            enableCompletion = false;
+            enableFzfCompletion = true;
+            enableFzfHistory = true;
+            promptInit = "";
+          };
           # programs.fish.enable = true;
 
           security.pam.enableSudoTouchIdAuth = true;
@@ -374,9 +381,7 @@
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#simple
-      darwinConfigurations."simple" = nix-darwin.lib.darwinSystem {
-        modules = [ configuration ];
-      };
+      darwinConfigurations."simple" = nix-darwin.lib.darwinSystem { modules = [ configuration ]; };
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."simple".pkgs;
