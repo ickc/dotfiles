@@ -24,10 +24,9 @@
             bat
             bottom
             btop
-            clang-tools
+            clang-tools_18
             cmake
             coreutils
-            darwin.iproute2mac
             difftastic
             diffutils
             dua
@@ -37,14 +36,15 @@
             exiftool
             f3
             fastfetch
+            fastgron
             ffmpeg_7
+            file
             findutils
             fzf
             gawk
             gh
             ghostscript
             git
-            glances
             gnugrep
             gnumake
             gnupatch
@@ -54,34 +54,29 @@
             go-task
             gpsbabel
             graphviz
-            gron
             gzip
-            highlight
             html-tidy
             htop
             hyperfine
             imagemagick
-            imagemagick
             inetutils
-            iperf3
+            iperf
             joshuto
             jq
             julia-bin
             less
+            libarchive
             libimobiledevice
             lmstudio
             lsd
             lux
-            lynx
             mactop
             mediainfo
             mediainfo-gui
-            memtester
             minify
             mosh
             mpv
             nano
-            neofetch
             nixfmt-rfc-style
             nmap
             onefetch
@@ -93,8 +88,7 @@
             pdf2svg
             pixi
             potrace
-            qmk
-            ranger
+            procps
             rsync
             shellcheck
             shfmt
@@ -102,15 +96,11 @@
             sshuttle
             starship
             streamlink
-            subversion
             time
             tmux
-            tree
             units
-            unzip
             w3m
             wakeonlan
-            watch
             wdiff
             wget
             which
