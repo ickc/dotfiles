@@ -43,6 +43,7 @@
             findutils
             fzf
             gawk
+            gcc14
             gh
             ghostscript
             git
