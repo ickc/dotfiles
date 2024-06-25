@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 
-from pathlib import Path
 import re
+from collections import defaultdict
+from pathlib import Path
 
 import defopt
 import pandas as pd
+import yaml
+import yamlloader
 
 
 def get_executable_paths(
@@ -30,12 +33,16 @@ def get_package_install_name(p: str) -> str:
         return "pandoc"
     if p == "pam_reattach":
         return "pam-reattach"
+    if p == "bash-interactive":
+        return "bashInteractive"
     return p
 
 
 def parse_nix_path(
     path: Path,
-    version_regex: str = re.compile(r'^(?P<interpreter>(python|perl)[.0-9]+-)?(?P<package>.+?)(?P<version>-[-_.0-9p]+(pre)?)?(?P<date>\+date=[-0-9]+)?(?P<git>\+git[-0-9]+)?(?P<bin>-bin)?$'),
+    version_regex: str = re.compile(
+        r"^(?P<interpreter>(python|perl)[.0-9]+-)?(?P<package>.+?)(?P<version>-[-_.0-9p]+(pre)?)?(?P<date>\+date=[-0-9]+)?(?P<git>\+git[-0-9]+)?(?P<bin>-bin)?$"
+    ),
 ) -> list[str | Path]:
     """Parse a nix path."""
     command = path.name
@@ -50,13 +57,13 @@ def parse_nix_path(
     if not match:
         raise ValueError(f"Invalid format for: {symbolink_name}")
     groups = match.groupdict()
-    
-    interpreter = groups['interpreter']
-    package = groups['package']
-    version = groups['version']
-    date = groups['date']
-    git = groups['git']
-    is_bin = not groups['bin']
+
+    interpreter = groups["interpreter"]
+    package = groups["package"]
+    version = groups["version"]
+    date = groups["date"]
+    git = groups["git"]
+    is_bin = not groups["bin"]
     if interpreter:
         interpreter = interpreter[:-1]
     if version:
@@ -65,14 +72,39 @@ def parse_nix_path(
         date = date[6:]
     if git:
         git = git[5:]
-    return [command, get_package_install_name(package), interpreter, package, version, date, git, is_bin, path]
+    return [
+        command,
+        get_package_install_name(package),
+        interpreter,
+        package,
+        version,
+        date,
+        git,
+        is_bin,
+        path,
+    ]
 
 
 def parse_nix_paths(
     nix_bin_dir: Path = Path("/run/current-system/sw/bin"),
 ) -> pd.DataFrame:
     paths = get_executable_paths(nix_bin_dir)
-    return pd.DataFrame((parse_nix_path(path) for path in paths), columns=["executable", "install", "interpreter", "package", "version", "date", "git", "is_bin", "path"])
+    df = pd.DataFrame(
+        (parse_nix_path(path) for path in paths),
+        columns=[
+            "executable",
+            "install",
+            "interpreter",
+            "package",
+            "version",
+            "date",
+            "git",
+            "is_bin",
+            "path",
+        ],
+    )
+    df.set_index("executable", inplace=True)
+    return df
 
 
 def read_environment_systemPackages(
@@ -109,12 +141,47 @@ def command2package(
     *,
     nix_bin_dir: Path = Path("/run/current-system/sw/bin"),
 ) -> None:
+    """Write the command to package mapping to a file."""
     df = parse_nix_paths(nix_bin_dir)
-    df.to_csv(path, index=False)
+    df.to_csv(path)
+
+
+def package2command(
+    path: Path,
+    *,
+    flake_path: Path = Path("flake.nix"),
+    nix_bin_dir: Path = Path("/run/current-system/sw/bin"),
+) -> None:
+    """Write the package to command mapping to a file."""
+    packages = set(p.split("_")[0] for p in read_environment_systemPackages(flake_path))
+    df = parse_nix_paths(nix_bin_dir)
+
+    installed = set(df.install.tolist())
+    excess = installed - packages
+    if excess:
+        print(f"Installed but not in {flake_path}:")
+        for i in sorted(excess):
+            print(f"\t{i}")
+    no_bin = packages - installed
+    if no_bin:
+        print(f"Installed but not in {nix_bin_dir}:")
+        for i in sorted(no_bin):
+            print(f"\t{i}")
+
+    res = defaultdict(list)
+    for name, row in df.iterrows():
+        # if row.install in packages:
+        res[row.install].append(name)
+        # else:
+        #     print(f"Ignored: {row.install}\t{name}")
+    # sort dict and its values
+    res = {k: sorted(v) for k, v in sorted(res.items())}
+    with path.open("w", encoding="utf-8") as f:
+        yaml.dump(res, f, Dumper=yamlloader.ordereddict.CSafeDumper)
 
 
 def cli() -> None:
-    defopt.run(command2package)
+    defopt.run([command2package, package2command])
 
 
 if __name__ == "__main__":
