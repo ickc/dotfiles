@@ -21,6 +21,7 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
+            bashInteractive
             bat
             bottom
             btop
@@ -108,6 +109,7 @@
             youtube-dl
             yt-dlp
             zellij
+            zsh
           ];
           homebrew = {
             enable = true;
@@ -277,6 +279,10 @@
           # Necessary for using flakes on this system.
           nix.settings.experimental-features = "nix-command flakes";
 
+          programs.bash = {
+            enable = true;
+            enableCompletion = true;
+          };
           # Create /etc/zshrc that loads the nix-darwin environment.
           programs.zsh = {
             enable = true; # default shell on catalina
