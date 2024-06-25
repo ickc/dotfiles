@@ -1,4 +1,5 @@
 .aider.*
+*.csv
 *.log
 *.zip
 config/bottom/bottom.toml
