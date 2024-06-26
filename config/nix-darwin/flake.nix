@@ -92,6 +92,7 @@
             potrace
             procps
             rsync
+            rustup
             shellcheck
             shfmt
             smartmontools
