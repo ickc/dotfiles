@@ -110,6 +110,7 @@
             sshuttle
             starship
             streamlink
+            stylish-haskell
             time
             tmux
             tokei
