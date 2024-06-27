@@ -35,6 +35,8 @@ def get_package_install_name(p: str) -> str:
         return "pam-reattach"
     if p == "bash-interactive":
         return "bashInteractive"
+    if p == "gcc-wrapper":
+        return "gcc14"
     return p
 
 
