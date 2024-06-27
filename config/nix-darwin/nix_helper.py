@@ -17,27 +17,25 @@ def get_executable_paths(
     return [path.readlink() for path in nix_bin_dir.iterdir()]
 
 
-def get_package_install_name(p: str) -> str:
-    """Get the package install name by patching it manually."""
-    if p == "Image-ExifTool":
-        return "exiftool"
-    if p == "mpv-with-scripts":
-        return "mpv"
-    if p == "patch":
-        return "gnupatch"
-    if p == "nixfmt-unstable":
-        return "nixfmt-rfc-style"
-    if p == "whisper-cpp":
-        return "openai-whisper-cpp"
-    if p == "pandoc-cli":
-        return "pandoc"
-    if p == "pam_reattach":
-        return "pam-reattach"
-    if p == "bash-interactive":
-        return "bashInteractive"
-    if p == "gcc-wrapper":
-        return "gcc14"
-    return p
+def get_package_install_name(name: str) -> str:
+    """Get the package install name by looking it up in a dictionary."""
+    return {
+        "bash-interactive": "bashInteractive",
+        "batdiff": "bat-extras.batdiff",
+        "batgrep": "bat-extras.batgrep",
+        "batman": "bat-extras.batman",
+        "batpipe": "bat-extras.batpipe",
+        "batwatch": "bat-extras.batwatch",
+        "gcc-wrapper": "gcc14",
+        "Image-ExifTool": "exiftool",
+        "mpv-with-scripts": "mpv",
+        "nixfmt-unstable": "nixfmt-rfc-style",
+        "pam_reattach": "pam-reattach",
+        "pandoc-cli": "pandoc",
+        "patch": "gnupatch",
+        "prettybat": "bat-extras.prettybat",
+        "whisper-cpp": "openai-whisper-cpp",
+    }.get(name, name)
 
 
 def parse_nix_path(
