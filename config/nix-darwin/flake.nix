@@ -53,6 +53,7 @@
             gawk
             gcc14
             gh
+            ghc
             ghostscript
             git
             gnugrep
