@@ -23,11 +23,18 @@
           environment.systemPackages = with pkgs; [
             bashInteractive
             bat
+            bat-extras.batdiff
+            bat-extras.batgrep
+            bat-extras.batman
+            bat-extras.batpipe
+            bat-extras.batwatch
+            bat-extras.prettybat
             bottom
             btop
             clang-tools_18
             cmake
             coreutils
+            delta
             difftastic
             diffutils
             dua
@@ -38,6 +45,7 @@
             f3
             fastfetch
             fastgron
+            fd
             ffmpeg_7
             file
             findutils
@@ -91,8 +99,10 @@
             pixi
             potrace
             procps
+            ripgrep
             rsync
             rustup
+            sd
             shellcheck
             shfmt
             smartmontools
@@ -101,6 +111,7 @@
             streamlink
             time
             tmux
+            tokei
             units
             w3m
             wakeonlan
