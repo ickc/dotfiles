@@ -90,6 +90,8 @@
             nano
             nixfmt-rfc-style
             nmap
+            nodejs_22
+            nodePackages_latest.prettier
             onefetch
             openai-whisper-cpp
             opencc
