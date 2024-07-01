@@ -116,6 +116,7 @@
             time
             tmux
             tokei
+            typescript
             units
             w3m
             wakeonlan
