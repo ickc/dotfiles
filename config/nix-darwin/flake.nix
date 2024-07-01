@@ -80,6 +80,8 @@
             libimobiledevice
             lmstudio
             lsd
+            lua54Packages.lua
+            lua54Packages.luarocks
             lux
             mactop
             mediainfo
@@ -113,6 +115,7 @@
             starship
             streamlink
             stylish-haskell
+            stylua
             time
             tmux
             tokei
