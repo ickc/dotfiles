@@ -78,6 +78,7 @@
             less
             libarchive
             libimobiledevice
+            librsvg
             lmstudio
             lsd
             lua54Packages.lua
