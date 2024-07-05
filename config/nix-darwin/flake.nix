@@ -31,8 +31,6 @@
             bat-extras.prettybat
             bottom
             btop
-            clang-tools_18
-            cmake
             coreutils
             delta
             devbox
@@ -52,9 +50,7 @@
             findutils
             fzf
             gawk
-            gcc14
             gh
-            ghc
             ghostscript
             git
             gnugrep
@@ -62,7 +58,6 @@
             gnupatch
             gnused
             gnutar
-            go
             go-task
             gpsbabel
             graphviz
@@ -75,15 +70,12 @@
             iperf
             joshuto
             jq
-            julia-bin
             less
             libarchive
             libimobiledevice
             librsvg
             lmstudio
             lsd
-            lua54Packages.lua
-            lua54Packages.luarocks
             lux
             mactop
             mediainfo
@@ -108,7 +100,6 @@
             procps
             ripgrep
             rsync
-            rustup
             sd
             shellcheck
             shfmt
@@ -116,12 +107,9 @@
             sshuttle
             starship
             streamlink
-            stylish-haskell
-            stylua
             time
             tmux
             tokei
-            typescript
             units
             w3m
             wakeonlan
