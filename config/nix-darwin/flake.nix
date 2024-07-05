@@ -35,6 +35,7 @@
             cmake
             coreutils
             delta
+            devbox
             difftastic
             diffutils
             dua
