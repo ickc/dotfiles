@@ -251,15 +251,6 @@ ml_pixi() {
     path_prepend_all "${PIXI_HOME}"
 }
 
-ml_lua() {
-    eval $(luarocks path)
-}
-
-mu_lua() {
-    unset LUA_PATH
-    unset LUA_CPATH
-}
-
 ml_basher() {
     path_prepend "${BASHER_ROOT}/cellar/bin"
     # shellcheck disable=SC1090
@@ -434,7 +425,6 @@ ml() {
     [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
     command -v ml_host > /dev/null 2>&1 && ml_host
-    command -v luarocks > /dev/null 2>&1 && ml_lua
 
     if [[ ${__OSTYPE} == darwin ]]; then
         if [[ -d /Library/TeX/texbin ]]; then
@@ -476,7 +466,6 @@ mu() {
     fi
 
     mu_conda
-    mu_lua
     ml_ls
 }
 
