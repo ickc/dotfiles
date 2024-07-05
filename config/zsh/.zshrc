@@ -251,6 +251,10 @@ ml_pixi() {
     path_prepend_all "${PIXI_HOME}"
 }
 
+ml_devbox() {
+    eval "$(devbox global shellenv --init-hook)"
+}
+
 ml_basher() {
     path_prepend "${BASHER_ROOT}/cellar/bin"
     # shellcheck disable=SC1090
