@@ -280,7 +280,7 @@
               "yattee"
               "zed"
               "zerotier-one"
-              "zotero"
+              "zotero@beta"
             ];
           };
 
