@@ -34,7 +34,6 @@
             coreutils
             delta
             devbox
-            devenv
             difftastic
             diffutils
             dua
