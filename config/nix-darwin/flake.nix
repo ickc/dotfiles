@@ -254,7 +254,6 @@
               "makemkv"
               "marked"
               "microsoft-auto-update"
-              "microsoft-edge"
               "musescore"
               "namechanger"
               "netdownloadhelpercoapp"
