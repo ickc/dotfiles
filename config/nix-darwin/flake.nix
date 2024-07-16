@@ -117,7 +117,6 @@
             wget
             which
             wtf
-            youtube-dl
             yt-dlp
             zellij
             zsh
