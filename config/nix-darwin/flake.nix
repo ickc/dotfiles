@@ -238,6 +238,7 @@
               "google-drive"
               "handbrake"
               "inkscape"
+              "jan"
               "jetbrains-toolbox"
               "jordanbaird-ice"
               "keepassxc"
