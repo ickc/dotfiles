@@ -278,6 +278,7 @@
               "xquartz"
               "yattee"
               "zed"
+              "zed@preview"
               "zerotier-one"
               "zotero@beta"
             ];
