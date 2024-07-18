@@ -7,15 +7,16 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "buffer_font_family": "JetBrainsMono Nerd Font",
-  "show_whitespaces": "all",
-  "soft_wrap": "editor_width",
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false
-  },
-  "terminal": {
-    "alternate_scroll": "on"
-  },
-  "theme": "Gruvbox Light Soft"
+    "buffer_font_family": "JetBrainsMono Nerd Font",
+    "show_whitespaces": "all",
+    "soft_wrap": "editor_width",
+    "tab_size": 4,
+    "telemetry": {
+        "diagnostics": false,
+        "metrics": false
+    },
+    "terminal": {
+        "alternate_scroll": "on"
+    },
+    "theme": "Gruvbox Light Soft"
 }
