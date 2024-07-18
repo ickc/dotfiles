@@ -7,9 +7,6 @@
 # for non-compute system, SCRATCH can be undefined
 # CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
-# shellcheck disable=SC1091
-[[ -e "${ZDOTDIR}/.env" ]] && . "${ZDOTDIR}/.env"
-
 # __OSTYPE detection ###################################################
 
 # set __OSTYPE as normalized OSTYPE
@@ -241,3 +238,8 @@ export \
     SMAN_EXEC_CONFIRM=false \
     SMAN_SNIPPET_DIR="${HOME}/git/source/sman-snippets" \
     ZIM_HOME="${HOME}/.zim"
+
+# misc #################################################################
+
+# shellcheck disable=SC1091
+[[ -e "${ZDOTDIR}/.env" ]] && . "${ZDOTDIR}/.env"
