@@ -237,9 +237,11 @@
               "google-chrome"
               "google-drive"
               "handbrake"
+              "heynote"
               "inkscape"
               "jan"
               "jetbrains-toolbox"
+              "joplin"
               "jordanbaird-ice"
               "keepassxc"
               "keka"
@@ -280,6 +282,7 @@
               "zed"
               "zed@preview"
               "zerotier-one"
+              "zettlr"
               "zotero@beta"
             ];
           };
