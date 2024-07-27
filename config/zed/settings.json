@@ -8,6 +8,7 @@
 // from the command palette or from `Zed` application menu.
 {
     "buffer_font_family": "JetBrainsMono Nerd Font",
+    "format_on_save": "off",
     "show_whitespaces": "all",
     "soft_wrap": "editor_width",
     "tab_size": 4,
