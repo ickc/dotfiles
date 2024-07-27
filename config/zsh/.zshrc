@@ -233,8 +233,8 @@ ml_conda() {
             conda_envs_path_append /opt
         fi
     elif [[ ${__OSTYPE} == darwin ]]; then
-        conda_envs_path_prepend /opt/conda/envs
         conda_envs_path_prepend ~/.mambaforge/envs
+        conda_envs_path_prepend /opt/conda/envs
     fi
 }
 
