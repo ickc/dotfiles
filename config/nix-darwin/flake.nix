@@ -34,6 +34,7 @@
             coreutils
             delta
             devbox
+            diffoscope
             difftastic
             diffutils
             dua
