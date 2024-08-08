@@ -92,7 +92,6 @@
             openai-whisper-cpp
             opencc
             pam-reattach
-            pandoc
             parallel
             pdf2svg
             pixi
@@ -174,6 +173,7 @@
             };
             brews = [
               "llama.cpp"
+              "pandoc"
               "verapdf"
             ];
             casks = [
