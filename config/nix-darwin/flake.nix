@@ -287,7 +287,7 @@
               "zed@preview"
               "zerotier-one"
               "zettlr"
-              "zotero@beta"
+              "zotero"
             ];
           };
 
