@@ -31,6 +31,7 @@
             bat-extras.prettybat
             bottom
             btop
+            code2prompt
             coreutils
             delta
             devbox
