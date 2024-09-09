@@ -262,6 +262,7 @@
               "makemkv"
               "marked"
               "microsoft-auto-update"
+              "microsoft-teams"
               "musescore"
               "namechanger"
               "netdownloadhelpercoapp"
