@@ -128,6 +128,7 @@
             onActivation.cleanup = "zap";
             masApps = {
               "1Blocker" = 1365531024;
+              "Aiko" = 1672085276;
               "Amphetamine" = 937984704;
               "Compressor" = 424390742;
               "Deliveries" = 290986013;
@@ -136,6 +137,7 @@
               "EasyRes" = 688211836;
               "Final Cut Pro" = 424389933;
               "forScore" = 363738376;
+              "FreeChat" = 6458534902;
               "GarageBand" = 682658836;
               "HACK" = 1464477788;
               "iThoughtsX" = 720669838;
