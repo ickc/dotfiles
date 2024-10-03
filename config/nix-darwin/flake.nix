@@ -90,6 +90,7 @@
             nodejs_22
             nodePackages_latest.prettier
             onefetch
+            openai-whisper
             openai-whisper-cpp
             opencc
             pam-reattach
