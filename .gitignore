@@ -17,6 +17,7 @@ config/mpv/shaders
 config/nix-darwin/*.yml
 config/parallel/*
 !/config/parallel/will-cite
+config/whisper.cpp/
 config/zed/*
 !config/zed/settings.json
 config/zsh/.env
