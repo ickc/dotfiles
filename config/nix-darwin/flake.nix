@@ -195,6 +195,7 @@
               "calibre"
               "chatgpt"
               "cheatsheet"
+              "claude"
               "dataspell"
               "detexify"
               "discord"
