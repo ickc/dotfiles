@@ -200,6 +200,7 @@
               "detexify"
               "discord"
               "disk-inventory-x"
+              "displaylink"
               "dropbox"
               "dupeguru"
               "eloston-chromium"
