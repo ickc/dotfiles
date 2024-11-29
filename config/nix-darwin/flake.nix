@@ -173,6 +173,7 @@
               "uBlacklist for Safari" = 1547912640;
               "URL Linker" = 1289119450;
               "Vinegar" = 1591303229;
+              "Windows App" = 1295203466;
               "Xcode" = 497799835;
             };
             brews = [
