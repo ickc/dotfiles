@@ -6,6 +6,15 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    # Optional: Declarative tap management
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
   };
 
   outputs =
@@ -14,6 +23,8 @@
       nixpkgs,
       nix-darwin,
       nix-homebrew,
+      homebrew-core,
+      homebrew-cask,
     }:
     let
       configuration =
@@ -420,8 +431,15 @@
               enable = true;
               enableRosetta = false;
               user = "kolen";
+              # Optional: Declarative tap management
+              taps = {
+                "homebrew/homebrew-core" = homebrew-core;
+                "homebrew/homebrew-cask" = homebrew-cask;
+              };
               # Automatically migrate existing Homebrew installations
               autoMigrate = true;
+              # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
+              mutableTaps = true;
             };
           }
         ];
