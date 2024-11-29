@@ -48,7 +48,7 @@
             coreutils
             delta
             devbox
-            diffoscope
+            # diffoscope
             difftastic
             diffutils
             dua
@@ -302,7 +302,7 @@
               "vlc"
               "wezterm"
               "whatsapp"
-              "windscribe"
+              # "windscribe"
               "xquartz"
               "yattee"
               "zed"
