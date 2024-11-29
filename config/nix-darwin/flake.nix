@@ -154,7 +154,6 @@
               "MultiMarkdown Composer" = 1275176220;
               "Notability" = 360593530;
               "Numbers" = 409203825;
-              # "OneDrive" = 823766827;
               "Pages" = 409201541;
               "Prime Video" = 545519333;
               "Rakuten Cash Back" = 1451893560;
