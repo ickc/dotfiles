@@ -327,7 +327,7 @@
 
           programs.bash = {
             enable = true;
-            enableCompletion = true;
+            completion.enable = true;
           };
           # Create /etc/zshrc that loads the nix-darwin environment.
           programs.zsh = {
