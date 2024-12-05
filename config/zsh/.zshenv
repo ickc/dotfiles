@@ -63,6 +63,13 @@ if [[ -n ${NERSC_HOST} ]]; then
     __CONDA_PREFIX=/global/common/software/polar/opt/miniforge3
     # CFS=/global/cfs/cdirs
     export CMN=/global/common/software
+elif [[ $USER == dc-cheu2 ]]; then
+    __PREFFERED_SHELL=bash
+    COSMA_HOST="${HOSTNAME}"
+    __HOST="${COSMA_HOST}"
+    # __CONDA_PREFIX=
+    export SCRATCH=/cosma5/data/durham/dc-cheu2
+    export CMN=/cosma/apps/durham/dc-cheu2
 else
     # set HOSTNAME by hostname if undefined
     if [[ -z ${HOSTNAME} ]]; then

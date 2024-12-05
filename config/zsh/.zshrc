@@ -341,6 +341,13 @@ if [[ -n ${NERSC_HOST} ]]; then
         TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
         conda activate "${TOAST_PREFIX}"
     }
+elif [[ -n ${COSMA_HOST} ]]; then
+    ml_host() {
+        module load cosma
+        if [[ -f /etc/bashrc ]]; then
+             . /etc/bashrc
+        fi
+    }
 elif [[ -n ${BLACKETT_HOST} ]]; then
     if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
         ml_host() {
@@ -491,6 +498,11 @@ else
     ml
 fi
 
+# copied from cosma's .bashrc
+# No core dumps
+ulimit -c 0
+# Limited stack size can cause segfaults with ifort
+ulimit -s unlimited
 # even if this doesn't mask the world readability
 # the parent directories should protect it already
 umask 022
