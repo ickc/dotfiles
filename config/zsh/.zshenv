@@ -67,7 +67,7 @@ elif [[ $USER == dc-cheu2 ]]; then
     __PREFERRED_SHELL=bash
     COSMA_HOST="${HOSTNAME}"
     __HOST="${COSMA_HOST}"
-    # __CONDA_PREFIX=
+    __CONDA_PREFIX="${HOME}/.mambaforge"
     export SCRATCH=/cosma5/data/durham/dc-cheu2
     export CMN=/cosma/apps/durham/dc-cheu2
 else
