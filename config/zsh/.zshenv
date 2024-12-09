@@ -64,7 +64,7 @@ if [[ -n ${NERSC_HOST} ]]; then
     # CFS=/global/cfs/cdirs
     export CMN=/global/common/software
 elif [[ $USER == dc-cheu2 ]]; then
-    __PREFFERED_SHELL=bash
+    __PREFERRED_SHELL=bash
     COSMA_HOST="${HOSTNAME}"
     __HOST="${COSMA_HOST}"
     # __CONDA_PREFIX=
