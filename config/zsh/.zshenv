@@ -60,16 +60,16 @@ __PREFERRED_SHELL=zsh
 if [[ -n ${NERSC_HOST} ]]; then
     __PREFERRED_SHELL=bash
     __HOST="${NERSC_HOST}"
-    __CONDA_PREFIX=/global/common/software/polar/opt/miniforge3
-    # CFS=/global/cfs/cdirs
     export CMN=/global/common/software
+    __CONDA_PREFIX="${CMN}/polar/opt/miniforge3"
+    # CFS=/global/cfs/cdirs
 elif [[ $USER == dc-cheu2 ]]; then
     __PREFERRED_SHELL=bash
     COSMA_HOST="${HOSTNAME}"
     __HOST="${COSMA_HOST}"
-    __CONDA_PREFIX="${HOME}/.mambaforge"
     export SCRATCH=/cosma5/data/durham/dc-cheu2
     export CMN=/cosma/apps/durham/dc-cheu2
+    __CONDA_PREFIX="${CMN}/opt/miniforge3"
 else
     # set HOSTNAME by hostname if undefined
     if [[ -z ${HOSTNAME} ]]; then
