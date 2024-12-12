@@ -169,8 +169,8 @@ export __HOST __PREFERRED_SHELL
 export XDG_CONFIG_HOME="${HOME}/.config"
 if [[ -n ${COSMA_HOST} ]]; then
     export \
-        XDG_DATA_HOME="${CMN}/.local/share" \
-        XDG_STATE_HOME="${CMN}/.local/state"
+        XDG_DATA_HOME="${CMN}/local/share" \
+        XDG_STATE_HOME="${CMN}/local/state"
 else
     export \
         XDG_DATA_HOME="${HOME}/.local/share" \
