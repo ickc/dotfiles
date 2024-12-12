@@ -17,6 +17,9 @@
     "languages": {
         "Markdown": {
             "show_inline_completions": false
+        },
+        "YAML": {
+            "tab_size": 2
         }
     },
     "show_inline_completions": true,
