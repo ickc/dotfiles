@@ -70,6 +70,7 @@ elif [[ $USER == dc-cheu2 ]]; then
     export SCRATCH=/cosma5/data/durham/dc-cheu2
     export CMN=/cosma/apps/durham/dc-cheu2
     __CONDA_PREFIX="${CMN}/opt/miniforge3"
+    export PIXI_HOME="${CMN}/opt/pixi"
 else
     # set HOSTNAME by hostname if undefined
     if [[ -z ${HOSTNAME} ]]; then
