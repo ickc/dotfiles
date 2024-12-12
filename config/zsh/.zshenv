@@ -166,13 +166,21 @@ export __HOST __PREFERRED_SHELL
 # https://wiki.archlinux.org/title/XDG_Base_Directory#Partial
 # https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
 
-export \
-    XDG_CONFIG_HOME="${HOME}/.config" \
-    XDG_DATA_HOME="${HOME}/.local/share" \
-    XDG_STATE_HOME="${HOME}/.local/state"
+export XDG_CONFIG_HOME="${HOME}/.config"
+if [[ -n ${COSMA_HOST} ]]; then
+    export \
+        XDG_DATA_HOME="${CMN}/.local/share" \
+        XDG_STATE_HOME="${CMN}/.local/state"
+else
+    export \
+        XDG_DATA_HOME="${HOME}/.local/share" \
+        XDG_STATE_HOME="${HOME}/.local/state"
+fi
 # as SCRATCH is subjected to be purged, only put cache in SCRATCH in sites
 if [[ (-n ${NERSC_HOST} || -n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
+elif [[ -n ${COSMA_HOST} ]]; then
+    export XDG_CACHE_HOME="${CMN}/.cache"
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
 fi
