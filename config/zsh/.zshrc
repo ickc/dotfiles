@@ -347,6 +347,8 @@ elif [[ -n ${COSMA_HOST} ]]; then
         if [[ -f /etc/bashrc ]]; then
              . /etc/bashrc
         fi
+        path_prepend_all /cosma/apps/durham/dc-cheu2/opt/system
+        path_prepend_all /cosma/apps/durham/dc-cheu2/opt/local
     }
 elif [[ -n ${BLACKETT_HOST} ]]; then
     if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
