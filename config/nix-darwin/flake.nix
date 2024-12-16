@@ -293,6 +293,7 @@
               "rectangle"
               "rstudio"
               "sdformatter"
+              "shortcat"
               "signal"
               "spotify"
               "steam"
