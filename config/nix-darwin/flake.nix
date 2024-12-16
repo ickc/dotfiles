@@ -292,6 +292,7 @@
               "raindropio"
               "rectangle"
               "rstudio"
+              "scoot"
               "sdformatter"
               "shortcat"
               "signal"
