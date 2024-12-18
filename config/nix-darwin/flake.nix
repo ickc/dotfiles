@@ -182,6 +182,7 @@
               "TaskPaper" = 1090940630;
               "The Camelizer" = 1532579087;
               "The Unarchiver" = 425424353;
+              "Toggl Track" = 1291898086;
               "Trello" = 1278508951;
               "uBlacklist for Safari" = 1547912640;
               "URL Linker" = 1289119450;
