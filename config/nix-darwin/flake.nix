@@ -257,6 +257,7 @@
               "font-tex-gyre-schola"
               "font-tex-gyre-termes-math"
               "font-tex-gyre-termes"
+              "ghostty"
               "gimp"
               "github"
               "google-chrome"
