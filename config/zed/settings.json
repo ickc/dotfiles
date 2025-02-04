@@ -10,7 +10,7 @@
     "assistant": {
         "default_model": {
             "provider": "copilot_chat",
-            "model": "o1-preview"
+            "model": "o1"
         },
         "version": "2"
     },
