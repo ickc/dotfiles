@@ -96,7 +96,6 @@
             mediainfo-gui
             minify
             mosh
-            mpv
             nano
             nixfmt-rfc-style
             nmap
@@ -192,6 +191,7 @@
             };
             brews = [
               "llama.cpp"
+              "mpv"
               "pandoc"
               "verapdf"
             ];
