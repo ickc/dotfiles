@@ -143,6 +143,7 @@
               "Aiko" = 1672085276;
               "Amphetamine" = 937984704;
               "Compressor" = 424390742;
+              "Copilot" = 6738511300;
               "Deliveries" = 290986013;
               "Disk Speed Test" = 425264550;
               "Drafts" = 1435957248;
@@ -154,6 +155,7 @@
               "HACK" = 1464477788;
               "iThoughtsX" = 720669838;
               "JPEGmini Pro" = 887163276;
+              "KeePassium" = 1435127111;
               "Keynote" = 409183694;
               "Logic Pro" = 634148309;
               "MainStage" = 634159523;
@@ -166,6 +168,7 @@
               "MultiMarkdown Composer" = 1275176220;
               "Notability" = 360593530;
               "Numbers" = 409203825;
+              "OneDrive" = 823766827;
               "Pages" = 409201541;
               "Prime Video" = 545519333;
               "Rakuten Cash Back" = 1451893560;
@@ -188,6 +191,7 @@
               "Vinegar" = 1591303229;
               "Windows App" = 1295203466;
               "Xcode" = 497799835;
+              "‎WhatsApp" = 310633997;
             };
             brews = [
               "llama.cpp"
