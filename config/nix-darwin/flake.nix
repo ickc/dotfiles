@@ -299,7 +299,7 @@
               "notion-calendar"
               "notion"
               "obsidian"
-              "onedrive"
+              # "onedrive"
               "r"
               "raindropio"
               "rectangle"
