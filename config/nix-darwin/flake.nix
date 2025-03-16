@@ -97,6 +97,7 @@
             minify
             mosh
             nano
+            nixd
             nixfmt-rfc-style
             nmap
             nodejs_22
