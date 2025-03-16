@@ -450,7 +450,7 @@
                 "homebrew/homebrew-bundle" = homebrew-bundle;
               };
               # Automatically migrate existing Homebrew installations
-              autoMigrate = true;
+              autoMigrate = false;
               # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
               mutableTaps = true;
             };
