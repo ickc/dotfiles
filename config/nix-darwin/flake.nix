@@ -445,14 +445,14 @@
               user = "kolen";
               # Optional: Declarative tap management
               taps = {
-                "homebrew/homebrew-core" = homebrew-core;
-                "homebrew/homebrew-cask" = homebrew-cask;
-                "homebrew/homebrew-bundle" = homebrew-bundle;
+                "homebrew/homebrew-core" = inputs.homebrew-core;
+                "homebrew/homebrew-cask" = inputs.homebrew-cask;
+                "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
               };
               # Automatically migrate existing Homebrew installations
               autoMigrate = false;
               # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-              mutableTaps = true;
+              mutableTaps = false;
             };
           }
         ];
