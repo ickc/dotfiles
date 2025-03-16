@@ -310,7 +310,7 @@
               "vlc"
               "wezterm"
               "whatsapp"
-              # "windscribe"
+              "windscribe"
               "xquartz"
               "yattee"
               "zed"
