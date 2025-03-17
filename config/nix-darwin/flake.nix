@@ -218,7 +218,6 @@
               "betterdisplay"
               "calibre"
               "chatgpt"
-              "cheatsheet"
               "claude"
               "dataspell"
               "detexify"
