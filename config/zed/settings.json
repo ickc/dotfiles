@@ -7,6 +7,14 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+    "edit_predictions": {
+        "mode": "subtle",
+        "copilot": {
+            "proxy": null,
+            "proxy_no_verify": null
+        },
+        "enabled_in_assistant": false
+    },
     "features": {
         "edit_prediction_provider": "zed"
     },
@@ -19,13 +27,13 @@
     },
     "languages": {
         "Markdown": {
-            "show_inline_completions": false
+            "show_edit_predictions": false
         },
         "YAML": {
             "tab_size": 2
         }
     },
-    "show_inline_completions": true,
+    "show_edit_predictions": true,
     "buffer_font_family": "JetBrainsMono Nerd Font",
     "format_on_save": "off",
     "show_whitespaces": "all",
