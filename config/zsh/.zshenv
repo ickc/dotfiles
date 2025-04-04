@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
-# These variables should exist on all systems:
+# * These variables should exist on all systems:
 # __CONDA_PREFIX
 # __PREFERRED_SHELL
-# SCRATCH
-# for non-compute system, SCRATCH can be undefined
-# CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
+# SCRATCH <- for non-compute system, SCRATCH can be undefined
+# * CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
 # __OSTYPE detection ###################################################
 
