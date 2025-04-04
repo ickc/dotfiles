@@ -6,11 +6,13 @@
 # SCRATCH <- for non-compute system, SCRATCH can be undefined
 # * CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
-# __OSTYPE detection ###################################################
+# __OSTYPE, __ARCH detection ###########################################
 
 # set __OSTYPE as normalized OSTYPE
 __OSTYPE="$(uname -s)"
 export __OSTYPE
+__ARCH="$(uname -m)"
+export __ARCH
 
 # __NCPU detection #####################################################
 # depends on __OSTYPE
