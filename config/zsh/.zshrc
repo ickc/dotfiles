@@ -223,14 +223,7 @@ ml_conda() {
     path_prepend "${__CONDA_PREFIX}/condabin"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
-    if [[ -n ${BLACKETT_HOST} ]]; then
-        conda_envs_path_prepend "${CVMFS_ROOT}/opt"
-        conda_envs_path_prepend "${CVMFS_ROOT}/conda"
-        conda_envs_path_prepend "${CVMFS_ROOT}/pmpm"
-        if [[ ${BLACKETT_HOST} == vm77 ]]; then
-            conda_envs_path_append /opt
-        fi
-    elif [[ ${__OSTYPE} == darwin ]]; then
+    if [[ ${__OSTYPE} == darwin ]]; then
         conda_envs_path_prepend ~/.mambaforge/envs
         conda_envs_path_prepend /opt/conda/envs
     fi
@@ -325,32 +318,8 @@ if [[ -n ${COSMA_HOST} ]]; then
         path_prepend_all /cosma/apps/durham/dc-cheu2/opt/system
         path_prepend_all /cosma/apps/durham/dc-cheu2/opt/local
     }
-elif [[ -n ${BLACKETT_HOST} ]]; then
-    if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-        ml_host() {
-            path_prepend_all "${CVMFS_ROOT}/usr"
-        }
-    else
-        ml_host() {
-            path_prepend_all /opt/local
-        }
-    fi
-    ml_intel() {
-        # shellcheck disable=SC1091
-        . "${CVMFS_ROOT}/opt/intel/oneapi/setvars.sh"
-    }
 else
     case "${__HOST}" in
-        simons1)
-            ml_host() {
-                # shellcheck disable=SC1091
-                . /usr/share/modules/init/zsh
-                module use --append /mnt/so1/shared/modules/
-            }
-            ml_toast() {
-                module load tod_stack_unstable
-            }
-            ;;
         kolen-server)
             ml_cuda() {
                 path_append /usr/local/cuda-11

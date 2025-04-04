@@ -56,7 +56,7 @@ export __NCPU
 # default to zsh unless overridden otherwise
 __PREFERRED_SHELL=zsh
 
-# priority: BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
+# priority: BOLO_HOST
 if [[ ${USER} == dc-cheu2 ]]; then
     __PREFERRED_SHELL=bash
     COSMA_HOST="${HOSTNAME}"
@@ -75,38 +75,6 @@ else
     # host-specific
     # define *_HOST for different computing sites
     case "${HOSTNAME}" in
-        vm77.tier2.hep.manchester.ac.uk)
-            export \
-                BLACKETT_HOST="${HOSTNAME%%.*}" \
-                HOMEBREW_CURL_PATH=/home/linuxbrew/.linuxbrew/bin/curl
-            __HOST="${BLACKETT_HOST}"
-            __CONDA_PREFIX=/opt/miniforge3
-            ;;
-        *.tier2.hep.manchester.ac.uk)
-            export \
-                BLACKETT_CVMFS_ENV=1 \
-                BLACKETT_HOST="${HOSTNAME%%.*}"
-            __HOST="${BLACKETT_HOST}"
-            ;;
-        cvmfs-uploader*.gridpp.rl.ac.uk)
-            export \
-                BLACKETT_CVMFS_ENV=1 \
-                BLACKETT_HOST="${HOSTNAME%%.*}"
-            __HOST="${BLACKETT_HOST}"
-            ;;
-        *.simonsobs.org)
-            export SO_HOST="${HOSTNAME%%.*}"
-            __HOST="${SO_HOST}"
-            ;;
-        simons1)
-            export \
-                CFS=/mnt/physicsso \
-                PRINCETON_HOST="${HOSTNAME}" \
-                WWW_DIR="/mnt/so1/public_html/${USER}"
-            __HOST="${PRINCETON_HOST}"
-            SCRATCH="/mnt/so1/users/${USER}"
-            __CONDA_PREFIX=${SCRATCH}/.mambaforge
-            ;;
         gordita.physics.berkeley.edu)
             export BOLO_HOST=gordita
             __HOST="${BOLO_HOST}"
@@ -132,21 +100,6 @@ else
             unset conda_prefix
             ;;
     esac
-    # site-specific
-    if [[ -n ${BLACKETT_HOST} ]]; then
-        export \
-            CVMFS_ROOT=/cvmfs/northgrid.gridpp.ac.uk/simonsobservatory \
-            XROOTD_ROOT=root://bohr3226.tier2.hep.manchester.ac.uk:1094//dpm/tier2.hep.manchester.ac.uk/home/souk.ac.uk
-        if [[ -n ${BLACKETT_CVMFS_ENV} ]]; then
-            __CONDA_PREFIX="${CVMFS_ROOT}/opt/miniforge3"
-        fi
-        if [[ -n ${_CONDOR_SCRATCH_DIR} ]]; then
-            SCRATCH="${_CONDOR_SCRATCH_DIR}"
-        fi
-    elif [[ -n ${SO_HOST} ]]; then
-        SCRATCH="/so/scratch/${USER}"
-        __CONDA_PREFIX="${HOME}/.mambaforge"
-    fi
     [[ -n ${SCRATCH} ]] && export SCRATCH
 fi
 export __HOST __PREFERRED_SHELL
@@ -171,7 +124,7 @@ else
         XDG_STATE_HOME="${HOME}/.local/state"
 fi
 # as SCRATCH is subjected to be purged, only put cache in SCRATCH in sites
-if [[ (-n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
+if [[ -n ${BOLO_HOST} && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 elif [[ -n ${COSMA_HOST} ]]; then
     export XDG_CACHE_HOME="${CMN}/.cache"
