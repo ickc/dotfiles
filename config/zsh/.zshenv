@@ -9,20 +9,7 @@
 # __OSTYPE detection ###################################################
 
 # set __OSTYPE as normalized OSTYPE
-# c.f. https://stackoverflow.com/a/18434831
-case "${OSTYPE}" in
-    linux*) __OSTYPE=linux ;;
-    darwin*) __OSTYPE=darwin ;;
-    freebsd*) __OSTYPE=freebsd ;;
-    *)
-        case "$(uname -s)" in
-            Linux) __OSTYPE=linux ;;
-            Darwin) __OSTYPE=darwin ;;
-            FreeBSD) __OSTYPE=freebsd ;;
-            *) __OSTYPE=unknown ;;
-        esac
-        ;;
-esac
+__OSTYPE="$(uname -s)"
 export __OSTYPE
 
 # __NCPU detection #####################################################
@@ -30,15 +17,15 @@ export __OSTYPE
 
 # c.f. https://stackoverflow.com/a/23378780/5769446
 case "${__OSTYPE}" in
-    linux)
+    Linux)
         # shellcheck disable=SC2312
         __NCPU="$(lscpu -p | grep -E -v '^#' | sort -u -t, -k 2,4 | wc -l)"
         ;;
-    darwin)
+    Darwin)
         # shellcheck disable=SC2312
         __NCPU="$(sysctl -n hw.physicalcpu_max)"
         ;;
-    freebsd)
+    FreeBSD)
         # shellcheck disable=SC2312
         __NCPU="$(sysctl -n hw.ncpu)"
         ;;
@@ -147,12 +134,12 @@ export \
 
 # set HOMEBREW_PREFIX if undefined and discovered
 if [[ -z ${HOMEBREW_PREFIX} ]]; then
-    if [[ ${__OSTYPE} == darwin ]]; then
+    if [[ ${__OSTYPE} == Darwin ]]; then
         for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
             command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
         done
         unset homebrew_prefix
-    elif [[ ${__OSTYPE} == linux ]]; then
+    elif [[ ${__OSTYPE} == Linux ]]; then
         for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
             command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
         done

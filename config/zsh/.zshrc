@@ -201,7 +201,7 @@ ml_conda() {
     path_prepend "${__CONDA_PREFIX}/condabin"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
-    if [[ ${__OSTYPE} == darwin ]]; then
+    if [[ ${__OSTYPE} == Darwin ]]; then
         conda_envs_path_prepend ~/.mambaforge/envs
         conda_envs_path_prepend /opt/conda/envs
     fi
@@ -312,7 +312,7 @@ else
             ml_toast_gnu() {
                 TOAST_PREFIX="${SCRATCH}/local/toast-gnu"
                 conda activate "${TOAST_PREFIX}/conda"
-                [[ ${__OSTYPE} == darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
+                [[ ${__OSTYPE} == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
                 ld_library_path_prepend "${TOAST_PREFIX}/compile/lib"
                 pythonpath_prepend "${TOAST_PREFIX}/compile/lib/python3.8/site-packages"
                 path_prepend "${TOAST_PREFIX}/compile/bin:${TOAST_PREFIX}/conda/bin"
@@ -361,7 +361,7 @@ ml() {
 
     command -v ml_host > /dev/null 2>&1 && ml_host
 
-    if [[ ${__OSTYPE} == darwin ]]; then
+    if [[ ${__OSTYPE} == Darwin ]]; then
         if [[ -d /Library/TeX/texbin ]]; then
             ml_mactex
         fi
@@ -501,7 +501,7 @@ fi
 
 # alias ########################################################################
 
-if [[ ${__OSTYPE} == darwin ]]; then
+if [[ ${__OSTYPE} == Darwin ]]; then
     if [[ -f /Applications/JupyterLab.app/Contents/Resources/app/jlab ]]; then
         alias jlab='bash /Applications/JupyterLab.app/Contents/Resources/app/jlab'
     fi
