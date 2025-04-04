@@ -2,8 +2,6 @@
 # shellcheck source=config/zsh/.zshenv
 
 # * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
-# * use `__PROMPT_THEME=[starship|powerlevel10k]` to set the prompt
-export __PROMPT_THEME="${__PROMPT_THEME:-starship}"
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 printf "\033]0;%s\007" "${__HOST%%.*}"
@@ -161,26 +159,6 @@ remove_home_local_bin_from_PATH() {
     PATH="$(echo "${PATH}" | tr ":" "\n" | grep -v "${HOME}/.local/bin" | tr "\n" ":")"
     export PATH
 }
-
-# Powerlevel10k ################################################################
-
-# fallback to starship if not in zsh
-if [[ ${__PROMPT_THEME} == powerlevel10k && -z ${ZSH_VERSION} ]]; then
-    __PROMPT_THEME=starship
-fi
-
-if [[ ${__PROMPT_THEME} == powerlevel10k ]]; then
-    # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-    # Initialization code that may require console input (password prompts, [y/n]
-    # confirmations, etc.) must go above this block; everything else may go below.
-    if [[ -r "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${USER}.zsh" ]]; then
-        # shellcheck disable=SC1090
-        source "${XDG_CACHE_HOME:-${HOME}/.cache}/p10k-instant-prompt-${USER}.zsh"
-    fi
-    # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-    # shellcheck disable=SC1090
-    [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-fi
 
 # "module" functions ###########################################################
 
