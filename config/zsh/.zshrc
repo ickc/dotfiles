@@ -223,9 +223,7 @@ ml_conda() {
     path_prepend "${__CONDA_PREFIX}/condabin"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
-    if [[ -n ${NERSC_HOST} ]]; then
-        conda_envs_path_prepend "${CMN}/polar/opt/conda/envs"
-    elif [[ -n ${BLACKETT_HOST} ]]; then
+    if [[ -n ${BLACKETT_HOST} ]]; then
         conda_envs_path_prepend "${CVMFS_ROOT}/opt"
         conda_envs_path_prepend "${CVMFS_ROOT}/conda"
         conda_envs_path_prepend "${CVMFS_ROOT}/pmpm"
@@ -318,34 +316,11 @@ ml_mactex() {
 
 # hosts ========================================================================
 
-if [[ -n ${NERSC_HOST} ]]; then
-    ml_host() {
-        # https://docs.nersc.gov/current/#ongoing-issues
-        [[ ${NERSC_HOST} == perlmutter ]] && module load fast-mkl-amd
-        path_prepend_all /global/common/software/polar/opt/system
-        path_prepend_all /global/common/software/polar/opt/local
-    }
-    ml_toast() {
-        module use /global/common/software/polar/.conda/envs/cmbenv/modulefiles
-        # module use /global/common/software/cmb/cori/default/modulefiles
-        module load cmbenv
-        # manually edit /global/common/software/polar/.conda/envs/cmbenv/modulefiles/cmbenv/v1.0.3.dev124
-        # to remove PATH editing, sqs alias, PYTHONSTARTUP, PYTHONUSERBASE
-        # manual edit /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
-        # to fix zsh error
-        # shellcheck disable=SC1091
-        . /global/common/software/polar/.conda/envs/cmbenv/cmbenv_python/bin/cmbenv
-    }
-
-    ml_toast_conda() {
-        TOAST_PREFIX=/global/common/software/polar/.conda/envs/common-20210404-toast-conda
-        conda activate "${TOAST_PREFIX}"
-    }
-elif [[ -n ${COSMA_HOST} ]]; then
+if [[ -n ${COSMA_HOST} ]]; then
     ml_host() {
         module load cosma
         if [[ -f /etc/bashrc ]]; then
-             . /etc/bashrc
+            . /etc/bashrc
         fi
         path_prepend_all /cosma/apps/durham/dc-cheu2/opt/system
         path_prepend_all /cosma/apps/durham/dc-cheu2/opt/local
@@ -415,7 +390,7 @@ ml_clean() {
 
     # * load minimal environment for interactive use
     [[ -f "${HOME}/.sman/sman.rc" ]] && ml_s
-    # exa: only alias if exist. hash is incorrect on NERSC
+    # exa: only alias if exist
     command -v exa > /dev/null 2>&1 && ml_exa
     command -v eza > /dev/null 2>&1 && ml_eza
     # note that this prefers lsd over exa

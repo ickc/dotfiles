@@ -10,5 +10,3 @@
         smudge = git-lfs smudge -- %f
 [credential]
         helper = store
-[safe]
-	directory = /global/cfs/cdirs/mfa/NERSC-MFA/.git

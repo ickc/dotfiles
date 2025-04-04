@@ -56,14 +56,8 @@ export __NCPU
 # default to zsh unless overridden otherwise
 __PREFERRED_SHELL=zsh
 
-# priority: NERSC_HOST > BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
-if [[ -n ${NERSC_HOST} ]]; then
-    __PREFERRED_SHELL=bash
-    __HOST="${NERSC_HOST}"
-    export CMN=/global/common/software
-    __CONDA_PREFIX="${CMN}/polar/opt/miniforge3"
-    # CFS=/global/cfs/cdirs
-elif [[ $USER == dc-cheu2 ]]; then
+# priority: BLACKETT_HOST > SO_HOST > PRINCETON_HOST > BOLO_HOST
+if [[ ${USER} == dc-cheu2 ]]; then
     __PREFERRED_SHELL=bash
     COSMA_HOST="${HOSTNAME}"
     __HOST="${COSMA_HOST}"
@@ -177,7 +171,7 @@ else
         XDG_STATE_HOME="${HOME}/.local/state"
 fi
 # as SCRATCH is subjected to be purged, only put cache in SCRATCH in sites
-if [[ (-n ${NERSC_HOST} || -n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
+if [[ (-n ${BLACKETT_HOST} || -n ${SO_HOST} || -n ${PRINCETON_HOST} || -n ${BOLO_HOST}) && -n ${SCRATCH} ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 elif [[ -n ${COSMA_HOST} ]]; then
     export XDG_CACHE_HOME="${CMN}/.cache"
@@ -200,27 +194,25 @@ export \
 # depends on __HOST detection
 
 # set HOMEBREW_PREFIX if undefined and discovered
-if [[ -z ${NERSC_HOST} ]]; then
-    if [[ -z ${HOMEBREW_PREFIX} ]]; then
-        if [[ ${__OSTYPE} == darwin ]]; then
-            for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
-                command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-            done
-            unset homebrew_prefix
-        elif [[ ${__OSTYPE} == linux ]]; then
-            for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
-                command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-            done
-            unset homebrew_prefix
-        fi
+if [[ -z ${HOMEBREW_PREFIX} ]]; then
+    if [[ ${__OSTYPE} == darwin ]]; then
+        for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
+            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
+        done
+        unset homebrew_prefix
+    elif [[ ${__OSTYPE} == linux ]]; then
+        for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
+            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
+        done
+        unset homebrew_prefix
     fi
-    if [[ -n ${HOMEBREW_PREFIX} ]]; then
-        export \
-            HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
-            HOMEBREW_NO_ANALYTICS=1 \
-            HOMEBREW_PREFIX \
-            HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
-    fi
+fi
+if [[ -n ${HOMEBREW_PREFIX} ]]; then
+    export \
+        HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
+        HOMEBREW_NO_ANALYTICS=1 \
+        HOMEBREW_PREFIX \
+        HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
 fi
 
 # export variables #####################################################
