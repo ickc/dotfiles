@@ -210,7 +210,6 @@
               "accordance"
               "adobe-creative-cloud"
               "adobe-dng-converter"
-              "alacritty"
               "alt-tab"
               "amethyst"
               "appcleaner"
