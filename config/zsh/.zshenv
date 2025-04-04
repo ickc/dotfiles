@@ -9,9 +9,8 @@
 # __OSTYPE, __ARCH detection ###########################################
 
 # set __OSTYPE as normalized OSTYPE
-__OSTYPE="$(uname -s)"
+read -r __OSTYPE __ARCH <<< "$(uname -sm)"
 export __OSTYPE
-__ARCH="$(uname -m)"
 export __ARCH
 
 # __NCPU detection #####################################################
