@@ -14,13 +14,11 @@ MPV=fast
 .PHONY: all
 all: \
 	config \
-	hyper \
 	mpv \
 	shell \
 	taskfile  ## install all dotfiles
 .PHONY: \
 	config \
-	hyper \
 	mpv \
 	shell \
 	taskfile
@@ -31,12 +29,11 @@ config:  ## setup config (moving existing config then symlink)
 		rm -rf $(XDG_CONFIG_HOME); \
 	fi
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
-hyper: ; ln -sf $(PWD)/home/.hyper.js ~  ## setup hyper dotfile
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true  ## setup mpv dotfile
 shell: ; ln -sf $(PWD)/config/zsh/.zshenv ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~  ## setup shell dotfiles
 taskfile: ; ln -sf $(PWD)/home/Taskfile.yml ~  ## setup taskfile at HOME
 
-# TODO: delete powerlevel10k-remove
+# TODO: delete hyper-remove powerlevel10k-remove
 .PHONY: remove
 remove: \
 	config-remove \
