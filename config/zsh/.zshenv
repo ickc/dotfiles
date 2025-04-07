@@ -135,24 +135,26 @@ export \
 
 # set HOMEBREW_PREFIX if undefined and discovered
 if [[ -z ${HOMEBREW_PREFIX} ]]; then
-    if [[ ${__OSTYPE} == Darwin ]]; then
-        for homebrew_prefix in /opt/homebrew "${HOME}/.homebrew" /usr/local; do
-            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-        done
-        unset homebrew_prefix
-    elif [[ ${__OSTYPE} == Linux ]]; then
-        for homebrew_prefix in /home/linuxbrew/.linuxbrew "${HOME}/.homebrew"; do
-            command -v "${homebrew_prefix}/bin/brew" > /dev/null 2>&1 && HOMEBREW_PREFIX="${homebrew_prefix}"
-        done
-        unset homebrew_prefix
-    fi
+    case "${__OSTYPE}" in
+        Linux) HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew ;;
+        Darwin)
+            case "${__ARCH}" in
+                x86_64) HOMEBREW_PREFIX=/usr/local ;;
+                arm64) HOMEBREW_PREFIX=/opt/homebrew ;;
+                *) ;;
+            esac
+            ;;
+        *) ;;
+    esac
 fi
-if [[ -n ${HOMEBREW_PREFIX} ]]; then
+if command -v "${HOMEBREW_PREFIX}/bin/brew" > /dev/null 2>&1; then
     export \
         HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
         HOMEBREW_NO_ANALYTICS=1 \
         HOMEBREW_PREFIX \
         HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+else
+    unset HOMEBREW_PREFIX
 fi
 
 # export variables #####################################################
