@@ -162,7 +162,6 @@ fi
 if [[ -n ${ZSH_VERSION} ]]; then
     export \
         BASHER_SHELL=zsh \
-        HISTFILE="${XDG_STATE_HOME}/zsh/history" \
         ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 elif [[ -n ${BASH_VERSION} ]]; then
     export BASHER_SHELL=bash

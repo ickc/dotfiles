@@ -181,15 +181,6 @@ check:  ## check all shell scripts
 todo:  ## find TODOs in all shell scripts
 	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
 
-# TODO: delete this after migration of ZDOTDIR
-migrate:  ## migrate zsh history to ZDOTDIR
-	if [[ -n "$$HISTFILE" ]]; then \
-		rm -f ~/.zcompdump*; \
-		mkdir -p "$$(dirname "$$HISTFILE")"; \
-		[[ -f ~/.zsh_history ]] && mv -f ~/.zsh_history "$$HISTFILE"; \
-		[[ -f ~/.zhistory ]] && mv -f ~/.zhistory "$$HISTFILE"; \
-	fi
-
 print-%:
 	$(info $* = $($*))
 
