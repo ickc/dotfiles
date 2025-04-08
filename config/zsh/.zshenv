@@ -48,6 +48,7 @@ if [[ ${USER} == dc-cheu2 ]]; then
     __PREFERRED_SHELL=bash
     COSMA_HOST="${HOSTNAME}"
     __HOST="${COSMA_HOST}"
+    # TODO: dispatch over cosma5, 7, 8
     export SCRATCH=/cosma5/data/durham/dc-cheu2
     export CMN=/cosma/apps/durham/dc-cheu2
     __CONDA_PREFIX="${CMN}/opt/miniforge3"
