@@ -46,5 +46,9 @@
     "terminal": {
         "alternate_scroll": "on"
     },
-    "theme": "Gruvbox Light Soft"
+    "theme": {
+        "mode": "system",
+        "light": "Gruvbox Light",
+        "dark": "Gruvbox Dark"
+    }
 }
