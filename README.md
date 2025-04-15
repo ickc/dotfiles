@@ -9,7 +9,6 @@ Put non-public env var into `config/zsh/.env`.
 - conda & mamba
 - zim
 - sman
-- basher
 
 # Install
 

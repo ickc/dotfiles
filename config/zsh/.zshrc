@@ -224,26 +224,6 @@ ml_devbox() {
     eval "$(devbox global shellenv --init-hook)"
 }
 
-ml_basher() {
-    path_prepend "${BASHER_ROOT}/cellar/bin"
-    # shellcheck disable=SC1090
-    . "${BASHER_ROOT}/lib/include.${BASHER_SHELL}"
-    # shellcheck disable=SC1090
-    . "${BASHER_ROOT}/completions/basher.${BASHER_SHELL}"
-    if [[ -n ${ZSH_VERSION} ]]; then
-        # TODO
-        # shellcheck disable=SC2206,SC2128
-        fpath=("${BASHER_ROOT}/cellar/completions/zsh/compsys" ${fpath})
-        # shellcheck disable=SC1090
-        for f in $(command ls "${BASHER_ROOT}/cellar/completions/zsh/compctl"); do source "${BASHER_ROOT}/cellar/completions/zsh/compctl/${f}"; done
-    elif [[ -n ${BASH_VERSION} ]]; then
-        # shellcheck disable=SC1090
-        for f in $(command ls "${BASHER_ROOT}/cellar/completions/bash"); do source "${BASHER_ROOT}/cellar/completions/bash/${f}"; done
-    fi
-    path_append_all "${BASHER_ROOT}"
-    path_append_all "${BASHER_PREFIX}"
-}
-
 # sman
 ml_s() {
     # shellcheck disable=SC1091
@@ -350,13 +330,12 @@ ml() {
     fi
 
     # * load all installed environments
-    # * includes clean, go, ghcup, brew, port, conda, cargo, basher, host
+    # * includes clean, go, ghcup, brew, port, conda, cargo, host
     ml_ghcup
     [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
     [[ -n ${__CONDA_PREFIX} ]] && ml_conda
     [[ -n ${PIXI_HOME} ]] && ml_pixi
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
-    [[ -d "${HOME}/.basher" ]] && ml_basher
     [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
 
     command -v ml_host > /dev/null 2>&1 && ml_host

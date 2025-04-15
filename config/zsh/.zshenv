@@ -164,15 +164,9 @@ fi
 # shell
 if [[ -n ${ZSH_VERSION} ]]; then
     export \
-        BASHER_SHELL=zsh \
         ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-elif [[ -n ${BASH_VERSION} ]]; then
-    export BASHER_SHELL=bash
+# elif [[ -n ${BASH_VERSION} ]]; then
 fi
-# basher
-export BASHER_ROOT="${HOME}/.basher"
-export BASHER_PREFIX="${BASHER_ROOT}/cellar"
-export BASHER_PACKAGES_PATH="${BASHER_PREFIX}/packages"
 # misc
 # LS_COLORS copied from https://github.com/perplexa/dotfiles/blob/master/.gruvbox.dircolors
 # and run dircolors ~/.gruvbox.dircolors

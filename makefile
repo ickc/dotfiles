@@ -93,16 +93,11 @@ config/mpv/shaders/:
 
 .PHONY: install
 install: \
-	basher-install \
 	sman-install \
 	zim-install  ## install all softwares
 .PHONY: \
-	basher-install \
 	sman-install \
 	zim-install
-basher-install:  ## install basher
-	git clone https://github.com/basherpm/basher.git ~/.basher
-	~/.basher/bin/basher install ickc/dautil-sh
 sman-install:  ## install sman
 	curl -L https://github.com/ickc/sman/raw/master/install.sh | bash
 	mkdir -p ~/git/source
@@ -110,6 +105,7 @@ sman-install:  ## install sman
 zim-install:  ## install zim
 	curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
 
+# TODO: delete basher-uninstall
 .PHONY: uninstall-software
 uninstall-software: \
 	basher-uninstall \
