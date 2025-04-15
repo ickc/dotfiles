@@ -137,7 +137,6 @@
             wdiff
             wget
             which
-            wtf
             yt-dlp
             zellij
             zsh
