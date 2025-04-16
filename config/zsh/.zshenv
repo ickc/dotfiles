@@ -59,8 +59,6 @@ fi
 # define *_HOST for different computing sites
 case "${HOSTNAME}" in
     *.pri.cosma.local)
-        __PREFERRED_SHELL=bash
-
         if [[ -n ${SLURM_JOB_PARTITION} ]]; then
             # running on a compute node
             COSMA_HOST="${SLURM_JOB_PARTITION}"
