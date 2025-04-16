@@ -221,6 +221,7 @@ ml_pixi() {
 }
 
 ml_devbox() {
+    # shellcheck disable=SC2312
     eval "$(devbox global shellenv --init-hook)"
 }
 
