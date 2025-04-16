@@ -274,8 +274,8 @@ if [[ -n ${COSMA_HOST} ]]; then
         if [[ -f /etc/bashrc ]]; then
             . /etc/bashrc
         fi
-        path_prepend_all /cosma/apps/durham/dc-cheu2/opt/system
-        path_prepend_all /cosma/apps/durham/dc-cheu2/opt/local
+        path_prepend_all "/cosma/apps/durham/${USER}/opt/system"
+        path_prepend_all "/cosma/apps/durham/${USER}/opt/local"
     }
 else
     case "${__HOST}" in

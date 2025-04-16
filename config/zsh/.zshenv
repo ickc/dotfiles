@@ -60,13 +60,42 @@ fi
 case "${HOSTNAME}" in
     *.pri.cosma.local)
         __PREFERRED_SHELL=bash
-        COSMA_HOST="${HOSTNAME}"
+
+        if [[ -n ${SLURM_JOB_PARTITION} ]]; then
+            # running on a compute node
+            COSMA_HOST="${SLURM_JOB_PARTITION}"
+        else
+            case "${HOSTNAME}" in
+                login5?.pri.cosma.local)
+                    # running on a login node
+                    COSMA_HOST=cosma5
+                    ;;
+                login7?.pri.cosma.local)
+                    # running on a login node
+                    COSMA_HOST=cosma7
+                    ;;
+                login8?.pri.cosma.local)
+                    # running on a login node
+                    COSMA_HOST=cosma8
+                    ;;
+                *)
+                    COSMA_HOST="${HOSTNAME}"
+                    ;;
+            esac
+        fi
+        export COSMA_HOST
         __HOST="${COSMA_HOST}"
-        # TODO: dispatch over cosma5, 7, 8
-        export SCRATCH=/cosma5/data/durham/dc-cheu2
-        export CMN=/cosma/apps/durham/dc-cheu2
-        __CONDA_PREFIX="${CMN}/opt/miniforge3"
-        export PIXI_HOME="${CMN}/opt/pixi"
+
+        export CMN="/cosma/apps/durham/${USER}"
+        export SOFTWARE_ROOT="${CMN}/opt"
+        export PIXI_HOME="${SOFTWARE_ROOT}/pixi"
+        __CONDA_PREFIX="${SOFTWARE_ROOT}/miniforge3"
+
+        if [[ -d /snap8 ]]; then
+            export SCRATCH="/snap8/scratch/do009/${USER}"
+        else
+            export SCRATCH="/cosma5/data/durham/${USER}"
+        fi
         ;;
     gordita.physics.berkeley.edu)
         export BOLO_HOST=gordita
