@@ -3,12 +3,18 @@
 # * These variables should exist on all systems:
 # __CONDA_PREFIX
 # __PREFERRED_SHELL
-# SCRATCH <- for non-compute system, SCRATCH can be undefined
+# SCRATCH <- often not backed up and purged periodically
+# SOFTWARE_ROOT <- for softwares
+# e.g. SOFTWARE_ROOT=.../opt or SOFTWARE_ROOT=~/.opt
+# ${SOFTWARE_ROOT}/${__OSTYPE}-${__ARCH}/${DISTRIBUTION_NAME}/... <- for architecture dependent, "distribution-like" such as a conda env
+# ${SOFTWARE_ROOT}/${__OSTYPE}-${__ARCH}/local <- for architecture dependent, local-like stuffs
+# ${SOFTWARE_ROOT}/local <- for architecture independent stuffs
 # * CONDA_PREFIX is defined by conda, and can be changed by conda as new environments are activated
 
 # __OSTYPE, __ARCH detection ###########################################
 
 # set __OSTYPE as normalized OSTYPE
+# shellcheck disable=SC2312
 read -r __OSTYPE __ARCH <<< "$(uname -sm)"
 export __OSTYPE
 export __ARCH
@@ -43,53 +49,52 @@ export __NCPU
 # default to zsh unless overridden otherwise
 __PREFERRED_SHELL=zsh
 
-# priority: BOLO_HOST
-if [[ ${USER} == dc-cheu2 ]]; then
-    __PREFERRED_SHELL=bash
-    COSMA_HOST="${HOSTNAME}"
-    __HOST="${COSMA_HOST}"
-    # TODO: dispatch over cosma5, 7, 8
-    export SCRATCH=/cosma5/data/durham/dc-cheu2
-    export CMN=/cosma/apps/durham/dc-cheu2
-    __CONDA_PREFIX="${CMN}/opt/miniforge3"
-    export PIXI_HOME="${CMN}/opt/pixi"
-else
-    # set HOSTNAME by hostname if undefined
-    if [[ -z ${HOSTNAME} ]]; then
-        # be careful that different implementation of hostname has different options
-        HOSTNAME="$(hostname -f 2> /dev/null || hostname)"
-        export HOSTNAME
-    fi
-    # host-specific
-    # define *_HOST for different computing sites
-    case "${HOSTNAME}" in
-        gordita.physics.berkeley.edu)
-            export BOLO_HOST=gordita
-            __HOST="${BOLO_HOST}"
-            SCRATCH="/scratch2/${USER}"
-            __CONDA_PREFIX="${HOME}/mambaforge"
-            ;;
-        bolo.berkeley.edu)
-            export \
-                BOLO_HOST=bolo \
-                HOME="/home/${USER}"
-            __HOST="${BOLO_HOST}"
-            SCRATCH="/tank/scratch/${USER}"
-            ;;
-        *)
-            # this should be systems I have sudo access to
-            __HOST="${HOSTNAME}"
-            SCRATCH="${SCRATCH:-/var/scratch/${USER}}"
-            export PIXI_HOME=/opt/pixi
-
-            for conda_prefix in "${HOME}/.mambaforge" "${HOME}/.miniforge3" /opt/miniforge3; do
-                command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
-            done
-            unset conda_prefix
-            ;;
-    esac
-    [[ -n ${SCRATCH} ]] && export SCRATCH
+# set HOSTNAME by hostname if undefined
+if [[ -z ${HOSTNAME} ]]; then
+    # be careful that different implementation of hostname has different options
+    HOSTNAME="$(hostname -f 2> /dev/null || hostname)"
+    export HOSTNAME
 fi
+# host-specific
+# define *_HOST for different computing sites
+case "${HOSTNAME}" in
+    *.pri.cosma.local)
+        __PREFERRED_SHELL=bash
+        COSMA_HOST="${HOSTNAME}"
+        __HOST="${COSMA_HOST}"
+        # TODO: dispatch over cosma5, 7, 8
+        export SCRATCH=/cosma5/data/durham/dc-cheu2
+        export CMN=/cosma/apps/durham/dc-cheu2
+        __CONDA_PREFIX="${CMN}/opt/miniforge3"
+        export PIXI_HOME="${CMN}/opt/pixi"
+        ;;
+    gordita.physics.berkeley.edu)
+        export BOLO_HOST=gordita
+        __HOST="${BOLO_HOST}"
+        SCRATCH="/scratch2/${USER}"
+        __CONDA_PREFIX="${HOME}/mambaforge"
+        ;;
+    bolo.berkeley.edu)
+        export \
+            BOLO_HOST=bolo \
+            HOME="/home/${USER}"
+        __HOST="${BOLO_HOST}"
+        SCRATCH="/tank/scratch/${USER}"
+        ;;
+    *)
+        # this should be systems I have sudo access to
+        __HOST="${HOSTNAME}"
+        SCRATCH="${SCRATCH:-/var/scratch/${USER}}"
+        export PIXI_HOME=/opt/pixi
+
+        for conda_prefix in "${HOME}/.mambaforge" "${HOME}/.miniforge3" /opt/miniforge3; do
+            command -v "${conda_prefix}/bin/conda" > /dev/null 2>&1 && __CONDA_PREFIX="${conda_prefix}"
+        done
+        unset conda_prefix
+        ;;
+esac
+[[ -n ${SCRATCH} ]] && export SCRATCH
+
 export __HOST __PREFERRED_SHELL
 [[ -n ${__CONDA_PREFIX} ]] && export __CONDA_PREFIX
 
