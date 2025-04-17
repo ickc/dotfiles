@@ -41,10 +41,6 @@ export __PATH="${__PATH:-${PATH}}" \
 [[ -n ${__PYTHONPATH} ]] && export PYTHONPATH="${__PYTHONPATH}"
 [[ -n ${__LD_LIBRARY_PATH} ]] && export LD_LIBRARY_PATH="${__LD_LIBRARY_PATH}"
 
-printerr() {
-    printf '%s\n' "$@" >&2
-}
-
 path_prepend() {
     if [[ -d $1 ]]; then
         case ":${PATH}:" in
@@ -131,7 +127,6 @@ path_prepend_all() {
     fi
 }
 
-# TODO: fix this on FreeBSD such as bolo
 path_append_all() {
     if [[ -d "$1/bin" ]]; then
         case ":${PATH}:" in
@@ -178,13 +173,6 @@ ml_brew() {
     fpath=("${HOMEBREW_PREFIX}/share/zsh/site-functions" ${fpath})
 }
 
-# macports
-ml_port() {
-    path_prepend /opt/local/sbin
-    path_prepend_all /opt/local
-    path_prepend /opt/local/libexec/gnubin
-}
-
 # conda
 ml_conda() {
     # * this source the conda functions but not changing the PATH directly
@@ -201,10 +189,6 @@ ml_conda() {
     path_prepend "${__CONDA_PREFIX}/condabin"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
-    if [[ ${__OSTYPE} == Darwin ]]; then
-        conda_envs_path_prepend ~/.mambaforge/envs
-        conda_envs_path_prepend /opt/conda/envs
-    fi
 }
 
 mu_conda() {
@@ -229,14 +213,6 @@ ml_devbox() {
 ml_s() {
     # shellcheck disable=SC1091
     . "${HOME}/.sman/sman.rc"
-}
-
-ml_exa() {
-    alias ls=exa
-}
-
-ml_eza() {
-    alias ls=eza
 }
 
 ml_lsd() {
@@ -274,62 +250,20 @@ if [[ -n ${COSMA_HOST} ]]; then
         if [[ -f /etc/bashrc ]]; then
             . /etc/bashrc
         fi
-        path_prepend_all "/cosma/apps/durham/${USER}/opt/system"
-        path_prepend_all "/cosma/apps/durham/${USER}/opt/local"
     }
-else
-    case "${__HOST}" in
-        kolen-server)
-            ml_cuda() {
-                path_append /usr/local/cuda-11
-                ld_library_path_prepend /usr/local/cuda-11/lib64
-            }
-            ml_cuda_12() {
-                path_append /usr/local/cuda-12
-                ld_library_path_prepend /usr/local/cuda-12/lib64
-            }
-            ;;
-        *)
-            ml_toast_gnu() {
-                TOAST_PREFIX="${SCRATCH}/local/toast-gnu"
-                conda activate "${TOAST_PREFIX}/conda"
-                [[ ${__OSTYPE} == Darwin ]] && ld_library_path_prepend /opt/local/lib/mpich-mp
-                ld_library_path_prepend "${TOAST_PREFIX}/compile/lib"
-                pythonpath_prepend "${TOAST_PREFIX}/compile/lib/python3.8/site-packages"
-                path_prepend "${TOAST_PREFIX}/compile/bin:${TOAST_PREFIX}/conda/bin"
-            }
-
-            ml_toast_conda() {
-                conda activate toast-conda
-            }
-            ;;
-    esac
 fi
 
 #===============================================================================
 
 ml_clean() {
-    path_prepend_all "${HOME}/.local"
-
-    # special case, may generalize something like this to any FreeBSD?
-    if [[ ${__HOST} == bolo ]]; then
-        remove_home_local_bin_from_PATH
-    fi
+    path_prepend_all "${__LOCAL_ROOT}"
 
     # * load minimal environment for interactive use
     [[ -f "${HOME}/.sman/sman.rc" ]] && ml_s
-    # exa: only alias if exist
-    command -v exa > /dev/null 2>&1 && ml_exa
-    command -v eza > /dev/null 2>&1 && ml_eza
-    # note that this prefers lsd over exa
     command -v lsd > /dev/null 2>&1 && ml_lsd
 }
 
 ml() {
-    if [[ ${__HOST} == bolo ]]; then
-        remove_home_local_bin_from_PATH
-    fi
-
     # * load all installed environments
     # * includes clean, go, ghcup, brew, port, conda, cargo, host
     ml_ghcup
@@ -341,14 +275,10 @@ ml() {
 
     command -v ml_host > /dev/null 2>&1 && ml_host
 
-    if [[ ${__OSTYPE} == Darwin ]]; then
-        if [[ -d /Library/TeX/texbin ]]; then
-            ml_mactex
-        fi
-        # if [[ -d /opt/local ]]; then
-        #     ml_port
-        # fi
-    fi
+    case "${__OSTYPE}" in
+        Darwin) [[ -d /Library/TeX/texbin ]] && ml_mactex ;;
+        *) ;;
+    esac
 
     ml_clean
 }
@@ -450,7 +380,7 @@ fi
 
 # zim ##########################################################################
 
-if [[ -n ${ZSH_VERSION} ]]; then
+if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
 
     zstyle ':zim:zmodule' use 'degit'
 
