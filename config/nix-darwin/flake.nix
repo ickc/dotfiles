@@ -238,7 +238,6 @@
               "font-han-nom-a"
               "font-hanamin"
               "font-hasklug-nerd-font"
-              "font-input"
               "font-jetbrains-mono-nerd-font"
               "font-latin-modern-math"
               "font-latin-modern"
