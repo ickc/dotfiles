@@ -48,8 +48,10 @@ export __NCPU
 # __HOST detection #####################################################
 # depends on __OSTYPE, __ARCH
 
-# default to zsh unless overridden otherwise
+# defaults unless overridden otherwise
 __PREFERRED_SHELL=zsh
+# this can be defined by the system already
+SCRATCH="${SCRATCH:-${HOME}/.scratch}"
 
 # set HOSTNAME by hostname if undefined
 if [[ -z ${HOSTNAME} ]]; then
@@ -117,7 +119,8 @@ case "${HOSTNAME}" in
 esac
 export \
     __HOST \
-    __PREFERRED_SHELL
+    __PREFERRED_SHELL \
+    SCRATCH
 
 if [[ -n ${__APPDIR} ]]; then
     __LOCAL_ROOT="${__APPDIR}/local"
@@ -143,16 +146,13 @@ export PIXI_HOME
 # https://numba.pydata.org/numba-doc/dev/reference/envvars.html?highlight=numba_threading_layer
 
 # For systems that has dedicated SCRATCH filesystem,
-# we put scratch there, as they are data-like, such as package cache
-if [[ -n ${SCRATCH} ]]; then
+# we put cache there, as they are data-like, such as package cache
+if [[ ${SCRATCH} != "${HOME}/.scratch" ]]; then
     export XDG_CACHE_HOME="${SCRATCH}/.cache"
 # systems without a dedicated SCRATCH filesystem
-# we still define SCRATCH for practical purposes
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
-    SCRATCH="${HOME}/.scratch"
 fi
-export SCRATCH
 
 # because not all softwares respect XDG_CONFIG_HOME
 # and I want to capture all of them in this repo
