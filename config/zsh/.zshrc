@@ -257,6 +257,7 @@ fi
 
 ml_clean() {
     path_prepend_all "${__LOCAL_ROOT}"
+    path_prepend_all "${__OPT_ROOT}"
 
     # * load minimal environment for interactive use
     [[ -f "${HOME}/.sman/sman.rc" ]] && ml_s
