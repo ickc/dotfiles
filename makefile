@@ -89,46 +89,7 @@ config/mpv/shaders/:
 	unzip config/mpv/Anime4K_v4.0.zip -d $@
 	rm config/mpv/Anime4K_v4.0.zip
 
-# installing softwares #################################################
-
-.PHONY: install
-install: \
-	sman-install \
-	zim-install  ## install all softwares
-.PHONY: \
-	sman-install \
-	zim-install
-sman-install:  ## install sman
-	curl -L https://github.com/ickc/sman/raw/master/install.sh | bash
-	mkdir -p ~/git/source
-	cd ~/git/source; git clone git@github.com:ickc/sman-snippets.git || git clone https://github.com/ickc/sman-snippets.git
-zim-install:  ## install zim
-	curl -fsSL --create-dirs -o ~/.zim/zimfw.zsh https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
-
-# TODO: delete basher-uninstall
-.PHONY: uninstall-software
-uninstall-software: \
-	basher-uninstall \
-	sman-uninstall \
-	zim-uninstall  ## uninstall all softwares
-.PHONY: \
-	basher-uninstall \
-	sman-uninstall \
-	zim-uninstall
-basher-uninstall:  ## uninstall basher
-	rm -rf ~/.basher
-sman-uninstall:  ## uninstall sman
-	rm -rf \
-		~/.local/bin/sman \
-		~/.sman \
-		~/git/source/sman-snippets
-zim-uninstall:  ## uninstall zim
-	rm -rf ~/.zim
-
 # helpers ##############################################################
-
-.PHONY: uninstall
-uninstall: remove uninstall-software  ## remove all dotfiles and uninstall all softwares
 
 .PHONY: format check
 format:  ## format all shell scripts
