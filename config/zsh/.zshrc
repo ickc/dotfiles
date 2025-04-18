@@ -189,6 +189,7 @@ ml_conda() {
     path_prepend "${__CONDA_PREFIX}/condabin"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
+    conda_envs_path_prepend "${__OPT_ROOT}"
 }
 
 mu_conda() {
