@@ -315,6 +315,7 @@
               "zed@preview"
               "zerotier-one"
               "zettlr"
+              "zoom"
               "zotero"
             ];
           };
