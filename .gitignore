@@ -4,6 +4,7 @@
 *.log
 *.zip
 config/bottom/bottom.toml
+config/btop/btop.log.1
 config/btop/themes
 config/fish/fish_variables
 config/github-copilot/hosts.json
