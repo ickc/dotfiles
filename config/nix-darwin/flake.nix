@@ -143,10 +143,10 @@
               "1Blocker" = 1365531024;
               "Aiko" = 1672085276;
               "Amphetamine" = 937984704;
+              "Blackmagic Disk Speed Test" = 425264550;
               "Compressor" = 424390742;
               "Copilot" = 6738511300;
               "Deliveries" = 290986013;
-              "Disk Speed Test" = 425264550;
               "Drafts" = 1435957248;
               "EasyRes" = 688211836;
               "Final Cut Pro" = 424389933;
@@ -171,6 +171,7 @@
               "Numbers" = 409203825;
               "OneDrive" = 823766827;
               "Pages" = 409201541;
+              "Perplexity" = 6714467650;
               "Prime Video" = 545519333;
               "Rakuten Cash Back" = 1451893560;
               "Save to Raindrop.io" = 1549370672;
@@ -190,9 +191,9 @@
               "uBlacklist for Safari" = 1547912640;
               "URL Linker" = 1289119450;
               "Vinegar" = 1591303229;
+              "WhatsApp" = 310633997;
               "Windows App" = 1295203466;
               "Xcode" = 497799835;
-              "‎WhatsApp" = 310633997;
             };
             brews = [
               "llama.cpp"
