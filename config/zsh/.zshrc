@@ -168,9 +168,6 @@ ml_brew() {
     path_prepend "${HOMEBREW_PREFIX}/sbin"
     path_prepend_all "${HOMEBREW_PREFIX}"
     path_prepend_all "${HOMEBREW_PREFIX}/opt/ruby"
-    # TODO
-    # shellcheck disable=SC2206
-    fpath=("${HOMEBREW_PREFIX}/share/zsh/site-functions" ${fpath})
 }
 
 # conda
@@ -348,42 +345,17 @@ umask 022
 # ${PATH} is not fully set in zshenv so we have to put it here
 command -v difft > /dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
 
-# fzf
-if FZF_PATH="$(command -v fzf)"; then
-    FZF_PATH="$(realpath "${FZF_PATH}")"
-    FZF_SHARE="${FZF_PATH%/*}/../share/fzf"
-    # sometimes it is put inside a "shell" subdirectory
-    [[ -d ${FZF_SHARE}/shell ]] && FZF_SHARE="${FZF_SHARE}/shell"
-    # check shell is bash or zsh
-    if [[ -n ${BASH_VERSION} ]]; then
-        # shellcheck disable=SC1091
-        [[ -f "${FZF_SHARE}"/completion.bash ]] && source "${FZF_SHARE}"/completion.bash
-        # shellcheck disable=SC1091
-        [[ -f "${FZF_SHARE}"/key-bindings.bash ]] && source "${FZF_SHARE}"/key-bindings.bash
-    elif [[ -n ${ZSH_VERSION} ]]; then
-        # shellcheck disable=SC1091
-        [[ -f "${FZF_SHARE}"/completion.zsh ]] && source "${FZF_SHARE}"/completion.zsh
-        # shellcheck disable=SC1091
-        [[ -f "${FZF_SHARE}"/key-bindings.zsh ]] && source "${FZF_SHARE}"/key-bindings.zsh
-    fi
-    # OpenSUSE
-    # shellcheck disable=SC1091
-    [[ -f /etc/zsh_completion.d/fzf-key-bindings ]] && source /etc/zsh_completion.d/fzf-key-bindings
-    unset FZF_SHARE
-fi
-unset FZF_PATH
-
-# starship
 if [[ -n ${BASH_VERSION} ]]; then
     # shellcheck disable=SC2312
-    command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
+    command -v fzf > /dev/null 2>&1 && eval "$(fzf --bash)"
     # shellcheck disable=SC2312
-    command -v zellij > /dev/null 2>&1 && eval "$(zellij setup --generate-completion bash)"
-fi
+    command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
+elif [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
+    # shellcheck disable=SC2312
+    command -v fzf > /dev/null 2>&1 && source <(fzf --zsh)
 
-# zim ##########################################################################
-
-if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
+    # shellcheck disable=SC2206
+    fpath=("${ZDOTDIR}/functions" ${fpath})
 
     zstyle ':zim:zmodule' use 'degit'
 
