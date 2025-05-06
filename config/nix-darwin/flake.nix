@@ -132,7 +132,6 @@
             wget
             which
             yt-dlp
-            zellij
             zsh
           ];
           homebrew = {
