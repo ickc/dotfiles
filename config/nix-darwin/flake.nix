@@ -110,7 +110,6 @@
             pam-reattach
             parallel
             pdf2svg
-            pixi
             poppler_utils
             potrace
             procps
