@@ -85,7 +85,6 @@
             iperf
             joshuto
             jq
-            julia-bin
             less
             libarchive
             libimobiledevice
