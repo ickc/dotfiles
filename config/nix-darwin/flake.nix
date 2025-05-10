@@ -269,6 +269,7 @@
               "jetbrains-toolbox"
               "joplin"
               "jordanbaird-ice"
+              "jupyterlab"
               "keepassxc"
               "keka"
               "keymapp"
