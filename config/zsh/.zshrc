@@ -172,30 +172,42 @@ ml_brew() {
 
 # conda
 ml_conda() {
+    export MAMBA_EXE="${MAMBA_ROOT_PREFIX}/condabin/mamba"
+
+    # just put conda and mamba in the PATH
+    path_prepend "${MAMBA_ROOT_PREFIX}/condabin"
+
     # * this source the conda functions but not changing the PATH directly
     # it allows you to put the conda function available without letting it
     # changing your PATH
     local __PATH__="${PATH}"
-    # shellcheck disable=SC1091
-    . "${__CONDA_PREFIX}/etc/profile.d/conda.sh"
-    # shellcheck disable=SC1091
-    . "${__CONDA_PREFIX}/etc/profile.d/mamba.sh"
+    if [[ -n ${ZSH_VERSION} ]]; then
+        # shellcheck disable=SC1091,SC2312
+        command -v conda > /dev/null 2>&1 && . <(conda shell.zsh hook)
+        # shellcheck disable=SC1091,SC2312
+        command -v mamba > /dev/null 2>&1 && . <(mamba shell hook --shell zsh)
+    else
+        # shellcheck disable=SC1091,SC2312
+        command -v conda > /dev/null 2>&1 && . <(conda shell.bash hook)
+        # shellcheck disable=SC1091,SC2312
+        command -v mamba > /dev/null 2>&1 && . <(mamba shell hook --shell bash)
+    fi
     export PATH="${__PATH__}"
-
-    # just put conda and mamba in the PATH
-    path_prepend "${__CONDA_PREFIX}/condabin"
 
     conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
     conda_envs_path_prepend "${__OPT_ROOT}"
 }
 
 mu_conda() {
-    # from "${__CONDA_PREFIX}/etc/profile.d/conda.sh"
-    unset CONDA_EXE
-    unset CONDA_PYTHON_EXE
-    unset CONDA_SHLVL
-    unset _CE_CONDA
-    unset _CE_M
+    # from sourcing above
+    unset \
+        CONDA_DEFAULT_ENV \
+        CONDA_EXE \
+        CONDA_PREFIX \
+        CONDA_PROMPT_MODIFIER \
+        CONDA_PYTHON_EXE \
+        CONDA_SHLVL \
+        MAMBA_EXE
 }
 
 ml_pixi() {
@@ -268,7 +280,7 @@ ml() {
     # * includes clean, go, ghcup, brew, port, conda, cargo, host
     ml_ghcup
     [[ -n ${HOMEBREW_PREFIX} ]] && ml_brew
-    [[ -n ${__CONDA_PREFIX} ]] && ml_conda
+    [[ -n ${MAMBA_ROOT_PREFIX} ]] && ml_conda
     [[ -n ${PIXI_HOME} ]] && ml_pixi
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
     [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
@@ -326,6 +338,33 @@ mkdir_xdg() {
 
 # main #########################################################################
 
+# zim
+if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
+    # shellcheck disable=SC2206
+    fpath=("${ZDOTDIR}/functions" ${fpath})
+
+    zstyle ':zim:zmodule' use 'degit'
+
+    # Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+    if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
+        # shellcheck disable=SC1091
+        source "${ZIM_HOME}/zimfw.zsh" init -q
+    fi
+
+    # ssh
+    zstyle ':zim:ssh' ids id_ed25519
+    # zsh-users/zsh-history-substring-search
+    # shellcheck disable=SC2154
+    bindkey "${terminfo[kcuu1]}" history-substring-search-up
+    # shellcheck disable=SC2154
+    bindkey "${terminfo[kcud1]}" history-substring-search-down
+
+    # Initialize modules.
+    # shellcheck disable=SC1091
+    source "${ZIM_HOME}/init.zsh"
+fi
+
+# this has to come after setting up zim as ml_conda would use compinit
 if [[ -n ${__CLEAN} ]]; then
     ml_clean
 else
@@ -350,32 +389,9 @@ if [[ -n ${BASH_VERSION} ]]; then
     command -v fzf > /dev/null 2>&1 && eval "$(fzf --bash)"
     # shellcheck disable=SC2312
     command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
-elif [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
+else
     # shellcheck disable=SC2312
     command -v fzf > /dev/null 2>&1 && source <(fzf --zsh)
-
-    # shellcheck disable=SC2206
-    fpath=("${ZDOTDIR}/functions" ${fpath})
-
-    zstyle ':zim:zmodule' use 'degit'
-
-    # Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
-    if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
-        # shellcheck disable=SC1091
-        source "${ZIM_HOME}/zimfw.zsh" init -q
-    fi
-
-    # ssh
-    zstyle ':zim:ssh' ids id_ed25519
-    # zsh-users/zsh-history-substring-search
-    # shellcheck disable=SC2154
-    bindkey "${terminfo[kcuu1]}" history-substring-search-up
-    # shellcheck disable=SC2154
-    bindkey "${terminfo[kcud1]}" history-substring-search-down
-
-    # Initialize modules.
-    # shellcheck disable=SC1091
-    source "${ZIM_HOME}/init.zsh"
 fi
 
 if command -v fastfetch > /dev/null 2>&1; then

@@ -8,7 +8,7 @@
 # * important prefixes exported
 # __LOCAL_ROOT <- arch-indep software prefix
 # __OPT_ROOT <- arch-dep software prefix
-# __CONDA_PREFIX
+# MAMBA_ROOT_PREFIX
 # PIXI_HOME
 # CARGO_PREFIX
 # GOPATH
@@ -132,8 +132,8 @@ fi
 export \
     __LOCAL_ROOT \
     __OPT_ROOT
-[[ -n ${__CONDA_PREFIX} ]] || __CONDA_PREFIX="${__OPT_ROOT}/miniforge3"
-export __CONDA_PREFIX
+[[ -n ${MAMBA_ROOT_PREFIX} ]] || MAMBA_ROOT_PREFIX="${__OPT_ROOT}/miniforge3"
+export MAMBA_ROOT_PREFIX
 [[ -n ${PIXI_HOME} ]] || PIXI_HOME="${__OPT_ROOT}/pixi"
 export PIXI_HOME
 
