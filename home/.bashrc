@@ -18,7 +18,7 @@ auto_ssh_agent() {
             )
         fi
         # shellcheck disable=SC1090
-        source "${ssh_env}" > /dev/null
+        . "${ssh_env}" > /dev/null
 
         # there's a chance that the stored process has been killed
         ssh-add -l &> /dev/null
@@ -29,7 +29,7 @@ auto_ssh_agent() {
                 ssh-agent > "${ssh_env}"
             )
             # shellcheck disable=SC1090
-            source "${ssh_env}" > /dev/null
+            . "${ssh_env}" > /dev/null
         fi
     fi
     # Load identities

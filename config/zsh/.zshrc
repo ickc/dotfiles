@@ -216,7 +216,7 @@ ml_pixi() {
 
 ml_devbox() {
     # shellcheck disable=SC2312
-    eval "$(devbox global shellenv --init-hook)"
+    . <(devbox global shellenv --init-hook)
 }
 
 # sman
@@ -348,7 +348,7 @@ if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
     # Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
     if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
         # shellcheck disable=SC1091
-        source "${ZIM_HOME}/zimfw.zsh" init -q
+        . "${ZIM_HOME}/zimfw.zsh" init -q
     fi
 
     # ssh
@@ -361,7 +361,7 @@ if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
 
     # Initialize modules.
     # shellcheck disable=SC1091
-    source "${ZIM_HOME}/init.zsh"
+    . "${ZIM_HOME}/init.zsh"
 fi
 
 # this has to come after setting up zim as ml_conda would use compinit
@@ -386,12 +386,12 @@ command -v difft > /dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
 
 if [[ -n ${BASH_VERSION} ]]; then
     # shellcheck disable=SC2312
-    command -v fzf > /dev/null 2>&1 && eval "$(fzf --bash)"
+    command -v fzf > /dev/null 2>&1 && . <(fzf --bash)
     # shellcheck disable=SC2312
-    command -v starship > /dev/null 2>&1 && eval "$(starship init bash)"
+    command -v starship > /dev/null 2>&1 && . <(starship init bash)
 else
     # shellcheck disable=SC2312
-    command -v fzf > /dev/null 2>&1 && source <(fzf --zsh)
+    command -v fzf > /dev/null 2>&1 && . <(fzf --zsh)
 fi
 
 if command -v fastfetch > /dev/null 2>&1; then
