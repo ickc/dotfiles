@@ -153,6 +153,7 @@ if [[ ${SCRATCH} != "${HOME}/.scratch" ]]; then
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
 fi
+export PIXI_CACHE_DIR="${XDG_CACHE_HOME}/${__OSTYPE}-${__ARCH}/pixi"
 
 # because not all softwares respect XDG_CONFIG_HOME
 # and I want to capture all of them in this repo
