@@ -357,7 +357,8 @@
           system.defaults = {
             LaunchServices.LSQuarantine = false;
             NSGlobalDomain = {
-              AppleInterfaceStyleSwitchesAutomatically = true;
+              AppleInterfaceStyle = "Dark";
+              AppleInterfaceStyleSwitchesAutomatically = false;
               AppleMeasurementUnits = "Centimeters";
               AppleMetricUnits = 1;
               AppleShowAllExtensions = true;
