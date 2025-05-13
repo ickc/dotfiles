@@ -1,0 +1,246 @@
+# Gruvbox Dark Theme dircolors
+# Based on the Gruvbox color scheme by morhetz
+# https://github.com/morhetz/gruvbox
+
+# Standard colors
+NORMAL 00;38;5;223         # default color (cream/beige)
+FILE 00                    # regular file - use default
+RESET 0                    # reset color
+DIR 01;38;5;109            # directory (blue)
+LINK 01;38;5;142           # symbolic link (green)
+MULTIHARDLINK 00           # regular file with more than one link
+FIFO 38;5;126              # pipe (purple)
+SOCK 01;38;5;126           # socket (bright purple)
+DOOR 01;38;5;126           # door
+BLK 01;38;5;208            # block device driver (orange)
+CHR 01;38;5;214            # character device driver (yellow)
+ORPHAN 38;5;167            # symlink to nonexistent file (red)
+MISSING 01;05;37;41        # file that is missing (white on red, blinking)
+SETUID 01;38;5;229;48;5;167 # file that is setuid (u+s)
+SETGID 01;38;5;229;48;5;166 # file that is setgid (g+s)
+CAPABILITY 30;41           # file with capability
+STICKY_OTHER_WRITABLE 01;38;5;229;48;5;167 # dir that is sticky and other-writable (+t,o+w)
+OTHER_WRITABLE 01;38;5;166 # dir that is other-writable (o+w) and not sticky
+STICKY 01;38;5;214         # dir with the sticky bit set (+t) and not other-writable
+EXEC 01;38;5;208           # executable files (orange)
+
+# Archives
+.tar 38;5;166
+.tgz 38;5;166
+.arc 38;5;166
+.arj 38;5;166
+.taz 38;5;166
+.lha 38;5;166
+.lz4 38;5;166
+.lzh 38;5;166
+.lzma 38;5;166
+.tlz 38;5;166
+.txz 38;5;166
+.tzo 38;5;166
+.t7z 38;5;166
+.zip 38;5;166
+.z 38;5;166
+.Z 38;5;166
+.dz 38;5;166
+.gz 38;5;166
+.lrz 38;5;166
+.lz 38;5;166
+.lzo 38;5;166
+.xz 38;5;166
+.bz2 38;5;166
+.bz 38;5;166
+.tbz 38;5;166
+.tbz2 38;5;166
+.tz 38;5;166
+.deb 38;5;166
+.rpm 38;5;166
+.jar 38;5;166
+.war 38;5;166
+.ear 38;5;166
+.sar 38;5;166
+.rar 38;5;166
+.ace 38;5;166
+.zoo 38;5;166
+.cpio 38;5;166
+.7z 38;5;166
+.rz 38;5;166
+.cab 38;5;166
+
+# Image files
+.jpg 38;5;214
+.jpeg 38;5;214
+.gif 38;5;214
+.bmp 38;5;214
+.pbm 38;5;214
+.pgm 38;5;214
+.ppm 38;5;214
+.tga 38;5;214
+.xbm 38;5;214
+.xpm 38;5;214
+.tif 38;5;214
+.tiff 38;5;214
+.png 38;5;214
+.svg 38;5;214
+.svgz 38;5;214
+.mng 38;5;214
+.pcx 38;5;214
+.mov 38;5;214
+.mpg 38;5;214
+.mpeg 38;5;214
+.m2v 38;5;214
+.mkv 38;5;214
+.webm 38;5;214
+.ogm 38;5;214
+.mp4 38;5;214
+.m4v 38;5;214
+.mp4v 38;5;214
+.vob 38;5;214
+.qt 38;5;214
+.nuv 38;5;214
+.wmv 38;5;214
+.asf 38;5;214
+.rm 38;5;214
+.rmvb 38;5;214
+.flc 38;5;214
+.avi 38;5;214
+.fli 38;5;214
+.flv 38;5;214
+.gl 38;5;214
+.dl 38;5;214
+.xcf 38;5;214
+.xwd 38;5;214
+.yuv 38;5;214
+.cgm 38;5;214
+
+# Video and animation
+.mkv 38;5;214
+.ogv 38;5;214
+.mp4 38;5;214
+.m4v 38;5;214
+.mp4v 38;5;214
+.vob 38;5;214
+.qt 38;5;214
+.nuv 38;5;214
+.wmv 38;5;214
+.asf 38;5;214
+.rm 38;5;214
+.rmvb 38;5;214
+.flc 38;5;214
+.avi 38;5;214
+.fli 38;5;214
+.flv 38;5;214
+.gl 38;5;214
+.dl 38;5;214
+.xcf 38;5;214
+.xwd 38;5;214
+.yuv 38;5;214
+.cgm 38;5;214
+
+# Audio files
+.aac 38;5;142
+.au 38;5;142
+.flac 38;5;142
+.m4a 38;5;142
+.mid 38;5;142
+.midi 38;5;142
+.mka 38;5;142
+.mp3 38;5;142
+.mpc 38;5;142
+.ogg 38;5;142
+.ra 38;5;142
+.wav 38;5;142
+.oga 38;5;142
+.opus 38;5;142
+.spx 38;5;142
+.xspf 38;5;142
+
+# Documents
+.pdf 38;5;167
+.ps 38;5;167
+.txt 38;5;223
+.doc 38;5;167
+.docx 38;5;167
+.odt 38;5;167
+.ppt 38;5;167
+.pptx 38;5;167
+.odp 38;5;167
+.xls 38;5;142
+.xlsx 38;5;142
+.ods 38;5;142
+.csv 38;5;142
+
+# Programming files
+.c 38;5;175
+.cpp 38;5;175
+.cc 38;5;175
+.cxx 38;5;175
+.h 38;5;175
+.hpp 38;5;175
+.py 38;5;142
+.rb 38;5;167
+.js 38;5;214
+.html 38;5;208
+.htm 38;5;208
+.css 38;5;175
+.php 38;5;125
+.java 38;5;208
+.sh 38;5;142
+.pl 38;5;208
+.rs 38;5;208
+.go 38;5;109
+.lua 38;5;109
+.vim 38;5;142
+.vimrc 38;5;142
+
+# Configuration files
+.conf 38;5;229
+.config 38;5;229
+.cfg 38;5;229
+.ini 38;5;229
+.json 38;5;229
+.yml 38;5;229
+.yaml 38;5;229
+.toml 38;5;229
+.lock 38;5;229
+
+# Data files
+.xml 38;5;167
+.sql 38;5;167
+.db 38;5;167
+.sqlite 38;5;167
+
+# Special files
+.log 38;5;245
+.bak 38;5;245
+.tmp 38;5;245
+.temp 38;5;245
+.swp 38;5;245
+
+# Version control
+.git 38;5;245
+.gitignore 38;5;245
+.gitmodules 38;5;245
+
+# System files
+*.pid 38;5;245
+*.socket 38;5;126
+*.service 38;5;175
+
+# Makefiles and build files
+*Makefile 38;5;142
+*makefile 38;5;142
+*.mk 38;5;142
+*CMakeLists.txt 38;5;142
+*.cmake 38;5;142
+
+# Markdown and text markup
+.md 38;5;223
+.markdown 38;5;223
+.rst 38;5;223
+.tex 38;5;223
+.org 38;5;223
+
+# Dotfiles (hidden config files)
+.*rc 38;5;229
+.*profile 38;5;229
+.*_history 38;5;245
