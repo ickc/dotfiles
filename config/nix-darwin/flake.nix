@@ -45,7 +45,7 @@
             bottom
             btop
             code2prompt
-            coreutils
+            coreutils-full
             delta
             devbox
             # diffoscope
