@@ -50,7 +50,7 @@ export __NCPU
 
 # defaults unless overridden otherwise
 __PREFERRED_SHELL=zsh
-# this can be defined by the system already
+# resolving order: system-defined, default to ~/.scratch, then host-specific definition below
 SCRATCH="${SCRATCH:-${HOME}/.scratch}"
 
 # set HOSTNAME by hostname if undefined
@@ -131,11 +131,9 @@ else
 fi
 export \
     __LOCAL_ROOT \
-    __OPT_ROOT
-[[ -n ${MAMBA_ROOT_PREFIX} ]] || MAMBA_ROOT_PREFIX="${__OPT_ROOT}/miniforge3"
-export MAMBA_ROOT_PREFIX
-[[ -n ${PIXI_HOME} ]] || PIXI_HOME="${__OPT_ROOT}/pixi"
-export PIXI_HOME
+    __OPT_ROOT \
+    MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}" \
+    PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
 
 # XDG setup ############################################################
 # depends on __HOST detection
@@ -153,7 +151,6 @@ if [[ ${SCRATCH} != "${HOME}/.scratch" ]]; then
 else
     export XDG_CACHE_HOME="${HOME}/.cache"
 fi
-export PIXI_CACHE_DIR="${XDG_CACHE_HOME}/${__OSTYPE}-${__ARCH}/pixi"
 
 # because not all softwares respect XDG_CONFIG_HOME
 # and I want to capture all of them in this repo
@@ -172,6 +169,7 @@ export \
     MATHEMATICA_USERBASE="${XDG_CONFIG_HOME}"/mathematica \
     NUMBA_CACHE_DIR="${XDG_CACHE_HOME}/numba" \
     PARALLEL_HOME="${XDG_CONFIG_HOME}"/parallel \
+    PIXI_CACHE_DIR="${XDG_CACHE_HOME}/${__OSTYPE}-${__ARCH}/pixi" \
     WGETRC="${XDG_CONFIG_HOME}/wgetrc"
 
 # HOMEBREW_PREFIX detection ############################################
