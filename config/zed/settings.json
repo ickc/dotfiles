@@ -13,12 +13,12 @@
             "proxy": null,
             "proxy_no_verify": null
         },
-        "enabled_in_assistant": false
+        "enabled_in_text_threads": false
     },
     "features": {
         "edit_prediction_provider": "zed"
     },
-    "assistant": {
+    "agent": {
         "default_profile": "minimal",
         "default_model": {
             "provider": "copilot_chat",
