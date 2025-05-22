@@ -222,7 +222,7 @@ ml_devbox() {
 # sman
 ml_s() {
     # shellcheck disable=SC1091
-    . "${HOME}/.sman/sman.rc"
+    . "${ZDOTDIR}/functions/sman.rc"
 }
 
 ml_lsd() {
@@ -271,7 +271,7 @@ ml_clean() {
     path_prepend_all "${__LOCAL_ROOT}"
 
     # * load minimal environment for interactive use
-    [[ -f "${HOME}/.sman/sman.rc" ]] && ml_s
+    [[ -f "${ZDOTDIR}/functions/sman.rc" ]] && ml_s
     command -v lsd > /dev/null 2>&1 && ml_lsd
 }
 
