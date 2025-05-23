@@ -193,6 +193,7 @@
               "Xcode" = 497799835;
             };
             brews = [
+              "imageoptim-cli"
               "llama.cpp"
               "mpv"
               "pandoc"
@@ -264,6 +265,7 @@
               "google-drive"
               "handbrake"
               "heynote"
+              "imageoptim"
               "inkscape"
               "jan"
               "jetbrains-toolbox"
