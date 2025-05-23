@@ -265,6 +265,7 @@
               "google-drive"
               "handbrake"
               "heynote"
+              "imagealpha"
               "imageoptim"
               "inkscape"
               "jan"
