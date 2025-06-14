@@ -195,6 +195,7 @@
             brews = [
               "imageoptim-cli"
               "llama.cpp"
+              "mas"
               "mpv"
               "pandoc"
               "verapdf"
