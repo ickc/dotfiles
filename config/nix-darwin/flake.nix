@@ -322,9 +322,6 @@
             ];
           };
 
-          # Auto upgrade nix package and the daemon service.
-          services.nix-daemon.enable = true;
-
           # Necessary for using flakes on this system.
           nix.settings = {
             experimental-features = "nix-command flakes";
@@ -348,7 +345,9 @@
             promptInit = "";
           };
 
-          security.pam.enableSudoTouchIdAuth = true;
+          security.pam.services.sudo_local.touchIdAuth = true;
+
+          system.primaryUser = "kolen";
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
