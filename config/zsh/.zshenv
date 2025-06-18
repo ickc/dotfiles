@@ -100,6 +100,10 @@ case "${HOSTNAME}" in
             SCRATCH="/cosma5/data/durham/${USER}"
         fi
         ;;
+    *.cluster.local)
+        export ISCA_HOST="${HOSTNAME%%.*}"
+        __HOST="${ISCA_HOST}"
+        ;;
     gordita.physics.berkeley.edu)
         export BOLO_HOST=gordita
         __HOST="${BOLO_HOST}"
