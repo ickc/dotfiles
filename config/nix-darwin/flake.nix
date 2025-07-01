@@ -51,6 +51,7 @@
             # diffoscope
             difftastic
             diffutils
+            direnv
             dua
             duti
             entr
