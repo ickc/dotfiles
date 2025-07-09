@@ -208,6 +208,7 @@
               "amethyst"
               "appcleaner"
               "astropad"
+              "audacity"
               "background-music"
               "betterdisplay"
               "calibre"
