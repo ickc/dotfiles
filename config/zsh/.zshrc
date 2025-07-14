@@ -389,6 +389,8 @@ if [[ -n ${BASH_VERSION} ]]; then
     command -v fzf > /dev/null 2>&1 && . <(fzf --bash)
     # shellcheck disable=SC2312
     command -v starship > /dev/null 2>&1 && . <(starship init bash)
+    # shellcheck disable=SC2312
+    command -v direnv > /dev/null 2>&1 && eval "$(direnv hook bash)"
 else
     # shellcheck disable=SC2312
     command -v fzf > /dev/null 2>&1 && . <(fzf --zsh)

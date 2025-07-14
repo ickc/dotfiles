@@ -4,6 +4,7 @@ zmodule joke/zim-starship
 zmodule zsh-users/zsh-completions --fpath src
 zmodule completion
 
+zmodule direnv
 zmodule environment
 zmodule input
 zmodule run-help
