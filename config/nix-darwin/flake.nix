@@ -222,7 +222,6 @@
               "displaylink"
               "dropbox"
               "dupeguru"
-              "eloston-chromium"
               "firefox"
               "font-andika"
               "font-cardo"
