@@ -19,10 +19,10 @@
         "edit_prediction_provider": "zed"
     },
     "agent": {
-        "default_profile": "minimal",
+        "default_profile": "write",
         "default_model": {
             "provider": "copilot_chat",
-            "model": "o4-mini"
+            "model": "gpt-5-mini"
         },
     },
     "languages": {
