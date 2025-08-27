@@ -294,7 +294,7 @@
               "notion"
               "obsidian"
               # "onedrive"
-              "r"
+              "r-app"
               "raindropio"
               "rectangle"
               "rstudio"
