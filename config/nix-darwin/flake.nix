@@ -284,7 +284,7 @@
               "logseq"
               "mactex"
               "makemkv"
-              "marked"
+              "marked-app"
               "microsoft-auto-update"
               "microsoft-teams"
               "musescore"
