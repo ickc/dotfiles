@@ -193,6 +193,7 @@
             };
             brews = [
               "ansible"
+              "gemini-cli"
               "imageoptim-cli"
               "llama.cpp"
               "mas"
