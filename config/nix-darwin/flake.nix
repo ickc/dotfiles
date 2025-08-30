@@ -192,6 +192,7 @@
               "Xcode" = 497799835;
             };
             brews = [
+              "ansible"
               "imageoptim-cli"
               "llama.cpp"
               "mas"
