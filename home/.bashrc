@@ -52,6 +52,10 @@ if [[ $- == *i* ]]; then
         fi
     # otherwise, it means I start bash deliberately, so we stay in bash
     else
+        # Source global definitions (Some distro such as RHEL has this in the default ~/.bashrc)
+        if [ -f /etc/bashrc ]; then
+            . /etc/bashrc
+        fi
         # shellcheck disable=SC1091
         [[ -e "${HOME}/.config/zsh/.zshrc" ]] && . "${HOME}/.config/zsh/.zshrc"
 
