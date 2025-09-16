@@ -350,6 +350,7 @@
           security.pam.services.sudo_local.touchIdAuth = true;
 
           system.primaryUser = "kolen";
+          # ids.gids.nixbld = 350;
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
