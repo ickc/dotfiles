@@ -314,7 +314,6 @@
               "vlc"
               "wezterm"
               "whatsapp"
-              "windscribe"
               "xquartz"
               "yattee"
               "zed"
