@@ -199,6 +199,7 @@
               "mas"
               "mpv"
               "pandoc"
+              "tailscale"
               "verapdf"
             ];
             casks = [
