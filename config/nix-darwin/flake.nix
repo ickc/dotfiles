@@ -179,6 +179,7 @@
               "Strongbox" = 897283731;
               "Tabs Switcher" = 1406718335;
               "Tabs to Links" = 1451408472;
+              "Tailscale" = 1475387142;
               "TaskPaper" = 1090940630;
               "The Camelizer" = 1532579087;
               "The Unarchiver" = 425424353;
@@ -306,7 +307,6 @@
               "signal"
               "spotify"
               "steam"
-              "tailscale-app"
               "textmate"
               "utm"
               "visual-studio-code"
