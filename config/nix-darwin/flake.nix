@@ -198,6 +198,7 @@
               "imageoptim-cli"
               "llama.cpp"
               "mas"
+              "mermaid-cli"
               "mpv"
               "pandoc"
               "verapdf"
