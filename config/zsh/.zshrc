@@ -354,10 +354,11 @@ if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
     # ssh
     zstyle ':zim:ssh' ids id_ed25519
     # zsh-users/zsh-history-substring-search
+    # Use terminfo if available, with fallbacks for arrow keys.
     # shellcheck disable=SC2154
-    bindkey "${terminfo[kcuu1]}" history-substring-search-up
+    bindkey "${terminfo[kcuu1]:-^[[A]}" history-substring-search-up
     # shellcheck disable=SC2154
-    bindkey "${terminfo[kcud1]}" history-substring-search-down
+    bindkey "${terminfo[kcud1]:-^[[B]}" history-substring-search-down
 
     # Initialize modules.
     # shellcheck disable=SC1091
