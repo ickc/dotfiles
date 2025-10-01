@@ -217,6 +217,7 @@
               "calibre"
               "chatgpt"
               "claude"
+              "clockify"
               "dataspell"
               "detexify"
               "discord"
