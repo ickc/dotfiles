@@ -328,6 +328,7 @@
 
           # Necessary for using flakes on this system.
           nix.settings = {
+            download-buffer-size = 256 * 1024 * 1024;
             experimental-features = "nix-command flakes";
             trusted-users = [
               "root"
