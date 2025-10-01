@@ -197,6 +197,7 @@
               "gemini-cli"
               "imageoptim-cli"
               "llama.cpp"
+              "macmon"
               "mas"
               "mermaid-cli"
               "mpv"
