@@ -269,6 +269,7 @@
               "github"
               "google-chrome"
               "google-drive"
+              "grandperspective"
               "handbrake"
               "heynote"
               "imagealpha"
