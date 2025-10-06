@@ -271,7 +271,7 @@
               "google-chrome"
               "google-drive"
               "grandperspective"
-              "handbrake"
+              "handbrake-app"
               "heynote"
               "imagealpha"
               "imageoptim"
