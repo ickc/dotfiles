@@ -38,18 +38,7 @@
             enable = true;
             onActivation.cleanup = "zap";
             masApps = import ./masApps.nix;
-            brews = [
-              "ansible"
-              "gemini-cli"
-              "imageoptim-cli"
-              "llama.cpp"
-              "macmon"
-              "mas"
-              "mermaid-cli"
-              "mpv"
-              "pandoc"
-              "verapdf"
-            ];
+            brews = import ./brews.nix;
             casks = [
               "accordance"
               "adobe-creative-cloud"
