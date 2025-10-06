@@ -1,9 +1,4 @@
 {
-  # nix-darwin/masApps.nix
-  # Extracted macOS App Store app id mappings for use with nix-homebrew's `masApps`.
-  # This file evaluates to an attribute set mapping display names to numeric MAS ids.
-  # Example usage from `flake.nix`:
-  #   homebrew.masApps = import ./nix-darwin/masApps.nix;
   "1Blocker" = 1365531024;
   "Aiko" = 1672085276;
   "Amphetamine" = 937984704;
