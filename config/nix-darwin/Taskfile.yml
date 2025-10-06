@@ -4,7 +4,7 @@ tasks:
   update:mas:
     desc: 'List all installed apps from the Mac App Store in nix flake format.'
     cmds:
-      - ./mas2nix.py flake.nix
+      - ./mas2nix.py masApps.nix
   command2package:
     desc: 'Write the command to package mapping to a file.'
     cmds:

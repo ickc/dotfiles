@@ -21,7 +21,7 @@ def mas_list(
 
 def format_mas_to_nix(apps: list[tuple[str, str, str]]) -> list[str]:
     """Format the list of mas apps to a list of strings that can be written to a flake.nix file."""
-    res = [f'              "{app[1]}" = {app[0]};\n' for app in apps]
+    res = [f'  "{app[1]}" = {app[0]};\n' for app in apps]
     res.sort(key=str.lower)
     return res
 
@@ -32,30 +32,11 @@ def write_nix_from_nas(
 ) -> None:
     """Write the nix content to the flake.nix file."""
     path = Path(path)
-    res: list[str] = []
-    with path.open("r", encoding="utf-8") as f:
-        lines = f.readlines()
-    # Find the indices of the lines to replace
-    start_index = -1
-    end_index = -1
-
-    for i, line in enumerate(lines):
-        if line.strip() == "masApps = {":
-            start_index = i + 1
-        elif start_index != -1 and line.strip() == "};":
-            end_index = i
-            break
-
-    if start_index == -1 or end_index == -1:
-        raise ValueError("Could not find the target lines in the file.")
-
-    # Replace the lines between the start and end index with content
-    new_lines: list[str] = lines[:start_index] + nix_content + lines[end_index:]
-
-    # Write the new content back to the file
     with path.open("w") as file:
-        for line in new_lines:
+        print("{", file=file)
+        for line in nix_content:
             file.write(line)
+        print("}", file=file)
 
 
 def main(path: Path) -> None:
