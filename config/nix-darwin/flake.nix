@@ -450,6 +450,13 @@
       darwinConfigurations."simple" = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
+          # https://github.com/zhaofengli/nix-homebrew/issues/5#issuecomment-2412587886
+          (
+            { config, ... }:
+            {
+              homebrew.taps = builtins.attrNames config.nix-homebrew.taps;
+            }
+          )
           configuration
           nix-homebrew.darwinModules.nix-homebrew
           {
