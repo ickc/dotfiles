@@ -29,6 +29,7 @@
       homebrew-cask,
     }:
     let
+      user = "kolen";
       configuration =
         { pkgs, ... }:
         {
@@ -68,7 +69,7 @@
 
           security.pam.services.sudo_local.touchIdAuth = true;
 
-          system.primaryUser = "kolen";
+          system.primaryUser = user;
           # ids.gids.nixbld = 350;
 
           # Set Git commit hash for darwin-version.
@@ -177,7 +178,7 @@
               # Install Homebrew under the default prefix
               enable = true;
               enableRosetta = false;
-              user = "kolen";
+              inherit user;
               # Optional: Declarative tap management
               taps = {
                 "homebrew/homebrew-core" = inputs.homebrew-core;
