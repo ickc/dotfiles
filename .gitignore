@@ -16,7 +16,7 @@ config/jupyter/*
 !config/jupyter/jupyter_lab_config.py
 config/mpv/input.conf
 config/mpv/shaders
-config/nix-darwin/*.yml
+config/nix/*.yml
 config/parallel/*
 !/config/parallel/will-cite
 config/whisper.cpp/
