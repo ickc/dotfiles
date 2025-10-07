@@ -34,13 +34,13 @@
         { pkgs, ... }:
         {
           # nixpkgs.config.allowUnfree = true;
-          environment.systemPackages = import ./systemPackages.nix { inherit pkgs; };
+          environment.systemPackages = import ./modules/systemPackages.nix { inherit pkgs; };
           homebrew = {
             enable = true;
             onActivation.cleanup = "zap";
-            masApps = import ./masApps.nix;
-            brews = import ./brews.nix;
-            casks = import ./casks.nix;
+            masApps = import ./modules/darwin/masApps.nix;
+            brews = import ./modules/darwin/brews.nix;
+            casks = import ./modules/darwin/casks.nix;
           };
 
           nix.settings = {
