@@ -8,7 +8,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    # Optional: Declarative tap management
+    # nix-homebrew's declarative tap management:
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
@@ -70,7 +70,6 @@
           security.pam.services.sudo_local.touchIdAuth = true;
 
           system.primaryUser = user;
-          # ids.gids.nixbld = 350;
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -78,6 +77,7 @@
           # Used for backwards compatibility, please read the changelog before changing.
           # $ darwin-rebuild changelog
           system.stateVersion = 4;
+          # ids.gids.nixbld = 350;
 
           system.defaults = {
             LaunchServices.LSQuarantine = false;
@@ -145,6 +145,7 @@
               TrackpadThreeFingerTapGesture = 0;
             };
           };
+
           # https://gist.github.com/tkafka/e3eb63a5ec448e9be6701bfd1f1b1e58
           launchd.user.agents.environment-fix-electron-resource-hog-bug.serviceConfig = {
             Label = "environment.fix-electron-resource-hog-bug";
