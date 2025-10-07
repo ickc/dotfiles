@@ -42,9 +42,9 @@
             casks = import ./casks.nix;
           };
 
-          # Necessary for using flakes on this system.
           nix.settings = {
             download-buffer-size = 256 * 1024 * 1024;
+            # Necessary for using flakes on this system.
             experimental-features = "nix-command flakes";
             trusted-users = [
               "root"
@@ -58,7 +58,7 @@
           };
           # Create /etc/zshrc that loads the nix-darwin environment.
           programs.zsh = {
-            enable = true; # default shell on catalina
+            enable = true;
             enableBashCompletion = false;
             enableCompletion = false;
             enableFzfCompletion = true;
