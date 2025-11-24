@@ -252,6 +252,14 @@ ml_mactex() {
     path_prepend /Library/TeX/texbin
 }
 
+ml_lms() {
+    path_prepend_all "${HOME}/.lmstudio"
+}
+
+ml_agy() {
+    path_prepend_all "${HOME}/.antigravity/antigravity"
+}
+
 # hosts ========================================================================
 
 if [[ -n ${COSMA_HOST} ]]; then
@@ -283,12 +291,16 @@ ml() {
     [[ -n ${MAMBA_ROOT_PREFIX} ]] && ml_conda
     [[ -n ${PIXI_HOME} ]] && ml_pixi
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
-    [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
+    [[ -d ${HOME}/.lmstudio ]] && ml_lms
+    [[ -d ${HOME}/.antigravity/antigravity ]] && ml_agy
 
     command -v ml_host > /dev/null 2>&1 && ml_host
 
     case "${__OSTYPE}" in
-        Darwin) [[ -d /Library/TeX/texbin ]] && ml_mactex ;;
+        Darwin)
+            [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
+            [[ -d /Library/TeX/texbin ]] && ml_mactex
+            ;;
         *) ;;
     esac
 
