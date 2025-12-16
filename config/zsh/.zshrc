@@ -260,6 +260,11 @@ ml_agy() {
     path_prepend_all "${HOME}/.antigravity/antigravity"
 }
 
+ml_cuda_toolkit() {
+    path_prepend_all /usr/local/cuda
+    ld_library_path_prepend /usr/local/cuda/lib64
+}
+
 # hosts ========================================================================
 
 if [[ -n ${COSMA_HOST} ]]; then
@@ -293,6 +298,7 @@ ml() {
     [[ -n ${CARGO_PREFIX} ]] && ml_cg
     [[ -d ${HOME}/.lmstudio ]] && ml_lms
     [[ -d ${HOME}/.antigravity/antigravity ]] && ml_agy
+    [[ -d /usr/local/cuda ]] && ml_cuda_toolkit
 
     command -v ml_host > /dev/null 2>&1 && ml_host
 
