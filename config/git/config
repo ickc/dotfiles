@@ -10,3 +10,7 @@
         smudge = git-lfs smudge -- %f
 [credential]
         helper = store
+[rerere]
+	enabled = true
+[core]
+	editor = code --wait
