@@ -1,2 +1,4 @@
 theme = dark:Gruvbox Dark,light:Gruvbox Light
 shell-integration-features = ssh-env,ssh-terminfo
+# https://github.com/anthropics/claude-code/issues/10461
+keybind = shift+enter=text:\x1b\r
