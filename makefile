@@ -68,16 +68,15 @@ update: \
 	joshuto-update \
 	mpv-update
 
-amethyst-update: amethyst/amethyst.yml  ## update amethyst config
+amethyst-update: config/amethyst/amethyst.yml  ## update amethyst config
 joshuto-update: config/joshuto/  ## update joshuto config
 mpv-update: config/mpv/shaders/  ## update mpv config
 
 # by default comment out all lines in amethyst.yml due to
 # https://github.com/ianyh/Amethyst/issues/1419
-amethyst/amethyst.yml:
+config/amethyst/amethyst.yml:
 	mkdir -p $(@D)
-	wget https://github.com/ianyh/Amethyst/raw/development/.amethyst.sample.yml -O $@
-	sed -i '/^\s*#/!{/^$$/!s/^/# /}' $@
+	wget https://github.com/ianyh/Amethyst/raw/v0.24.1/.amethyst.sample.yml -O - | sed '/^\s*#/!{/^$$/!s/^/# /}' > $@
 config/joshuto/:
 	rm -rf $@
 	mkdir -p $@
