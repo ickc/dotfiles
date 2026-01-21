@@ -28,7 +28,7 @@ layouts:
   # - 4column-right
   - column
   # - row
-  - floating
+#   - floating
   - widescreen-tall
   # - widescreen-tall-right
   # - bsp
@@ -223,12 +223,7 @@ select-fullscreen-layout:
   mod: mod1
   key: a
 
-# Select column layout
-select-column-layout:
-  mod: ""
-  key: ""
-
-select-bsp-layout:
+select-middle-wide-layout:
   mod: mod1
   key: s
 
@@ -237,9 +232,14 @@ select-two-pane-layout:
   mod: mod1
   key: d
 
-select-floating-layout:
+select-widescreen-tall-layout:
   mod: mod1
   key: f
+
+# Select column layout
+select-column-layout:
+  mod: mod1
+  key: g
 
 # Move the currently focused window to the space to the left.
 throw-space-left:
