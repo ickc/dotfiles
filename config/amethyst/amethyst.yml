@@ -20,6 +20,7 @@ layouts:
   # - tall-right
 #   - wide
   - two-pane
+  - two-pane-right
   - middle-wide
   # - 3column-left
   # - middle-wide # The legacy name of "3column-middle"
@@ -231,6 +232,10 @@ select-middle-wide-layout:
 select-two-pane-layout:
   mod: mod1
   key: d
+
+select-two-pane-right-layout:
+  mod: mod1
+  key: e
 
 select-widescreen-tall-layout:
   mod: mod1
