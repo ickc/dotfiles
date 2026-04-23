@@ -249,7 +249,7 @@ ml_jetbrains() {
 }
 
 ml_mactex() {
-    path_prepend /Library/TeX/texbin
+    path_prepend /Library/TeX/Distributions/Programs/texbin
 }
 
 ml_lms() {
@@ -305,7 +305,7 @@ ml() {
     case "${__OSTYPE}" in
         Darwin)
             [[ -d "${HOME}/Library/Application Support/JetBrains/Toolbox/scripts" ]] && ml_jetbrains
-            [[ -d /Library/TeX/texbin ]] && ml_mactex
+            [[ -d /Library/TeX/Distributions/Programs/texbin ]] && ml_mactex
             ;;
         *) ;;
     esac
