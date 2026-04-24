@@ -13,8 +13,7 @@
         "copilot": {
             "proxy": null,
             "proxy_no_verify": null
-        },
-        "enabled_in_text_threads": false
+        }
     },
     "agent": {
         "default_profile": "write",
