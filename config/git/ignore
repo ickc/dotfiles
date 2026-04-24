@@ -10,5 +10,5 @@
 .vscode/
 *.egg-info/
 *.pyc
-
+.zed/
 **/.claude/settings.local.json
