@@ -1,6 +1,9 @@
+**/.claude/settings.local.json
+*.egg-info/
+*.pyc
+.DS_Store
 .coverage*
 .dmypy.json
-.DS_Store
 .idea/
 .ipynb_checkpoints/
 .jupyter/
@@ -8,7 +11,4 @@
 .obsidian/
 .pytest_cache/
 .vscode/
-*.egg-info/
-*.pyc
 .zed/
-**/.claude/settings.local.json
