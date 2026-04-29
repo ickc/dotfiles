@@ -30,7 +30,7 @@ config:  ## setup config (moving existing config then symlink)
 	fi
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true  ## setup mpv dotfile
-shell: ; ln -sf $(PWD)/home/.zshenv ~; ln -sf $(PWD)/home/.zshrc ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~  ## setup shell dotfiles
+shell: ; ln -sf $(PWD)/home/.zimrc ~; ln -sf $(PWD)/home/.zshenv ~; ln -sf $(PWD)/home/.zshrc ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~  ## setup shell dotfiles
 taskfile: ; ln -sf $(PWD)/home/Taskfile.yml ~  ## setup taskfile at HOME
 
 # TODO: delete hyper-remove powerlevel10k-remove
@@ -53,7 +53,7 @@ config-remove: ; rm -f $(XDG_CONFIG_HOME) || true  ## remove config symlink
 hyper-remove: ; rm -f ~/.hyper.js  ## remove hyper dotfile
 mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf  ## remove mpv dotfile
 powerlevel10k-remove: ; rm -f ~/.p10k.zsh  ## remove powerlovel10k dotfile
-shell-remove: ; rm -rf ~/.bash_profile ~/.bashrc ~/.zlogin ~/.zlogout ~/.zprofile ~/.zshenv ~/.zshrc  ## remove shell dotfiles
+shell-remove: ; rm -rf ~/.bash_profile ~/.bashrc ~/.zlogin ~/.zlogout ~/.zprofile ~/.zimrc ~/.zshenv ~/.zshrc  ## remove shell dotfiles
 taskfile-remove: ; rm -f ~/Taskfile.yml  ## remove taskfile symlink at HOME
 
 # update dotfiles from upstream ########################################
