@@ -222,7 +222,7 @@ ml_devbox() {
 # sman
 ml_s() {
     # shellcheck disable=SC1091
-    . "${ZDOTDIR}/functions/sman.rc"
+    . "${XDG_CONFIG_HOME}/zsh/functions/sman.rc"
 }
 
 ml_lsd() {
@@ -284,7 +284,7 @@ ml_clean() {
     path_prepend_all "${__LOCAL_ROOT}"
 
     # * load minimal environment for interactive use
-    [[ -f "${ZDOTDIR}/functions/sman.rc" ]] && ml_s
+    [[ -f "${XDG_CONFIG_HOME}/zsh/functions/sman.rc" ]] && ml_s
     command -v lsd > /dev/null 2>&1 && ml_lsd
 }
 
@@ -359,7 +359,7 @@ mkdir_xdg() {
 # zim
 if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
     # shellcheck disable=SC2206
-    fpath=("${ZDOTDIR}/functions" ${fpath})
+    fpath=("${XDG_CONFIG_HOME}/zsh/functions" ${fpath})
 
     zstyle ':zim:zmodule' use 'degit'
 

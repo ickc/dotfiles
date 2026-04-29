@@ -201,7 +201,7 @@ fi
 # depends on XDG setup
 
 # shell
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
+export ZDOTDIR="${HOME}"
 # misc
 # LS_COLORS copied from https://github.com/perplexa/dotfiles/blob/master/.gruvbox.dircolors
 # and run dircolors ~/.gruvbox.dircolors
@@ -217,8 +217,3 @@ export \
     SMAN_EXEC_CONFIRM=false \
     SMAN_SNIPPET_DIR="${HOME}/git/source/sman-snippets" \
     ZIM_HOME="${__LOCAL_ROOT}/zim"
-
-# misc #################################################################
-
-# shellcheck disable=SC1091
-[[ -e "${ZDOTDIR}/.env" ]] && . "${ZDOTDIR}/.env"
