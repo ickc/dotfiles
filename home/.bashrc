@@ -40,12 +40,12 @@ auto_ssh_agent() {
 }
 
 # shellcheck source=config/zsh/.zshenv
-[[ -e "${HOME}/.config/zsh/.zshenv" ]] && . "${HOME}/.config/zsh/.zshenv"
+[[ -e "${HOME}/.zshenv" ]] && . "${HOME}/.zshenv"
 if [[ $- == *i* ]]; then
     # if $0 is -bash, then it means I cannot chsh to zsh, so we start zsh manually
     if [[ $0 == -bash && ${__PREFERRED_SHELL} == zsh ]]; then
         # shellcheck disable=SC1091
-        [[ -e "${HOME}/.config/zsh/.zshrc" ]] && . "${HOME}/.config/zsh/.zshrc" > /dev/null 2>&1
+        [[ -e "${HOME}/.zshrc" ]] && . "${HOME}/.zshrc" > /dev/null 2>&1
         if _SHELL="$(command -v zsh)"; then
             export SHELL="${_SHELL}"
             exec "${SHELL}" -l
@@ -57,7 +57,7 @@ if [[ $- == *i* ]]; then
             . /etc/bashrc
         fi
         # shellcheck disable=SC1091
-        [[ -e "${HOME}/.config/zsh/.zshrc" ]] && . "${HOME}/.config/zsh/.zshrc"
+        [[ -e "${HOME}/.zshrc" ]] && . "${HOME}/.zshrc"
 
         # Set up ssh-agent
         if command -v ssh-agent > /dev/null; then
