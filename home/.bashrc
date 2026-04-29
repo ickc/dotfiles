@@ -39,29 +39,18 @@ auto_ssh_agent() {
     fi
 }
 
-# shellcheck source=config/zsh/.zshenv
+# shellcheck source=.zshenv
 [[ -e "${HOME}/.zshenv" ]] && . "${HOME}/.zshenv"
 if [[ $- == *i* ]]; then
-    # if $0 is -bash, then it means I cannot chsh to zsh, so we start zsh manually
-    if [[ $0 == -bash && ${__PREFERRED_SHELL} == zsh ]]; then
-        # shellcheck disable=SC1091
-        [[ -e "${HOME}/.zshrc" ]] && . "${HOME}/.zshrc" > /dev/null 2>&1
-        if _SHELL="$(command -v zsh)"; then
-            export SHELL="${_SHELL}"
-            exec "${SHELL}" -l
-        fi
-    # otherwise, it means I start bash deliberately, so we stay in bash
-    else
-        # Source global definitions (Some distro such as RHEL has this in the default ~/.bashrc)
-        if [[ -f /etc/bashrc ]]; then
-            . /etc/bashrc
-        fi
-        # shellcheck disable=SC1091
-        [[ -e "${HOME}/.zshrc" ]] && . "${HOME}/.zshrc"
+    # Source global definitions (Some distro such as RHEL has this in the default ~/.bashrc)
+    if [[ -f /etc/bashrc ]]; then
+        . /etc/bashrc
+    fi
+    # shellcheck source=.zshrc
+    [[ -e "${HOME}/.zshrc" ]] && . "${HOME}/.zshrc"
 
-        # Set up ssh-agent
-        if command -v ssh-agent > /dev/null; then
-            auto_ssh_agent
-        fi
+    # Set up ssh-agent
+    if command -v ssh-agent > /dev/null; then
+        auto_ssh_agent
     fi
 fi
