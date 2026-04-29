@@ -413,6 +413,10 @@ if [[ -n ${BASH_VERSION} ]]; then
 else
     # shellcheck disable=SC2312
     command -v fzf > /dev/null 2>&1 && . <(fzf --zsh)
+    # shellcheck disable=SC2312
+    command -v starship > /dev/null 2>&1 && . <(starship init zsh)
+    # shellcheck disable=SC2312
+    command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
 fi
 
 if command -v fastfetch > /dev/null 2>&1; then
