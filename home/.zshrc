@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# shellcheck source=config/zsh/.zshenv
+# shellcheck source=.zshenv
 
 # * use `__CLEAN=1 zsh` to load a minimal environment, see notes below
 

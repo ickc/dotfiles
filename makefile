@@ -30,7 +30,7 @@ config:  ## setup config (moving existing config then symlink)
 	fi
 	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true  ## setup mpv dotfile
-shell: ; ln -sf $(PWD)/config/zsh/.zshenv ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~  ## setup shell dotfiles
+shell: ; ln -sf $(PWD)/home/.zshenv ~; ln -sf $(PWD)/home/.zshrc ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~  ## setup shell dotfiles
 taskfile: ; ln -sf $(PWD)/home/Taskfile.yml ~  ## setup taskfile at HOME
 
 # TODO: delete hyper-remove powerlevel10k-remove
