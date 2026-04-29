@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # * These variables can be customized per __HOST
-# __PREFERRED_SHELL
 # SCRATCH <- decicated filesystem for scratch, often not backed up and purged periodically
 # __CMN <- dedicated filesystem for softwares, potentially read-only on compute nodes
 # __APPDIR <- could be just __CMN, or a subdir of __CMN if shared with other users
@@ -48,8 +47,6 @@ export __NCPU
 # __HOST detection #####################################################
 # depends on __OSTYPE, __ARCH
 
-# defaults unless overridden otherwise
-__PREFERRED_SHELL=zsh
 # resolving order: system-defined, default to ~/.scratch, then host-specific definition below
 SCRATCH="${SCRATCH:-${HOME}/.scratch}"
 
@@ -63,8 +60,6 @@ fi
 # define *_HOST for different computing sites
 case "${HOSTNAME}" in
     *.pri.cosma.local)
-        __PREFERRED_SHELL=bash
-
         # running on a compute node
         if [[ -n ${SLURM_JOB_PARTITION} ]]; then
             COSMA_HOST="${SLURM_JOB_PARTITION}"
@@ -123,7 +118,6 @@ case "${HOSTNAME}" in
 esac
 export \
     __HOST \
-    __PREFERRED_SHELL \
     SCRATCH
 
 if [[ -n ${__APPDIR} ]]; then
