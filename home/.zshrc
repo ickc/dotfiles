@@ -410,6 +410,8 @@ if [[ -n ${BASH_VERSION} ]]; then
     command -v starship > /dev/null 2>&1 && . <(starship init bash)
     # shellcheck disable=SC2312
     command -v direnv > /dev/null 2>&1 && eval "$(direnv hook bash)"
+    # shellcheck disable=SC2312
+    command -v navi > /dev/null 2>&1 && eval "$(navi widget bash)"
 else
     # shellcheck disable=SC2312
     command -v fzf > /dev/null 2>&1 && . <(fzf --zsh)
@@ -417,6 +419,8 @@ else
     command -v starship > /dev/null 2>&1 && . <(starship init zsh)
     # shellcheck disable=SC2312
     command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
+    # shellcheck disable=SC2312
+    command -v navi > /dev/null 2>&1 && eval "$(navi widget zsh)"
 fi
 
 if command -v fastfetch > /dev/null 2>&1; then
