@@ -214,5 +214,5 @@ export \
     MAKEFLAGS="-j${__NCPU}" \
     SMAN_APPEND_HISTORY=false \
     SMAN_EXEC_CONFIRM=false \
-    SMAN_SNIPPET_DIR="${HOME}/git/source/sman-snippets" \
+    SMAN_SNIPPET_DIR="${XDG_DATA_HOME}/sman/snippets" \
     ZIM_HOME="${__LOCAL_ROOT}/zim"
