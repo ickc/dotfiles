@@ -6,6 +6,9 @@ export GIT_SSH_COMMAND
 XDG_CONFIG_HOME ?= $(HOME)/.config
 export XDG_CONFIG_HOME
 
+# Get the directory of the current Makefile
+DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+
 # option: slow, fast
 MPV=fast
 
@@ -28,10 +31,10 @@ config:  ## setup config (moving existing config then symlink)
 		find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;; \
 		rm -rf $(XDG_CONFIG_HOME); \
 	fi
-	ln -s $(PWD)/config $(XDG_CONFIG_HOME)
+	ln -s $(DIR)/config $(XDG_CONFIG_HOME)
 mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true  ## setup mpv dotfile
-shell: ; ln -sf $(PWD)/home/.zimrc ~; ln -sf $(PWD)/home/.zshenv ~; ln -sf $(PWD)/home/.zshrc ~; ln -sf $(PWD)/home/.bash_profile ~; ln -sf $(PWD)/home/.bashrc ~; ln -sf $(PWD)/home/.cshrc ~  ## setup shell dotfiles
-taskfile: ; ln -sf $(PWD)/home/Taskfile.yml ~  ## setup taskfile at HOME
+shell: ; ln -sf $(DIR)/home/.zimrc ~; ln -sf $(DIR)/home/.zshenv ~; ln -sf $(DIR)/home/.zshrc ~; ln -sf $(DIR)/home/.bash_profile ~; ln -sf $(DIR)/home/.bashrc ~; ln -sf $(DIR)/home/.cshrc ~  ## setup shell dotfiles
+taskfile: ; ln -sf $(DIR)/home/Taskfile.yml ~  ## setup taskfile at HOME
 
 # TODO: delete hyper-remove powerlevel10k-remove
 .PHONY: remove
