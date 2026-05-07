@@ -1,6 +1,7 @@
 // If you'd like to override the default keybindings completely, be sure to change "keybinds" to "keybinds clear-defaults=true"
 keybinds clear-defaults=true {
     normal {
+        // https://github.com/zellij-org/zellij/issues/2345#issuecomment-2492158745
         bind "Alt g" { Write 7; } // Write ^G
         // uncomment this and adjust key if using copy_on_select=false
         // bind "Alt c" { Copy; }
