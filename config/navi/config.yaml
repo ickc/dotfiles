@@ -1,0 +1,2 @@
+finder:
+  overrides: --with-nth 2,3
