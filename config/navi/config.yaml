@@ -1,2 +1,2 @@
 finder:
-  overrides: --with-nth 2,3
+  overrides: --with-nth 2,3 --no-exact
