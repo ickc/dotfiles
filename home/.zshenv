@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
 # * These variables can be customized per __HOST
-# SCRATCH <- decicated filesystem for scratch, often not backed up and purged periodically
+# SCRATCH <- dedicated filesystem for scratch, often not backed up and purged periodically
 # __CMN <- dedicated filesystem for softwares, potentially read-only on compute nodes
 # __APPDIR <- could be just __CMN, or a subdir of __CMN if shared with other users
-# * important prefixes exported
+# * important prefixes (set by envoy/env.sh if envoy is installed)
 # __LOCAL_ROOT <- arch-indep software prefix
 # __OPT_ROOT <- arch-dep software prefix
 # MAMBA_ROOT_PREFIX
 # PIXI_HOME
+# * personal exports
 # CARGO_PREFIX
 # GOPATH
 # ZIM_HOME
@@ -120,19 +121,6 @@ export \
     __HOST \
     SCRATCH
 
-if [[ -n ${__APPDIR} ]]; then
-    __LOCAL_ROOT="${__APPDIR}/local"
-    __OPT_ROOT="${__APPDIR}/opt/${__OSTYPE}-${__ARCH}"
-else
-    __LOCAL_ROOT="${HOME}/.local"
-    __OPT_ROOT="${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}"
-fi
-export \
-    __LOCAL_ROOT \
-    __OPT_ROOT \
-    MAMBA_ROOT_PREFIX="${MAMBA_ROOT_PREFIX:-${__OPT_ROOT}/miniforge3}" \
-    PIXI_HOME="${PIXI_HOME:-${__OPT_ROOT}/pixi}"
-
 # XDG setup ############################################################
 # depends on __HOST detection
 
@@ -154,9 +142,18 @@ fi
 # and I want to capture all of them in this repo
 # it is best to use the default location
 export XDG_CONFIG_HOME="${HOME}/.config"
-# these are same as the defaults if __APPDIR is not set
-export XDG_DATA_HOME="${__LOCAL_ROOT}/share"
-export XDG_STATE_HOME="${__LOCAL_ROOT}/state"
+# derive data/state from __APPDIR (same as the defaults if __APPDIR is not set)
+if [[ -n ${__APPDIR} ]]; then
+    export XDG_DATA_HOME="${__APPDIR}/local/share"
+    export XDG_STATE_HOME="${__APPDIR}/local/state"
+else
+    export XDG_DATA_HOME="${HOME}/.local/share"
+    export XDG_STATE_HOME="${HOME}/.local/state"
+fi
+
+# envoy's env.sh sets __LOCAL_ROOT, __OPT_ROOT, MAMBA_ROOT_PREFIX, PIXI_HOME, ZIM_HOME
+# using __APPDIR if already set above; XDG vars already set are respected
+[[ -f "${XDG_DATA_HOME}/envoy/env.sh" ]] && . "${XDG_DATA_HOME}/envoy/env.sh"
 
 export \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
