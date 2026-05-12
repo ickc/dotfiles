@@ -215,4 +215,4 @@ export \
     SMAN_APPEND_HISTORY=false \
     SMAN_EXEC_CONFIRM=false \
     SMAN_SNIPPET_DIR="${XDG_DATA_HOME}/sman/snippets" \
-    ZIM_HOME="${__LOCAL_ROOT}/zim"
+    ZIM_HOME="${HOME}/.zim"
