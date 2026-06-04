@@ -5,7 +5,7 @@ Public shell and tool configuration managed by [chezmoi](https://chezmoi.io). Co
 ## Install
 
 ```bash
-BINDIR="${HOME}/.local/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git --branch chezmoi
+BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git --branch chezmoi
 ```
 
 ## Per-machine configuration
