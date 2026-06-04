@@ -7,12 +7,12 @@ SHELL = /usr/bin/env bash
 format:  ## format all shell scripts
 	find . -type f \
 		\( \
-			-name .bash_profile -o \
-			-name .bashrc -o \
-			-name .cshrc -o \
-			-name .zimrc -o \
-			-name .zshenv -o \
-			-name .zshrc -o \
+			-name dot_bash_profile -o \
+			-name dot_bashrc -o \
+			-name dot_cshrc -o \
+			-name dot_zimrc -o \
+			-name dot_zshenv -o \
+			-name dot_zshrc -o \
 			-name '*.sh' \
 		\) \
 		\! -name executable_preview_file.sh \
@@ -31,12 +31,12 @@ format:  ## format all shell scripts
 check:  ## check all shell scripts
 	find . -type f \
 		\( \
-			-name .bash_profile -o \
-			-name .bashrc -o \
-			-name .cshrc -o \
-			-name .zimrc -o \
-			-name .zshenv -o \
-			-name .zshrc -o \
+			-name dot_bash_profile -o \
+			-name dot_bashrc -o \
+			-name dot_cshrc -o \
+			-name dot_zimrc -o \
+			-name dot_zshenv -o \
+			-name dot_zshrc -o \
 			-name '*.sh' \
 		\) \
 		\! -name executable_preview_file.sh \
@@ -50,12 +50,12 @@ check:  ## check all shell scripts
 todo:  ## find TODOs in shell scripts
 	find . -type f \
 		\( \
-			-name .bash_profile -o \
-			-name .bashrc -o \
-			-name .cshrc -o \
-			-name .zimrc -o \
-			-name .zshenv -o \
-			-name .zshrc -o \
+			-name dot_bash_profile -o \
+			-name dot_bashrc -o \
+			-name dot_cshrc -o \
+			-name dot_zimrc -o \
+			-name dot_zshenv -o \
+			-name dot_zshrc -o \
 			-name '*.sh' \
 		\) \
 		-exec grep --color=auto -iHnE '(TODO|FIXME)' {} +
