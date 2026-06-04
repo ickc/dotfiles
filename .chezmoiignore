@@ -1,3 +1,8 @@
+# Repo metadata — not dotfiles, should not land in ~
+LICENSE
+README.md
+makefile
+
 # Secrets — never manage these
 .config/gh/hosts.yml
 
