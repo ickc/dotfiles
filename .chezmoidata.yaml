@@ -1,0 +1,5 @@
+# Per-machine overrides go in ~/.config/chezmoi/chezmoi.toml under [data]
+# Example:
+#   [data]
+#     email = "your@hpc.edu"
+email: "christian.kolen@gmail.com"

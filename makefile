@@ -1,111 +1,21 @@
 .DEFAULT_GOAL = help
 
 SHELL = /usr/bin/env bash
-GIT_SSH_COMMAND = ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
-export GIT_SSH_COMMAND
-XDG_CONFIG_HOME ?= $(HOME)/.config
-export XDG_CONFIG_HOME
 
-# Get the directory of the current Makefile
-DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
+.PHONY: format check todo help
 
-# option: slow, fast
-MPV=fast
-
-# installing dotfiles ##################################################
-
-.PHONY: all
-all: \
-	config \
-	mpv \
-	shell \
-	taskfile  ## install all dotfiles
-.PHONY: \
-	config \
-	mpv \
-	shell \
-	taskfile
-config:  ## setup config (moving existing config then symlink)
-	if [[ -d $(XDG_CONFIG_HOME) ]]; then \
-		find $(XDG_CONFIG_HOME) -maxdepth 1 -type l -delete; \
-		find $(XDG_CONFIG_HOME) -mindepth 1 -maxdepth 1 -exec mv {} config \;; \
-		rm -rf $(XDG_CONFIG_HOME); \
-	fi
-	ln -s $(DIR)/config $(XDG_CONFIG_HOME)
-mpv: ; ln -sf input-$(MPV).conf config/mpv/input.conf || true  ## setup mpv dotfile
-shell: ; ln -sf $(DIR)/home/.zimrc ~; ln -sf $(DIR)/home/.zshenv ~; ln -sf $(DIR)/home/.zshrc ~; ln -sf $(DIR)/home/.bash_profile ~; ln -sf $(DIR)/home/.bashrc ~; ln -sf $(DIR)/home/.cshrc ~  ## setup shell dotfiles
-taskfile: ; ln -sf $(DIR)/home/Taskfile.yml ~  ## setup taskfile at HOME
-
-# TODO: delete hyper-remove powerlevel10k-remove
-.PHONY: remove
-remove: \
-	config-remove \
-	hyper-remove \
-	mpv-remove \
-	powerlevel10k-remove \
-	shell-remove \
-	taskfile-remove  ## remove all dotfiles
-.PHONY: \
-	config-remove \
-	hyper-remove \
-	mpv-remove \
-	powerlevel10k-remove \
-	shell-remove \
-	taskfile-remove
-config-remove: ; rm -f $(XDG_CONFIG_HOME) || true  ## remove config symlink
-hyper-remove: ; rm -f ~/.hyper.js  ## remove hyper dotfile
-mpv-remove: ; rm -rf config/mpv/shaders config/mpv/input.conf  ## remove mpv dotfile
-powerlevel10k-remove: ; rm -f ~/.p10k.zsh  ## remove powerlovel10k dotfile
-shell-remove: ; rm -rf ~/.bash_profile ~/.bashrc ~/.zlogin ~/.zlogout ~/.zprofile ~/.zimrc ~/.zshenv ~/.zshrc  ## remove shell dotfiles
-taskfile-remove: ; rm -f ~/Taskfile.yml  ## remove taskfile symlink at HOME
-
-# update dotfiles from upstream ########################################
-
-.PHONY: update
-update: \
-	amethyst-update \
-	joshuto-update \
-	mpv-update  ## update dotfiles from upstream
-.PHONY: \
-	amethyst-update \
-	joshuto-update \
-	mpv-update
-
-amethyst-update: config/amethyst/amethyst.yml  ## update amethyst config
-joshuto-update: config/joshuto/  ## update joshuto config
-mpv-update: config/mpv/shaders/  ## update mpv config
-
-# by default comment out all lines in amethyst.yml due to
-# https://github.com/ianyh/Amethyst/issues/1419
-config/amethyst/amethyst.yml:
-	mkdir -p $(@D)
-	wget https://github.com/ianyh/Amethyst/raw/v0.24.1/.amethyst.sample.yml -O - | sed '/^\s*#/!{/^$$/!s/^/# /}' > $@
-config/joshuto/:
-	rm -rf $@
-	mkdir -p $@
-	joshuto_version_output="$$(joshuto --version | head -n 1)"; \
-	version_string="$${joshuto_version_output#*-}"; \
-	wget "https://github.com/kamiyaa/joshuto/archive/refs/tags/v$${version_string}.tar.gz" -O - | tar -xz --strip-components=2 -C $@ "joshuto-$${version_string}/config"
-config/mpv/shaders/:
-	cd config/mpv; wget https://github.com/bloc97/Anime4K/releases/download/v4.0.1/Anime4K_v4.0.zip
-	unzip config/mpv/Anime4K_v4.0.zip -d $@
-	rm config/mpv/Anime4K_v4.0.zip
-
-# helpers ##############################################################
-
-.PHONY: format check
 format:  ## format all shell scripts
 	find . -type f \
 		\( \
-			-name .bash_profile -o \
-			-name .bashrc -o \
-			-name .env -o \
-			-name .zimrc -o \
-			-name .zshenv -o \
-			-name .zshrc -o \
+			-name dot_bash_profile -o \
+			-name dot_bashrc -o \
+			-name dot_cshrc -o \
+			-name dot_zimrc -o \
+			-name dot_zshenv -o \
+			-name dot_zshrc -o \
 			-name '*.sh' \
 		\) \
-		\! -name preview_file.sh \
+		\! -name executable_preview_file.sh \
 		-exec sed -i -E \
 			-e 's/\$$([a-zA-Z_][a-zA-Z0-9_]*)/$${\1}/g' \
 			-e 's/([^[])\[ ([^]]+) \]/\1[[ \2 ]]/g' \
@@ -117,18 +27,19 @@ format:  ## format all shell scripts
 			--case-indent \
 			--space-redirects \
 			{} +
+
 check:  ## check all shell scripts
 	find . -type f \
 		\( \
-			-name .bash_profile -o \
-			-name .bashrc -o \
-			-name .env -o \
-			-name .zimrc -o \
-			-name .zshenv -o \
-			-name .zshrc -o \
+			-name dot_bash_profile -o \
+			-name dot_bashrc -o \
+			-name dot_cshrc -o \
+			-name dot_zimrc -o \
+			-name dot_zshenv -o \
+			-name dot_zshrc -o \
 			-name '*.sh' \
 		\) \
-		\! -name preview_file.sh \
+		\! -name executable_preview_file.sh \
 		-exec shellcheck \
 			--norc \
 			--enable=all \
@@ -136,12 +47,18 @@ check:  ## check all shell scripts
 			--severity=style \
 			{} +
 
-.PHONY: todo
-todo:  ## find TODOs in all shell scripts
-	find bin -type f -exec grep --color=auto -iHnE '(TODO|printerr|Deprecation)' {} +
-
-print-%:
-	$(info $* = $($*))
+todo:  ## find TODOs in shell scripts
+	find . -type f \
+		\( \
+			-name dot_bash_profile -o \
+			-name dot_bashrc -o \
+			-name dot_cshrc -o \
+			-name dot_zimrc -o \
+			-name dot_zshenv -o \
+			-name dot_zshrc -o \
+			-name '*.sh' \
+		\) \
+		-exec grep --color=auto -iHnE '(TODO|FIXME)' {} +
 
 help:  ## print this help message
 	@awk 'BEGIN{w=0;n=0}{while(match($$0,/\\$$/)){sub(/\\$$/,"");getline nextLine;$$0=$$0 nextLine}if(/^[[:alnum:]_-]+:.*##.*$$/){n++;split($$0,cols[n],":.*##");l=length(cols[n][1]);if(w<l)w=l}}END{for(i=1;i<=n;i++)printf"\033[1m\033[93m%-*s\033[0m%s\n",w+1,cols[i][1]":",cols[i][2]}' $(MAKEFILE_LIST)
