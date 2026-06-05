@@ -6,9 +6,9 @@ Public shell and tool configuration managed by [chezmoi](https://chezmoi.io). Co
 
 ```bash
 # public (no auth)
-BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ickc/dotfiles --branch dev
+BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ickc/dotfiles --branch main
 # personal (ssh auth)
-BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git --branch dev
+BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git --branch main
 ```
 
 ## Per-machine configuration
