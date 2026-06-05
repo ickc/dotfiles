@@ -154,6 +154,10 @@ fi
 # envoy's env.sh sets __LOCAL_ROOT, __OPT_ROOT, MAMBA_ROOT_PREFIX, PIXI_HOME, ZIM_HOME
 # using __APPDIR if already set above; XDG vars already set are respected
 [[ -f "${XDG_DATA_HOME}/envoy/env.sh" ]] && . "${XDG_DATA_HOME}/envoy/env.sh"
+# fallback defaults when envoy is absent (mirrors envoy/env.sh)
+: "${__LOCAL_ROOT:=${__APPDIR:+${__APPDIR}/local}}"
+: "${__LOCAL_ROOT:=${HOME}/.local}"
+: "${__OPT_ROOT:=${__LOCAL_ROOT}/opt/${__OSTYPE}-${__ARCH}}"
 
 export \
     CONDA_BLD_PATH="${XDG_CACHE_HOME}/conda-bld/" \
