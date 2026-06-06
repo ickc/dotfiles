@@ -11,15 +11,6 @@ BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS ge
 BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git --branch main
 ```
 
-## Per-machine configuration
-
-Per-machine data (e.g. a different git email on an HPC cluster) goes in `~/.config/chezmoi/chezmoi.toml`:
-
-```toml
-[data]
-    email = "you@hpc.edu"
-```
-
 ## Update
 
 ```bash
