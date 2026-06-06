@@ -356,34 +356,10 @@ mkdir_xdg() {
 
 # main #########################################################################
 
-# zim
-if [[ -n ${ZSH_VERSION} && -d ${ZIM_HOME} ]]; then
-    # shellcheck disable=SC2206
-    fpath=("${XDG_DATA_HOME}/zsh/functions" ${fpath})
+# shellcheck disable=SC1091
+[[ -n ${ZSH_VERSION} ]] && . "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/interactive.zsh"
 
-    zstyle ':zim:zmodule' use 'degit'
-
-    # Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
-    if [[ ! "${ZIM_HOME}/init.zsh" -nt "${ZDOTDIR:-${HOME}}/.zimrc" ]]; then
-        # shellcheck disable=SC1091
-        . "${ZIM_HOME}/zimfw.zsh" init -q
-    fi
-
-    # ssh
-    zstyle ':zim:ssh' ids id_ed25519
-    # zsh-users/zsh-history-substring-search
-    # Use terminfo if available, with fallbacks for arrow keys.
-    # shellcheck disable=SC2154
-    bindkey "${terminfo[kcuu1]:-^[[A]}" history-substring-search-up
-    # shellcheck disable=SC2154
-    bindkey "${terminfo[kcud1]:-^[[B]}" history-substring-search-down
-
-    # Initialize modules.
-    # shellcheck disable=SC1091
-    . "${ZIM_HOME}/init.zsh"
-fi
-
-# this has to come after setting up zim as ml_conda would use compinit
+# this has to come after the zsh interactive setup above, as ml_conda uses compinit
 if [[ -n ${__CLEAN} ]]; then
     ml_clean
 else
@@ -421,6 +397,9 @@ else
     command -v direnv > /dev/null 2>&1 && eval "$(direnv hook zsh)"
     # shellcheck disable=SC2312
     command -v navi > /dev/null 2>&1 && eval "$(navi widget zsh)"
+
+    # shellcheck disable=SC1091
+    . "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/plugins.zsh"
 fi
 
 if command -v fastfetch > /dev/null 2>&1; then
