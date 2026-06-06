@@ -1,0 +1,33 @@
+# Third-party zsh plugins, fetched by chezmoi into $XDG_DATA_HOME/zsh/plugins.
+# These replace the zsh-users/* (and zim-managed) modules previously listed in
+# ~/.zimrc. Pinned to release tags for reproducibility; "archive" + stripComponents
+# mirrors zim's degit fetch (plain files, no .git directory).
+#
+# .zshrc sources these from "$XDG_DATA_HOME/zsh/plugins/<name>". The target paths
+# below assume the default XDG_DATA_HOME (~/.local/share); on hosts where .zshenv
+# relocates XDG_DATA_HOME via __APPDIR, the .zshrc guards degrade gracefully and
+# the plugins simply won't load there (same caveat the hard-coded ZIM_HOME had).
+
+[".local/share/zsh/plugins/zsh-autosuggestions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v0.7.1.tar.gz"
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".local/share/zsh/plugins/zsh-syntax-highlighting"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/refs/tags/0.8.0.tar.gz"
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".local/share/zsh/plugins/zsh-history-substring-search"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-history-substring-search/archive/refs/tags/v1.1.0.tar.gz"
+    stripComponents = 1
+    refreshPeriod = "168h"
+
+[".local/share/zsh/plugins/zsh-completions"]
+    type = "archive"
+    url = "https://github.com/zsh-users/zsh-completions/archive/refs/tags/0.36.0.tar.gz"
+    stripComponents = 1
+    refreshPeriod = "168h"

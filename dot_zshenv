@@ -12,7 +12,6 @@
 # * personal exports
 # CARGO_PREFIX
 # GOPATH
-# ZIM_HOME
 
 # __OSTYPE, __ARCH detection ###########################################
 
@@ -151,7 +150,7 @@ else
     export XDG_STATE_HOME="${HOME}/.local/state"
 fi
 
-# envoy's env.sh sets __LOCAL_ROOT, __OPT_ROOT, MAMBA_ROOT_PREFIX, PIXI_HOME, ZIM_HOME
+# envoy's env.sh sets __LOCAL_ROOT, __OPT_ROOT, MAMBA_ROOT_PREFIX, PIXI_HOME
 # using __APPDIR if already set above; XDG vars already set are respected
 [[ -f "${XDG_DATA_HOME}/envoy/env.sh" ]] && . "${XDG_DATA_HOME}/envoy/env.sh"
 # fallback defaults when envoy is absent (mirrors envoy/env.sh)
@@ -215,5 +214,4 @@ export \
     MAKEFLAGS="-j${__NCPU}" \
     SMAN_APPEND_HISTORY=false \
     SMAN_EXEC_CONFIRM=false \
-    SMAN_SNIPPET_DIR="${XDG_DATA_HOME}/sman/snippets" \
-    ZIM_HOME="${HOME}/.zim"
+    SMAN_SNIPPET_DIR="${XDG_DATA_HOME}/sman/snippets"

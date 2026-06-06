@@ -10,7 +10,6 @@ format:  ## format all shell scripts
 			-name dot_bash_profile -o \
 			-name dot_bashrc -o \
 			-name dot_cshrc -o \
-			-name dot_zimrc -o \
 			-name dot_zshenv -o \
 			-name dot_zshrc -o \
 			-name '*.sh' \
@@ -34,7 +33,6 @@ check:  ## check all shell scripts
 			-name dot_bash_profile -o \
 			-name dot_bashrc -o \
 			-name dot_cshrc -o \
-			-name dot_zimrc -o \
 			-name dot_zshenv -o \
 			-name dot_zshrc -o \
 			-name '*.sh' \
@@ -53,7 +51,6 @@ todo:  ## find TODOs in shell scripts
 			-name dot_bash_profile -o \
 			-name dot_bashrc -o \
 			-name dot_cshrc -o \
-			-name dot_zimrc -o \
 			-name dot_zshenv -o \
 			-name dot_zshrc -o \
 			-name '*.sh' \

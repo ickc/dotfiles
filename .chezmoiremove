@@ -1,0 +1,4 @@
+# zim is no longer used (see .chezmoiexternal.toml / .zshrc). Drop the orphaned
+# ~/.zimrc on already-provisioned machines. The ~/.zim runtime dir (installed by
+# envoy, not chezmoi) and envoy's zim.py installer are cleaned up separately.
+.zimrc
