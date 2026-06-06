@@ -135,7 +135,7 @@ if command -v ssh-agent > /dev/null 2>&1; then
         if [[ $? -eq 2 ]]; then
             (
                 umask 066
-                ssh-agent > "${_ssh_env}"
+                ssh-agent >! "${_ssh_env}"
             )
             # shellcheck disable=SC1090
             . "${_ssh_env}" > /dev/null
