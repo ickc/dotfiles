@@ -215,7 +215,12 @@ ml_lsd() {
 }
 
 ml_ls() {
-    alias ls="noglob ls"
+    if [[ -n ${ZSH_VERSION} ]]; then
+        # noglob is a zsh precommand modifier; not available in bash
+        alias ls="noglob ls"
+    else
+        unalias ls 2> /dev/null || true
+    fi
 }
 
 ml_cg() {

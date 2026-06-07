@@ -47,6 +47,14 @@ stopsudo() {
 # inside the subshell makes the redirection noclobber-safe in both shells (zsh
 # sets NO_CLOBBER via interactive.zsh), replacing zsh's `>!` and bash's bare `>`.
 # modified from https://github.com/zimfw/ssh/blob/master/init.zsh
+_ssh_env_safe() {
+    local f=$1 uid
+    # Only source if it's a regular, non-symlink file owned by the current user.
+    [[ -f $f && ! -L $f ]] || return 1
+    uid=$(stat -c '%u' "$f" 2>/dev/null) || uid=$(stat -f '%u' "$f" 2>/dev/null) || return 1
+    [[ $uid -eq $(id -u) ]]
+}
+
 auto_ssh_agent() {
     local ssh_env="${HOME}/.ssh-agent" rc
 
@@ -55,7 +63,7 @@ auto_ssh_agent() {
     if [[ ${rc} -eq 2 ]]; then
         # no reachable agent: try the stored connection info first
         # shellcheck disable=SC1090
-        [[ -r ${ssh_env} ]] && . "${ssh_env}" > /dev/null
+        _ssh_env_safe "${ssh_env}" && . "${ssh_env}" > /dev/null
         ssh-add -l > /dev/null 2>&1
         rc=$?
         if [[ ${rc} -eq 2 ]]; then
@@ -66,7 +74,7 @@ auto_ssh_agent() {
                 ssh-agent > "${ssh_env}"
             )
             # shellcheck disable=SC1090
-            . "${ssh_env}" > /dev/null
+            _ssh_env_safe "${ssh_env}" && . "${ssh_env}" > /dev/null
         fi
     fi
     # agent reachable but holds no identities: add the default key
