@@ -1,11 +1,12 @@
 #!/usr/bin/env zsh
 # Native zsh interactive setup (replaces zimfw).
-# Sourced from ~/.zshrc before ml/ml_conda so that compinit is available.
-# Reproduces the zimfw modules that ~/.zimrc used to load: environment (options
-# + history), completion (compinit + styling), input (key bindings), run-help,
-# and ssh (agent). starship/direnv/fzf/navi load via their own hooks in
-# ~/.zshrc; the zsh-users/* line-editing plugins load via plugins.zsh after
-# those hooks so that syntax-highlighting is sourced last.
+# Sourced from ~/.config/sh/rc.sh before ml/ml_conda so that compinit is
+# available. Reproduces the zimfw modules that ~/.zimrc used to load:
+# environment (options + history), completion (compinit + styling), input (key
+# bindings), and run-help. The ssh-agent is started by rc.sh (shared with bash);
+# starship/direnv/fzf/navi load via their own hooks in rc.sh; the zsh-users/*
+# line-editing plugins load via plugins.zsh after those hooks so that
+# syntax-highlighting is sourced last.
 
 zmodload zsh/terminfo 2> /dev/null
 autoload -Uz is-at-least
@@ -121,27 +122,4 @@ if [[ ${TERM} != dumb ]]; then
         command -v "${_c}" > /dev/null 2>&1 && autoload -Uz "run-help-${_c}"
     done
     unset _c
-fi
-
-# ssh: start an agent if none is reachable, then load id_ed25519
-# (mirrors auto_ssh_agent() in .bashrc and the old zim ssh module)
-if command -v ssh-agent > /dev/null 2>&1; then
-    ssh-add -l &> /dev/null
-    if [[ $? -eq 2 ]]; then
-        _ssh_env="${HOME}/.ssh-agent"
-        # shellcheck disable=SC1090
-        [[ -r ${_ssh_env} ]] && . "${_ssh_env}" > /dev/null
-        ssh-add -l &> /dev/null
-        if [[ $? -eq 2 ]]; then
-            (
-                umask 066
-                ssh-agent >! "${_ssh_env}"
-            )
-            # shellcheck disable=SC1090
-            . "${_ssh_env}" > /dev/null
-        fi
-        unset _ssh_env
-    fi
-    ssh-add -l &> /dev/null
-    [[ $? -eq 1 ]] && ssh-add "${HOME}/.ssh/id_ed25519" 2> /dev/null
 fi
