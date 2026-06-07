@@ -10,15 +10,15 @@
 
 # helpers ######################################################################
 
-# * any path-like variables should be remember and reset using this machanism
-# keeping the original PATH for cleaning environments
+# * any path-like variables should be remembered and reset using this mechanism,
+#   keeping the original PATH for cleaning environments
 export __PATH="${__PATH:-${PATH}}" \
     __MANPATH="${__MANPATH:-${MANPATH}}" \
     __INFOPATH="${__INFOPATH:-${INFOPATH}}" \
     __PYTHONPATH="${__PYTHONPATH:-${PYTHONPATH}}" \
     __LD_LIBRARY_PATH="${__LD_LIBRARY_PATH:-${LD_LIBRARY_PATH}}"
 # reset PATH every time a new interactive shell is started
-# berfore any paths are added to it
+# before any paths are added to it
 [[ -n ${__PATH} ]] && export PATH="${__PATH}"
 [[ -n ${__MANPATH} ]] && export MANPATH="${__MANPATH}"
 [[ -n ${__INFOPATH} ]] && export INFOPATH="${__INFOPATH}"
