@@ -1,1 +1,1 @@
-setenv PATH ~/.local/bin:$PATH
+setenv PATH ~/.local/bin:${PATH}

@@ -12,6 +12,7 @@ format:  ## format all shell scripts
 			-name dot_cshrc -o \
 			-name dot_zshenv -o \
 			-name dot_zshrc -o \
+			-name '*.bash' -o \
 			-name '*.sh' \
 		\) \
 		\! -name executable_preview_file.sh \
@@ -35,6 +36,7 @@ check:  ## check all shell scripts
 			-name dot_cshrc -o \
 			-name dot_zshenv -o \
 			-name dot_zshrc -o \
+			-name '*.bash' -o \
 			-name '*.sh' \
 		\) \
 		\! -name executable_preview_file.sh \
@@ -53,6 +55,7 @@ todo:  ## find TODOs in shell scripts
 			-name dot_cshrc -o \
 			-name dot_zshenv -o \
 			-name dot_zshrc -o \
+			-name '*.bash' -o \
 			-name '*.sh' \
 		\) \
 		-exec grep --color=auto -iHnE '(TODO|FIXME)' {} +
