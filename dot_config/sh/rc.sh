@@ -118,13 +118,17 @@ elif [[ -n ${BASH_VERSION} ]]; then
 fi
 
 # module system (Lmod) #########################################################
-# Prefer a host-provided `module` (HPC sites); otherwise source the Lmod that
-# envoy bootstraps no-sudo via conda. envoy exports __LMOD_INIT pointing at
-# Lmod's per-shell init directory (containing bash/zsh). Lmod reads both Lua and
+# Priority: host-provided module (HPC sites) > envoy's conda-bootstrapped Lmod
+# (__LMOD_INIT) > brew-provided Lmod (HOMEBREW_PREFIX). Lmod reads both Lua and
 # TCL modulefiles, so it sits cleanly over an Lmod or a TCL-only host.
-if ! command -v module > /dev/null 2>&1 && [[ -n ${__LMOD_INIT} && -f ${__LMOD_INIT}/${_shell} ]]; then
-    # shellcheck disable=SC1090
-    . "${__LMOD_INIT}/${_shell}"
+if ! command -v module > /dev/null 2>&1; then
+    if [[ -n ${__LMOD_INIT} && -f ${__LMOD_INIT}/${_shell} ]]; then
+        # shellcheck disable=SC1090
+        . "${__LMOD_INIT}/${_shell}"
+    elif [[ -n ${HOMEBREW_PREFIX} && -f ${HOMEBREW_PREFIX}/opt/lmod/init/${_shell} ]]; then
+        # shellcheck disable=SC1090
+        . "${HOMEBREW_PREFIX}/opt/lmod/init/${_shell}"
+    fi
 fi
 if command -v module > /dev/null 2>&1; then
     # personal modulefiles take precedence over any host-provided ones
