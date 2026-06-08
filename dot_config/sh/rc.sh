@@ -4,8 +4,8 @@
 # system, the per-shell interactive setup, the prompt/navigation tool hooks, and
 # the ssh-agent.
 #
-# * use `__CLEAN=1 <shell>` to load a minimal environment (ml_clean) instead of
-#   the full module set (ml).
+# * use `__CLEAN=1 <shell>` to load only the base `core` module instead of the
+#   full module set. The module system is Lmod (see ~/.config/modulefiles/).
 
 # __HOST/__OSTYPE used below are exported by env.sh, which is sourced first.
 # shellcheck disable=SC2154
@@ -19,10 +19,6 @@ fi
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 printf "\033]0;%s\007" "${__HOST%%.*}"
-
-# PATH / module system: defines path_*, ml_*, ml, mu and resets PATH ###########
-# shellcheck source=dot_config/sh/modules.sh
-. "${XDG_CONFIG_HOME:-${HOME}/.config}/sh/modules.sh"
 
 # functions ####################################################################
 
@@ -40,6 +36,34 @@ stopsudo() {
     kill "${SUDO_PID}"
     trap - SIGINT SIGTERM
     sudo -k
+}
+
+# create the XDG base directories (and astropy's, which ignores XDG)
+mkdir_xdg() {
+    mkdir -p \
+        "${XDG_DATA_HOME}" \
+        "${XDG_STATE_HOME}" \
+        "${XDG_CONFIG_HOME}" \
+        "${XDG_CACHE_HOME}" \
+        "${XDG_CONFIG_HOME}/astropy" \
+        "${XDG_CACHE_HOME}/astropy"
+}
+
+# The `conda` modulefile only puts condabin on PATH (clean load/unload); the
+# shell function needed by `conda activate` is not wired there. Call this to
+# source the hook on demand when you actually need to activate an environment.
+conda-shell() {
+    if [[ -n ${ZSH_VERSION} ]]; then
+        # shellcheck disable=SC1090,SC2312
+        command -v conda > /dev/null 2>&1 && . <(conda shell.zsh hook)
+        # shellcheck disable=SC1090,SC2312
+        command -v mamba > /dev/null 2>&1 && . <(mamba shell hook --shell zsh)
+    else
+        # shellcheck disable=SC1090,SC2312
+        command -v conda > /dev/null 2>&1 && . <(conda shell.bash hook)
+        # shellcheck disable=SC1090,SC2312
+        command -v mamba > /dev/null 2>&1 && . <(mamba shell hook --shell bash)
+    fi
 }
 
 # ssh: start an agent if none is reachable, then load the default identity.
@@ -84,7 +108,7 @@ auto_ssh_agent() {
 }
 
 # per-shell interactive setup (early) ##########################################
-# must precede ml: zsh's ml_conda relies on compinit from interactive.zsh
+# loaded before the prompt/navigation hooks below so zsh's compinit is ready
 if [[ -n ${ZSH_VERSION} ]]; then
     # shellcheck disable=SC1091
     . "${XDG_CONFIG_HOME:-${HOME}/.config}/zsh/interactive.zsh"
@@ -93,11 +117,47 @@ elif [[ -n ${BASH_VERSION} ]]; then
     . "${XDG_CONFIG_HOME:-${HOME}/.config}/bash/interactive.bash"
 fi
 
-# load environment modules #####################################################
-if [[ -n ${__CLEAN} ]]; then
-    ml_clean
-else
-    ml
+# module system (Lmod) #########################################################
+# Prefer a host-provided `module` (HPC sites); otherwise source the Lmod that
+# envoy bootstraps no-sudo via conda. envoy exports __LMOD_INIT pointing at
+# Lmod's per-shell init directory (containing bash/zsh). Lmod reads both Lua and
+# TCL modulefiles, so it sits cleanly over an Lmod or a TCL-only host.
+if ! command -v module > /dev/null 2>&1 && [[ -n ${__LMOD_INIT} && -f ${__LMOD_INIT}/${_shell} ]]; then
+    # shellcheck disable=SC1090
+    . "${__LMOD_INIT}/${_shell}"
+fi
+if command -v module > /dev/null 2>&1; then
+    # personal modulefiles take precedence over any host-provided ones
+    module use "${XDG_CONFIG_HOME:-${HOME}/.config}/modulefiles"
+    # each modulefile self-guards on directory existence, so loading one for an
+    # absent tool (or wrong OS) is a harmless no-op. `module purge` ≈ the old mu;
+    # `module purge && module load core` ≈ ml_clean.
+    if [[ -n ${__CLEAN} ]]; then
+        module load core
+    else
+        # Load toolchains first, then `core` LAST so the personal local/opt
+        # prefixes stay frontmost on PATH (Lmod prepends, so last-loaded wins) —
+        # matching the old `ml`, which ran ml_clean last.
+        module load brew conda pixi cargo go ghcup lms agy cuda jetbrains mactex
+        # host-specific site modules (COSMA): load the site module and bashrc,
+        # as the old ml_host did (before core, so local/opt still win).
+        if [[ -n ${COSMA_HOST} ]]; then
+            module load cosma 2> /dev/null || true
+            # shellcheck disable=SC1091
+            [[ -f /etc/bashrc ]] && . /etc/bashrc
+        fi
+        module load core
+    fi
+fi
+
+# interactive niceties that the old ml_clean carried (always wanted, even clean)
+[[ -f "${XDG_DATA_HOME}/sman/sman.rc" ]] && {
+    # shellcheck disable=SC1091
+    . "${XDG_DATA_HOME}/sman/sman.rc"
+}
+if command -v lsd > /dev/null 2>&1; then
+    alias ls=lsd
+    alias tree="lsd --tree"
 fi
 
 # limits / umask (copied from cosma's .bashrc) #################################
