@@ -34,6 +34,9 @@ set -gx XDG_CONFIG_HOME $HOME/.config
 set -gx XDG_DATA_HOME $HOME/.local/share
 set -gx XDG_STATE_HOME $HOME/.local/state
 
+set -q XDG_DATA_DIRS; or set -gx XDG_DATA_DIRS /usr/local/share/ /usr/share/
+set -q XDG_CONFIG_DIRS; or set -gx XDG_CONFIG_DIRS /etc/xdg/
+
 # software prefixes (mirror envoy/env.sh fallbacks; envoy ships no fish env.sh)
 set -gx __LOCAL_ROOT $HOME/.local
 set -gx __OPT_ROOT $__LOCAL_ROOT/opt/$__OSTYPE-$__ARCH

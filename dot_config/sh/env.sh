@@ -152,6 +152,8 @@ else
     export XDG_DATA_HOME="${HOME}/.local/share"
     export XDG_STATE_HOME="${HOME}/.local/state"
 fi
+export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/local/share/:/usr/share/}"
+export XDG_CONFIG_DIRS="${XDG_CONFIG_DIRS:-/etc/xdg/}"
 
 # envoy's env.sh sets __LOCAL_ROOT, __OPT_ROOT, MAMBA_ROOT_PREFIX, PIXI_HOME
 # using __APPDIR if already set above; XDG vars already set are respected

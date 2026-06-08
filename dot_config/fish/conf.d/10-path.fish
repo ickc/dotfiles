@@ -28,6 +28,11 @@ else
     set -e HOMEBREW_PREFIX
 end
 
+# lmod (brew-provided; after homebrew so HOMEBREW_PREFIX is confirmed set)
+if set -q HOMEBREW_PREFIX; and test -f $HOMEBREW_PREFIX/opt/lmod/init/fish
+    source $HOMEBREW_PREFIX/opt/lmod/init/fish
+end
+
 # pixi / cargo / go (≈ ml_pixi / ml_cg)
 test -d $PIXI_HOME/bin; and fish_add_path -gp $PIXI_HOME/bin
 test -d $CARGO_PREFIX/bin; and fish_add_path -ga $CARGO_PREFIX/bin
