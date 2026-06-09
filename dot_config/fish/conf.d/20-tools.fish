@@ -1,7 +1,10 @@
 # Interactive tool hooks (mirror the unified block in ~/.config/sh/rc.sh).
 if status is-interactive
-    # conda / mamba (≈ ml_conda) — miniforge ships a fish hook
-    if test -f $MAMBA_ROOT_PREFIX/etc/fish/conf.d/conda.fish
+    # conda / mamba (≈ ml_conda): micromamba ships no fish conf.d hook, so eval
+    # its shell hook directly; fall back to Miniforge's fish hook if present.
+    if type -q micromamba
+        micromamba shell hook --shell fish | source
+    else if test -f $MAMBA_ROOT_PREFIX/etc/fish/conf.d/conda.fish
         source $MAMBA_ROOT_PREFIX/etc/fish/conf.d/conda.fish
     end
 

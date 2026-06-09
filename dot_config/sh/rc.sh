@@ -49,20 +49,22 @@ mkdir_xdg() {
         "${XDG_CACHE_HOME}/astropy"
 }
 
-# The `conda` modulefile only puts condabin on PATH (clean load/unload); the
-# shell function needed by `conda activate` is not wired there. Call this to
-# source the hook on demand when you actually need to activate an environment.
+# The `conda` modulefile only puts the package-manager binary on PATH and sets
+# MAMBA_EXE (clean load/unload); the shell function needed for `activate` is not
+# wired there. Call this to source the hook on demand when you actually need to
+# activate an environment. Prefers micromamba, falling back to mamba then conda.
 conda-shell() {
-    if [[ -n ${ZSH_VERSION} ]]; then
+    local _sh=bash
+    [[ -n ${ZSH_VERSION} ]] && _sh=zsh
+    if command -v micromamba > /dev/null 2>&1; then
         # shellcheck disable=SC1090,SC2312
-        command -v conda > /dev/null 2>&1 && . <(conda shell.zsh hook)
+        . <(micromamba shell hook --shell "${_sh}")
+    elif command -v mamba > /dev/null 2>&1; then
         # shellcheck disable=SC1090,SC2312
-        command -v mamba > /dev/null 2>&1 && . <(mamba shell hook --shell zsh)
-    else
+        . <(mamba shell hook --shell "${_sh}")
+    elif command -v conda > /dev/null 2>&1; then
         # shellcheck disable=SC1090,SC2312
-        command -v conda > /dev/null 2>&1 && . <(conda shell.bash hook)
-        # shellcheck disable=SC1090,SC2312
-        command -v mamba > /dev/null 2>&1 && . <(mamba shell hook --shell bash)
+        . <(conda "shell.${_sh}" hook)
     fi
 }
 

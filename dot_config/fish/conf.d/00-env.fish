@@ -58,7 +58,7 @@ if not set -q __OPT_ROOT; or test -z "$__OPT_ROOT"
     set -gx __OPT_ROOT $__LOCAL_ROOT/opt/$__OSTYPE-$__ARCH
 end
 if not set -q MAMBA_ROOT_PREFIX; or test -z "$MAMBA_ROOT_PREFIX"
-    set -gx MAMBA_ROOT_PREFIX $__OPT_ROOT/miniforge3
+    set -gx MAMBA_ROOT_PREFIX $__OPT_ROOT/micromamba
 end
 if not set -q PIXI_HOME; or test -z "$PIXI_HOME"
     set -gx PIXI_HOME $__OPT_ROOT/pixi
