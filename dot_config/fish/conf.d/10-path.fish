@@ -1,13 +1,3 @@
-# PATH setup ≈ ml_clean (the minimal "clean" module set). The full ml_*/mu
-# dynamic module loader is intentionally not ported to fish. `man` auto-derives
-# its search path from PATH entries (sibling share/man), so MANPATH is left alone.
-
-# clean prefixes — iterate system -> opt -> local so the final precedence ends up
-# local/bin, opt/bin, opt/system/bin (matches ml_clean's prepend order).
-for _d in $__OPT_ROOT/system $__OPT_ROOT $__LOCAL_ROOT
-    test -d $_d/bin; and fish_add_path -gp $_d/bin
-end
-
 # homebrew (mirrors env.sh detection, then `brew shellenv`)
 if not set -q HOMEBREW_PREFIX
     switch $__OSTYPE
@@ -28,12 +18,28 @@ else
     set -e HOMEBREW_PREFIX
 end
 
-# lmod (brew-provided; after homebrew so HOMEBREW_PREFIX is confirmed set)
-if set -q HOMEBREW_PREFIX; and test -f $HOMEBREW_PREFIX/opt/lmod/init/fish
-    source $HOMEBREW_PREFIX/opt/lmod/init/fish
+# module system (Lmod). Priority: host-provided module first, then Homebrew's
+# Lmod if present, then envoy's conda-bootstrapped Lmod from __LMOD_INIT.
+if not type -q module
+    if set -q HOMEBREW_PREFIX; and test -f "$HOMEBREW_PREFIX/opt/lmod/init/fish"
+        set -gx __LMOD_INIT "$HOMEBREW_PREFIX/opt/lmod/init"
+    end
+    if set -q __LMOD_INIT; and test -f "$__LMOD_INIT/fish"
+        source "$__LMOD_INIT/fish"
+    end
 end
 
-# pixi / cargo / go (≈ ml_pixi / ml_cg)
-test -d $PIXI_HOME/bin; and fish_add_path -gp $PIXI_HOME/bin
-test -d $CARGO_PREFIX/bin; and fish_add_path -ga $CARGO_PREFIX/bin
-test -d $GOBIN; and fish_add_path -ga $GOBIN
+if type -q module
+    # personal modulefiles take precedence over any host-provided ones
+    module use "$XDG_CONFIG_HOME/modulefiles"
+
+    if set -q __CLEAN; and test -n "$__CLEAN"
+        module load core
+    else
+        module load brew conda pixi cargo go ghcup lms agy cuda jetbrains mactex
+        if set -q COSMA_HOST; and test -n "$COSMA_HOST"
+            module load cosma 2>/dev/null; or true
+        end
+        module load core
+    end
+end

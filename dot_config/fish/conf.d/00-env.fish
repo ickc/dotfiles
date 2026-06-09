@@ -38,10 +38,25 @@ set -q XDG_DATA_DIRS; or set -gx XDG_DATA_DIRS /usr/local/share/ /usr/share/
 set -q XDG_CONFIG_DIRS; or set -gx XDG_CONFIG_DIRS /etc/xdg/
 
 # software prefixes (mirror envoy/env.sh fallbacks; envoy ships no fish env.sh)
-set -gx __LOCAL_ROOT $HOME/.local
-set -gx __OPT_ROOT $__LOCAL_ROOT/opt/$__OSTYPE-$__ARCH
-set -gx MAMBA_ROOT_PREFIX $__OPT_ROOT/miniforge3
-set -gx PIXI_HOME $__OPT_ROOT/pixi
+if not set -q __LOCAL_ROOT; or test -z "$__LOCAL_ROOT"
+    if set -q __APPDIR; and test -n "$__APPDIR"
+        set -gx __LOCAL_ROOT $__APPDIR/local
+    else
+        set -gx __LOCAL_ROOT $HOME/.local
+    end
+end
+if not set -q __OPT_ROOT; or test -z "$__OPT_ROOT"
+    set -gx __OPT_ROOT $__LOCAL_ROOT/opt/$__OSTYPE-$__ARCH
+end
+if not set -q MAMBA_ROOT_PREFIX; or test -z "$MAMBA_ROOT_PREFIX"
+    set -gx MAMBA_ROOT_PREFIX $__OPT_ROOT/miniforge3
+end
+if not set -q PIXI_HOME; or test -z "$PIXI_HOME"
+    set -gx PIXI_HOME $__OPT_ROOT/pixi
+end
+if not set -q __LMOD_INIT; or test -z "$__LMOD_INIT"
+    set -gx __LMOD_INIT $__OPT_ROOT/system/lmod/lmod/init
+end
 
 # package caches + tool config (mirror env.sh exports)
 set -gx CONDA_BLD_PATH $XDG_CACHE_HOME/conda-bld/
