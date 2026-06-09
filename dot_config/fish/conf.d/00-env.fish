@@ -1,7 +1,6 @@
-# Native fish port of ~/.config/sh/env.sh (environment variables only).
-# Keep section-by-section in sync with env.sh. The per-host COSMA/ISCA/bolo
-# SCRATCH/__APPDIR matrix is intentionally omitted: fish is not the login shell
-# on those managed HPC systems (use bash/zsh there).
+# Shared environment for fish (environment variables only).
+# Keep dotfile-specific exports in sync with ~/.config/sh/env.sh. Envoy-managed
+# path defaults come from envoy/env.fish when installed.
 
 # __OSTYPE / __ARCH — normalized `uname -sm`
 set -l _uname (uname -sm | string split ' ')
@@ -18,7 +17,7 @@ switch $__OSTYPE
         set -gx __NCPU (getconf _NPROCESSORS_ONLN 2>/dev/null; or echo 1)
 end
 
-# __HOST — short hostname (host-specific *_HOST overrides omitted, see note above)
+# __HOST — short hostname (host-specific *_HOST overrides omitted in fish)
 set -q HOSTNAME; or set -gx HOSTNAME (hostname -f 2>/dev/null; or hostname)
 set -l _host (string split -m1 . $HOSTNAME)
 set -gx __HOST $_host[1]
@@ -31,13 +30,23 @@ else
     set -gx XDG_CACHE_HOME $HOME/.cache
 end
 set -gx XDG_CONFIG_HOME $HOME/.config
-set -gx XDG_DATA_HOME $HOME/.local/share
-set -gx XDG_STATE_HOME $HOME/.local/state
+if set -q __APPDIR; and test -n "$__APPDIR"
+    set -gx XDG_DATA_HOME $__APPDIR/local/share
+    set -gx XDG_STATE_HOME $__APPDIR/local/state
+else
+    set -gx XDG_DATA_HOME $HOME/.local/share
+    set -gx XDG_STATE_HOME $HOME/.local/state
+end
 
 set -q XDG_DATA_DIRS; or set -gx XDG_DATA_DIRS /usr/local/share/ /usr/share/
 set -q XDG_CONFIG_DIRS; or set -gx XDG_CONFIG_DIRS /etc/xdg/
 
-# software prefixes (mirror envoy/env.sh fallbacks; envoy ships no fish env.sh)
+# envoy's env.fish sets __LOCAL_ROOT, __OPT_ROOT, MAMBA_ROOT_PREFIX, PIXI_HOME,
+# and __LMOD_INIT using __APPDIR if already set above; XDG vars are respected.
+if test -f "$XDG_DATA_HOME/envoy/env.fish"
+    source "$XDG_DATA_HOME/envoy/env.fish"
+end
+# fallback defaults when envoy is absent (mirrors envoy/env.fish)
 if not set -q __LOCAL_ROOT; or test -z "$__LOCAL_ROOT"
     if set -q __APPDIR; and test -n "$__APPDIR"
         set -gx __LOCAL_ROOT $__APPDIR/local

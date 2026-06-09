@@ -5,7 +5,7 @@
 # apply to non-interactive fish too, while interactive-only pieces guard with
 # `status is-interactive`:
 #
-#   conf.d/00-env.fish        native port of ~/.config/sh/env.sh (env vars)
+#   conf.d/00-env.fish        env vars + envoy/env.fish path defaults
 #   conf.d/10-path.fish       Homebrew detection + Lmod module load
 #   conf.d/20-tools.fish      starship/fzf/direnv/navi/conda/sman hooks + greeting
 #   conf.d/30-aliases.fish    ls -> lsd, etc. (≈ ml_lsd)
