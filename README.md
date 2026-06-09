@@ -38,11 +38,12 @@ loading one for an absent tool — or the wrong OS — is a harmless no-op.
   `family("pkgmgr")` makes a competing package-manager module swap brew out.
 - `module unload <name>` reverses exactly what that module added (the correctness
   the old hand-rolled unload could not guarantee).
-- conda's modulefile puts `condabin` on `PATH` only. For `conda activate`, run the
-  `conda-shell` helper (defined in `sh/rc.sh`) to source the hook on demand.
+- the `conda` modulefile puts micromamba/mamba on `PATH` and sets `MAMBA_EXE`. For
+  `micromamba activate`, run the `conda-shell` helper (defined in `sh/rc.sh`) to
+  source the hook on demand (it prefers micromamba, falling back to mamba/conda).
 
 `sh/rc.sh` prefers a host-provided `module` (HPC sites) and otherwise sources the
-Lmod that [envoy](https://github.com/ickc/envoy) bootstraps no-sudo via conda;
+Lmod that [envoy](https://github.com/ickc/envoy) bootstraps no-sudo via micromamba;
 envoy exports `__LMOD_INIT` pointing at Lmod's per-shell `init/` directory. Lmod
 reads both Lua and TCL modulefiles, so it sits cleanly over an Lmod or a TCL-only
 host, with `module use` adding the personal modulefiles alongside the host's.
