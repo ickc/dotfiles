@@ -1,3 +1,4 @@
+.cshrc
 # Drop the orphaned ~/.zimrc on already-provisioned machines (no longer used;
 # see .chezmoiexternal.toml / .zshrc). Any leftover ~/.zim runtime dir was
 # installed outside chezmoi and is removed separately.
