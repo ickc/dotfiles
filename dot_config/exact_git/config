@@ -2,15 +2,11 @@
 	name = Kolen Cheung
 	email = 10970208+ickc@users.noreply.github.com
 [pull]
-	rebase = false
+	rebase = true
 [filter "lfs"]
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
-[credential]
-	helper = store
 [rerere]
 	enabled = true
-[core]
-	editor = code --wait
