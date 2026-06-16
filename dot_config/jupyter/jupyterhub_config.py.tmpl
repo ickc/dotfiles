@@ -1,5 +1,0 @@
-{{- $xdg_config_home := or (env "XDG_CONFIG_HOME") (print .chezmoi.homeDir "/.config") -}}
-c.Spawner.default_url = "/lab"
-c.JupyterHub.ssl_key = "{{ $xdg_config_home }}/jupyter/ssl.key"
-c.JupyterHub.ssl_cert = "{{ $xdg_config_home }}/jupyter/ssl.crt"
-c.Authenticator.allow_all = True
