@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# Line-editing plugins (replaces zimfw's zsh-users/* modules).
+# Line-editing plugins (zsh-users/* modules).
 # Fetched by .chezmoiexternal.toml. Sourced from ~/.zshrc after fzf/starship/
 # direnv/navi so that syntax-highlighting loads last and
 # history-substring-search loads after it.

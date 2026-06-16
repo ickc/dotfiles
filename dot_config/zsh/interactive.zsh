@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
-# Native zsh interactive setup (replaces zimfw).
+# Native zsh interactive setup.
 # Sourced from ~/.config/sh/rc.sh before ml/ml_conda so that compinit is
-# available. Reproduces the zimfw modules that ~/.zimrc used to load:
-# environment (options + history), completion (compinit + styling), input (key
-# bindings), and run-help. The ssh-agent is started by rc.sh (shared with bash);
+# available. Sets up: environment (options + history), completion (compinit +
+# styling), input (key bindings), and run-help. The ssh-agent is started by
+# rc.sh (shared with bash);
 # starship/direnv/fzf/navi load via their own hooks in rc.sh; the zsh-users/*
 # line-editing plugins load via plugins.zsh after those hooks so that
 # syntax-highlighting is sourced last.

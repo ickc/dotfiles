@@ -72,7 +72,7 @@ conda-shell() {
 # Unifies the old auto_ssh_agent() (.bashrc) and the inline zsh block. `set +C`
 # inside the subshell makes the redirection noclobber-safe in both shells (zsh
 # sets NO_CLOBBER via interactive.zsh), replacing zsh's `>!` and bash's bare `>`.
-# modified from https://github.com/zimfw/ssh/blob/master/init.zsh
+# adapted from the upstream zsh ssh module's init logic.
 _ssh_env_safe() {
     local f=$1 uid
     # Only source if it's a regular, non-symlink file owned by the current user.
