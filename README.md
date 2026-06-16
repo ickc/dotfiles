@@ -1,14 +1,25 @@
 # dotfiles
 
-Public shell and tool configuration managed by [chezmoi](https://chezmoi.io). Contains no secrets.
+Public shell and tool configuration managed by [chezmoi](https://chezmoi.io).
 
-## Install
+## Installation
 
-```bash
-# public (no auth)
-BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ickc/dotfiles --branch main
-# personal (ssh auth)
-BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git --branch main
+Personal (ssh auth)
+
+```sh
+BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' '-')/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply git@github.com:ickc/dotfiles.git
+```
+
+Public (no auth)
+
+```sh
+BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' -)/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ickc/dotfiles
+```
+
+Then add this to your rc files,
+
+```sh
+export PATH="$PATH:$HOME/.local/opt/$(uname -sm | tr ' ' -)/bin"
 ```
 
 ## Update
