@@ -2,6 +2,8 @@
 ## General
 ##########################################
 lscolors_enabled = true
+# The image preview background color, only RGB colors are accepted.
+# preview_background = "#FFFFFF"
 
 ##########################################
 ## Tabs
@@ -54,7 +56,7 @@ prefix = "v "
 
 # Basic style, used for regular files (and also device files and FIFOs)
 [regular]
-fg = "white"
+fg = "default"
 
 # For directories
 [directory]
