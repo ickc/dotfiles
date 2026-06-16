@@ -22,11 +22,6 @@ dot_config/zsh/functions
 dot_config/mpv/input.conf
 dot_config/mpv/shaders/
 
-# jupyter: only lab config is intentional
-dot_config/jupyter/*
-!dot_config/jupyter/jupyter_lab_config.py
-!dot_config/jupyter/jupyterhub_config.py.tmpl
-
 # parallel: only track will-cite
 dot_config/parallel/
 !dot_config/parallel/will-cite
