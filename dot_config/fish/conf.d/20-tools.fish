@@ -1,12 +1,14 @@
 # Interactive tool hooks (mirror the unified block in ~/.config/sh/rc.sh).
+# conda/mamba are on PATH but nothing is auto-activated; run the `conda-shell`
+# function (functions/conda-shell.fish) on demand when you need `activate`.
 if status is-interactive
-    # conda / mamba (≈ ml_conda): micromamba ships no fish conf.d hook, so eval
-    # its shell hook directly; fall back to Miniforge's fish hook if present.
-    if type -q micromamba
-        micromamba shell hook --shell fish | source
-    else if test -f $MAMBA_ROOT_PREFIX/etc/fish/conf.d/conda.fish
-        source $MAMBA_ROOT_PREFIX/etc/fish/conf.d/conda.fish
-    end
+    # terminal title: short hostname (≈ rc.sh's printf to the xterm title)
+    printf '\033]0;%s\007' (string split -m1 . $HOSTNAME)[1]
+
+    # limits / umask (mirror rc.sh)
+    ulimit -c 0                       # no core dumps
+    ulimit -s unlimited 2>/dev/null   # unlimited stack (ifort segfaults otherwise)
+    umask 022
 
     # prompt + navigation tools
     type -q starship; and starship init fish | source
@@ -15,9 +17,7 @@ if status is-interactive
     type -q navi; and navi widget fish | source
 
     # sman (≈ ml_s)
-    if test -f $XDG_DATA_HOME/sman/sman.fish
-        source $XDG_DATA_HOME/sman/sman.fish
-    end
+    test -f $XDG_DATA_HOME/sman/sman.fish; and source $XDG_DATA_HOME/sman/sman.fish
 
     # git external diff (set in rc.sh for bash/zsh)
     type -q difft; and set -gx GIT_EXTERNAL_DIFF difft
