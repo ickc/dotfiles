@@ -2,7 +2,5 @@
 # zsh interactive entry point. The shared interactive setup (for bash + zsh)
 # lives in ~/.config/sh/rc.sh, which sources zsh/interactive.zsh and
 # zsh/plugins.zsh at the right points.
-#
-# * use `__CLEAN=1 zsh` to load a minimal environment (see ~/.config/sh/rc.sh).
 # shellcheck source=dot_config/sh/rc.sh
 . "${XDG_CONFIG_HOME:-${HOME}/.config}/sh/rc.sh"

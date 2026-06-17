@@ -31,33 +31,31 @@ chezmoi update
 ## Dependencies
 
 - [chezmoi](https://chezmoi.io) — applies the source state
-- [envoy](https://github.com/ickc/envoy) — optional; if installed at `$XDG_DATA_HOME/envoy`, its `env.sh` is sourced by `.zshenv` to set `__OPT_ROOT`, `MAMBA_ROOT_PREFIX`, `PIXI_HOME`, etc.
+- [envoy](https://github.com/ickc/envoy) — sets the software prefixes (`__OPT_ROOT`, `__LOCAL_ROOT`, `MAMBA_ROOT_PREFIX`, `PIXI_HOME`, `__LMOD_INIT`) and the XDG base dirs. `.zshenv` sources its `env.sh` from `~/.local/share/envoy`; when envoy is absent, a vendored copy at `~/.config/envoy/env.sh` (refreshed with `make vendor-envoy`) is sourced instead, so the repo stands alone.
 
-## Module system
+## PATH and toolchains
 
-Toolchains (Homebrew, conda, pixi, cargo, Go, GHCup, CUDA, …) are layered onto
-`PATH`/`MANPATH`/`INFOPATH` with [Lmod](https://lmod.readthedocs.io) instead of a
-homegrown loader. The Lua modulefiles live in `~/.config/modulefiles/` (one per
-toolchain) and read their prefixes from `sh/env.sh`, so that file stays the
-single source of truth. Each modulefile self-guards on directory existence, so
-loading one for an absent tool — or the wrong OS — is a harmless no-op.
+The personal software prefixes (`__LOCAL_ROOT`, `__OPT_ROOT`, `__OPT_ROOT/system`)
+are put on `PATH`/`MANPATH`/`INFOPATH` directly in `sh/rc.sh` (the
+`path_append_all` helper), with no dependency on a module system — micromamba,
+pixi and the other core tools live under these prefixes and must work even when
+Lmod is unavailable. They are **appended**, so system-provided binaries keep
+precedence over the personal ones (a deliberate, security-minded change from the
+older prepend behaviour).
 
-- New interactive shells load the full set; `__CLEAN=1 <shell>` loads only `core`.
-- `module purge` strips the personal toolchains; `module purge && module load core`
-  returns to the clean base.
-- `module load core brew` gives an isolated brew-only environment;
-  `family("pkgmgr")` makes a competing package-manager module swap brew out.
-- `module unload <name>` reverses exactly what that module added (the correctness
-  the old hand-rolled unload could not guarantee).
-- the `conda` modulefile puts micromamba/mamba on `PATH` and sets `MAMBA_EXE`. For
-  `micromamba activate`, run the `conda-shell` helper (defined in `sh/rc.sh`) to
-  source the hook on demand (it prefers micromamba, falling back to mamba/conda).
+micromamba/mamba/conda are on `PATH` by default but stay out of the way: nothing
+is auto-activated. When you need `activate`, run the `conda-shell` helper (defined
+in `sh/rc.sh`) to source the shell hook on demand (it prefers micromamba, falling
+back to mamba then conda).
 
-`sh/rc.sh` prefers a host-provided `module` (HPC sites) and otherwise sources the
-Lmod that [envoy](https://github.com/ickc/envoy) bootstraps no-sudo via micromamba;
-envoy exports `__LMOD_INIT` pointing at Lmod's per-shell `init/` directory. Lmod
-reads both Lua and TCL modulefiles, so it sits cleanly over an Lmod or a TCL-only
-host, with `module use` adding the personal modulefiles alongside the host's.
+[Lmod](https://lmod.readthedocs.io) is **optional**. When a `module` command is
+available — host-provided (HPC sites) or the no-sudo Lmod that
+[envoy](https://github.com/ickc/envoy) bootstraps via micromamba and points at
+through `__LMOD_INIT` — `sh/rc.sh` adds `~/.config/modulefiles/` and loads the few
+toolchains that still benefit from it (`brew`, `cuda`, `lms`, `mactex`).
+Each modulefile self-guards on directory existence, so loading one for an absent
+tool or the wrong OS is a harmless no-op; if Lmod is missing, these simply do not
+load and nothing else breaks.
 
 ## Notes
 

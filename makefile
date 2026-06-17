@@ -2,7 +2,10 @@
 
 SHELL = /usr/bin/env bash
 
-.PHONY: format check todo help
+# location of the envoy checkout to vendor env.sh/env.fish from
+ENVOY_DIR ?= $(HOME)/.local/share/envoy
+
+.PHONY: format check todo vendor-envoy help
 
 format:  ## format all shell scripts
 	find . -type f \
@@ -16,6 +19,7 @@ format:  ## format all shell scripts
 			-name '*.sh' \
 		\) \
 		\! -name executable_preview_file.sh \
+		\! -path './dot_config/envoy/*' \
 		-exec sed -i -E \
 			-e 's/\$$([a-zA-Z_][a-zA-Z0-9_]*)/$${\1}/g' \
 			-e 's/([^[])\[ ([^]]+) \]/\1[[ \2 ]]/g' \
@@ -40,12 +44,18 @@ check:  ## check all shell scripts
 			-name '*.sh' \
 		\) \
 		\! -name executable_preview_file.sh \
+		\! -path './dot_config/envoy/*' \
 		-exec shellcheck \
 			--norc \
 			--enable=all \
 			--shell=bash \
 			--severity=style \
 			{} +
+
+vendor-envoy:  ## copy envoy's env.sh/env.fish into dot_config/envoy as an offline fallback
+	mkdir -p dot_config/envoy
+	cp $(ENVOY_DIR)/env.sh dot_config/envoy/env.sh
+	cp $(ENVOY_DIR)/env.fish dot_config/envoy/env.fish
 
 todo:  ## find TODOs in shell scripts
 	find . -type f \

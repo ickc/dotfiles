@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 # Native zsh interactive setup.
-# Sourced from ~/.config/sh/rc.sh before ml/ml_conda so that compinit is
+# Sourced from ~/.config/sh/rc.sh so that compinit is
 # available. Sets up: environment (options + history), completion (compinit +
 # styling), input (key bindings), and run-help. The ssh-agent is started by
 # rc.sh (shared with bash);

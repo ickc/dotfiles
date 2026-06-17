@@ -23,19 +23,12 @@ shopt -s cdspell checkwinsize extglob nocaseglob no_empty_cmd_completion
 shopt -s autocd dirspell globstar 2> /dev/null # bash >= 4 only
 
 # completion ###################################################################
-# Load the bash-completion framework. v2.10+ then lazily discovers envoy's
-# generated completions in ${XDG_DATA_HOME}/bash-completion/completions/* (and
-# anything else under that XDG dir) — no manual sourcing loop required.
-if ! shopt -oq posix; then
-    for _bc in \
-        "${HOMEBREW_PREFIX:+${HOMEBREW_PREFIX}/etc/profile.d/bash_completion.sh}" \
-        /usr/share/bash-completion/bash_completion \
-        /etc/bash_completion; do
-        if [[ -n ${_bc} && -r ${_bc} ]]; then
-            # shellcheck disable=SC1090
-            . "${_bc}"
-            break
-        fi
-    done
-    unset _bc
+# bash-completion (v2.10+ then lazily loads per-command completions from
+# ${XDG_DATA_HOME}/bash-completion/completions/, incl. envoy's). The OS loads this
+# for login shells; source it directly here for non-login interactive shells. One
+# path suffices: /usr/share/... is the canonical location on every mainstream
+# distro, and the /etc/profile.d + /etc/bash_completion variants only re-source it.
+if ! shopt -oq posix && [[ -r /usr/share/bash-completion/bash_completion ]]; then
+    # shellcheck disable=SC1091
+    . /usr/share/bash-completion/bash_completion
 fi

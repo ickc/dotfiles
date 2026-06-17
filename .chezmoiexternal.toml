@@ -2,10 +2,8 @@
 # Pinned to release tags for reproducibility; "archive" + stripComponents fetches
 # plain files (no .git directory).
 #
-# .zshrc sources these from "$XDG_DATA_HOME/zsh/plugins/<name>". The target paths
-# below assume the default XDG_DATA_HOME (~/.local/share); on hosts where .zshenv
-# relocates XDG_DATA_HOME via __APPDIR, the .zshrc guards degrade gracefully and
-# the plugins simply won't load there.
+# .zshrc sources these from "$XDG_DATA_HOME/zsh/plugins/<name>"; the target paths
+# below match the default XDG_DATA_HOME (~/.local/share).
 
 [".local/share/zsh/plugins/zsh-autosuggestions"]
     type = "archive"
