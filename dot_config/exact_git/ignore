@@ -12,3 +12,5 @@
 .pytest_cache/
 .vscode/
 .zed/
+.pixi/*
+!.pixi/config.toml
