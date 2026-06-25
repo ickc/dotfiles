@@ -1,4 +1,4 @@
-**/.claude/settings.local.json
+.claude/
 *.egg-info/
 *.pyc
 .DS_Store
