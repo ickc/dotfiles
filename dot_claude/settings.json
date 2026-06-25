@@ -8,11 +8,11 @@
   "permissions": {
     "defaultMode": "bypassPermissions"
   },
-  "effortLevel": "high",
+  "model": "opus",
   "skipDangerousModePermissionPrompt": true,
   "remoteControlAtStartup": true,
   "autoUploadSessions": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "model": "opus"
+  "tui": "fullscreen"
 }
