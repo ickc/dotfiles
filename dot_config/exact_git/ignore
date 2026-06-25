@@ -13,4 +13,3 @@
 .vscode/
 .zed/
 .pixi/*
-!.pixi/config.toml
