@@ -4,27 +4,42 @@
 #
 # .zshrc sources these from "$XDG_DATA_HOME/zsh/plugins/<name>"; the target paths
 # below match the default XDG_DATA_HOME (~/.local/share).
+#
+# Run scripts/update_chezmoi_externals.py to update GitHub tag pins and refresh
+# checksum metadata.
 
 [".local/share/zsh/plugins/zsh-autosuggestions"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-autosuggestions/archive/refs/tags/v0.7.1.tar.gz"
+    format = "tar.gz"
     stripComponents = 1
     refreshPeriod = "168h"
+    checksum.sha512 = "52c9dc8e9c4ba31788cf6c25448dbb8341545af7f763903533133d92a93e898256187e2f94b37c384926d9615b3bd61b7c6dd61337e1f47ae3babed813f9cc0b"
+    checksum.size = 29968
 
 [".local/share/zsh/plugins/zsh-syntax-highlighting"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-syntax-highlighting/archive/refs/tags/0.8.0.tar.gz"
+    format = "tar.gz"
     stripComponents = 1
     refreshPeriod = "168h"
+    checksum.sha512 = "58593c8bf3fa1476ecf0fceb1fc4eab986a778de657d359a28fe48798e787896fbf2588441c69b017a08227ab44dd46473afb16e0f125aae59cc58004bfa8c2e"
+    checksum.size = 155914
 
 [".local/share/zsh/plugins/zsh-history-substring-search"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-history-substring-search/archive/refs/tags/v1.1.0.tar.gz"
+    format = "tar.gz"
     stripComponents = 1
     refreshPeriod = "168h"
+    checksum.sha512 = "267efc0960f6403b748e78734b43b8d997f05a2a2542520508e6ef028ef2e0a2c0805d24ae5ad4c30454742a08a7abf2e3baa591e60a660a0ca54aca0ad7175a"
+    checksum.size = 9984
 
 [".local/share/zsh/plugins/zsh-completions"]
     type = "archive"
     url = "https://github.com/zsh-users/zsh-completions/archive/refs/tags/0.36.0.tar.gz"
+    format = "tar.gz"
     stripComponents = 1
     refreshPeriod = "168h"
+    checksum.sha512 = "05d9d69dc849303a2bb2afb4614dc58c2e064889b6f1bf2673532fba441cc45816fca4694de8c7c6960744be449901317a1cb61d0ebd76c80f4741e82542d22a"
+    checksum.size = 401928
