@@ -24,11 +24,27 @@
         }
     },
     "agent": {
+        "favorite_models": [
+            {
+                "provider": "copilot_chat",
+                "model": "claude-sonnet-5",
+                "enable_thinking": true,
+                "effort": "medium"
+            },
+            {
+                "provider": "google",
+                "model": "gemini-3.1-pro-preview",
+                "enable_thinking": true,
+                "effort": "high"
+            }
+        ],
         "default_profile": "write",
         "default_model": {
+            "effort": "medium",
+            "enable_thinking": true,
             "provider": "copilot_chat",
-            "model": "gpt-5-mini"
-        },
+            "model": "claude-sonnet-5"
+        }
     },
     "languages": {
         "Markdown": {
@@ -38,7 +54,6 @@
             "tab_size": 2
         }
     },
-    "show_edit_predictions": true,
     "buffer_font_family": "JetBrainsMono Nerd Font",
     "format_on_save": "off",
     "show_whitespaces": "all",
@@ -48,12 +63,18 @@
         "diagnostics": false,
         "metrics": false
     },
-    "terminal": {
-        "alternate_scroll": "on"
-    },
     "theme": {
         "mode": "system",
         "light": "Gruvbox Light",
         "dark": "Gruvbox Dark"
+    },
+    "auto_install_extensions": {
+        "html": true,
+        "git-firefly": true,
+        "toml": true,
+        "lua": true,
+        "log": true,
+        "nix": true,
+        "julia": true
     }
 }
