@@ -28,4 +28,4 @@ dot_config/parallel/
 
 # zed: only track settings.json (not runtime files)
 dot_config/zed/
-!dot_config/zed/settings.json
+!dot_config/zed/private_settings.json
