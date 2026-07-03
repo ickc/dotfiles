@@ -7,6 +7,14 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+    "agent_servers": {
+        "claude-acp": {
+            "type": "registry"
+        },
+        "codex-acp": {
+            "type": "registry"
+        }
+    },
     "edit_predictions": {
         "provider": "copilot",
         "mode": "subtle",
