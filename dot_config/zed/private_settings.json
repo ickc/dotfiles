@@ -7,6 +7,29 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
+    "agent": {
+        "default_model": {
+            "effort": "medium",
+            "enable_thinking": true,
+            "model": "claude-sonnet-5",
+            "provider": "copilot_chat"
+        },
+        "default_profile": "write",
+        "favorite_models": [
+            {
+                "effort": "medium",
+                "enable_thinking": true,
+                "model": "claude-sonnet-5",
+                "provider": "copilot_chat"
+            },
+            {
+                "effort": "high",
+                "enable_thinking": true,
+                "model": "gemini-3.1-pro-preview",
+                "provider": "google"
+            }
+        ]
+    },
     "agent_servers": {
         "claude-acp": {
             "type": "registry"
@@ -15,37 +38,25 @@
             "type": "registry"
         }
     },
+    "auto_install_extensions": {
+        "git-firefly": true,
+        "html": true,
+        "julia": true,
+        "log": true,
+        "lua": true,
+        "nix": true,
+        "toml": true
+    },
+    "buffer_font_family": "JetBrainsMono Nerd Font",
     "edit_predictions": {
-        "provider": "copilot",
-        "mode": "subtle",
         "copilot": {
             "proxy": null,
             "proxy_no_verify": null
-        }
+        },
+        "mode": "subtle",
+        "provider": "copilot"
     },
-    "agent": {
-        "favorite_models": [
-            {
-                "provider": "copilot_chat",
-                "model": "claude-sonnet-5",
-                "enable_thinking": true,
-                "effort": "medium"
-            },
-            {
-                "provider": "google",
-                "model": "gemini-3.1-pro-preview",
-                "enable_thinking": true,
-                "effort": "high"
-            }
-        ],
-        "default_profile": "write",
-        "default_model": {
-            "effort": "medium",
-            "enable_thinking": true,
-            "provider": "copilot_chat",
-            "model": "claude-sonnet-5"
-        }
-    },
+    "format_on_save": "off",
     "languages": {
         "Markdown": {
             "show_edit_predictions": false
@@ -54,8 +65,6 @@
             "tab_size": 2
         }
     },
-    "buffer_font_family": "JetBrainsMono Nerd Font",
-    "format_on_save": "off",
     "show_whitespaces": "all",
     "soft_wrap": "editor_width",
     "tab_size": 4,
@@ -64,17 +73,8 @@
         "metrics": false
     },
     "theme": {
-        "mode": "system",
+        "dark": "Gruvbox Dark",
         "light": "Gruvbox Light",
-        "dark": "Gruvbox Dark"
-    },
-    "auto_install_extensions": {
-        "html": true,
-        "git-firefly": true,
-        "toml": true,
-        "lua": true,
-        "log": true,
-        "nix": true,
-        "julia": true
+        "mode": "system"
     }
 }
