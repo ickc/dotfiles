@@ -27,5 +27,3 @@ dot_config/parallel/
 !dot_config/parallel/will-cite
 
 # zed: only track settings.json (not runtime files)
-dot_config/zed/
-!dot_config/zed/private_settings.json

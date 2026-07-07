@@ -1,0 +1,30 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "context": "Editor && extension == csv",
+    "bindings": {
+      "ctrl-alt-p": [
+        "workspace::SendKeystrokes",
+        "cmd-a ctrl-shift-enter escape",
+      ],
+    },
+  },
+  {
+    "context": "Editor && extension == csv",
+    "bindings": {
+      "cmd-shift-v": ["task::Spawn", { "task_name": "csv: markdown preview" }],
+    },
+  },
+  {
+    "context": "Editor && extension == taskpaper",
+    "bindings": {
+      "alt-d": ["workspace::SendKeystrokes", "end space @ d o n e"],
+    },
+  },
+]

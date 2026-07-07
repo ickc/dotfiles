@@ -1,0 +1,11 @@
+// Project tasks configuration. See https://zed.dev/docs/tasks for documentation.
+//
+// Example:
+[
+  {
+    "label": "csv: markdown preview",
+    "command": "b=$(command -v csv-ls) || b=\"$HOME/Library/Application Support/Zed/extensions/work/csv-toolkit/bin/csv-ls\"; zed \"$(\"$b\" markdown --temp \"$ZED_FILE\")\"",
+    "reveal": "never",
+    "hide": "always",
+  }
+]
