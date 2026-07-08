@@ -39,6 +39,7 @@ if test -n "$__OPT_ROOT"
     __path_append_all $__OPT_ROOT
     __path_append_all $__OPT_ROOT/system
 end
+test -n "$PIXI_HOME"; and __path_append_all $PIXI_HOME
 functions -e __path_append_all
 
 # conda/mamba env discovery (≈ the old conda modulefile). Prepended so __OPT_ROOT
