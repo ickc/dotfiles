@@ -47,6 +47,7 @@
         "lua": true,
         "make": true,
         "nix": true,
+        "rst": true,
         "toml": true
     },
     "buffer_font_family": "JetBrainsMono Nerd Font",
