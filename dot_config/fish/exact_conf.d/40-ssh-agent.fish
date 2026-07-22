@@ -53,6 +53,12 @@ function __ssh_agent_start --description 'point SSH_AUTH_SOCK at a live agent'
     # `ssh-agent -k` reads it, and it would kill the host's shared agent.
     rm -f -- $sock
     ssh-agent -s -a $sock >/dev/null 2>&1
+
+    # Do not leave SSH_AUTH_SOCK naming a dead path if the agent failed to
+    # start; ssh would skip AddKeysToAgent and prompt on every connection.
+    ssh-add -l >/dev/null 2>&1
+    test $status -eq 2; and set -e SSH_AUTH_SOCK
+    return 0
 end
 
 if status is-interactive; and type -q ssh-agent

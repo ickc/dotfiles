@@ -162,6 +162,13 @@ auto_ssh_agent() {
     # would kill an agent every other shell on this host is sharing.
     rm -f -- "${sock}"
     ssh-agent -s -a "${sock}" > /dev/null 2>&1
+
+    # If the agent could not start (unwritable directory, hit RLIMIT_NPROC, no
+    # space), do not leave SSH_AUTH_SOCK naming a dead path: ssh would skip
+    # AddKeysToAgent and silently prompt on every connection instead.
+    ssh-add -l > /dev/null 2>&1
+    [[ $? -eq 2 ]] && unset SSH_AUTH_SOCK
+    return 0
 }
 
 # PATH MANPATH INFOPATH CONDA_ENVS_PATH ########################################
