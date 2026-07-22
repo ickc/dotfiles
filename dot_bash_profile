@@ -1,5 +1,12 @@
-if [[ -z ${__BASHRC_SOURCED} ]]; then
-    export __BASHRC_SOURCED=1
+# Bash reads this for login shells and ~/.bashrc for interactive non-login ones,
+# so a login shell has to pull in ~/.bashrc itself. The guard only needs to stop
+# a double source *within this shell*, so it records the pid rather than a flag:
+# an inherited value is some ancestor's pid and can never match. A plain flag
+# would be inherited by every nested login shell (tmux/zellij panes, `bash -l`,
+# `su -`, `srun --pty bash -l`), which would then skip ~/.bashrc entirely and
+# silently lose the module setup and the ssh-agent bootstrap.
+if [[ ${__BASHRC_SOURCED} != "$$" ]]; then
+    __BASHRC_SOURCED=$$
     # shellcheck disable=SC1090
     . ~/.bashrc
 fi

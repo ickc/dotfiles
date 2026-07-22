@@ -1,3 +1,4 @@
 .cshrc
+.ssh-agent
 .git-credentials
 .zimrc
