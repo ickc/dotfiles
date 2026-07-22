@@ -103,8 +103,26 @@ conda-shell() {
 # a shared home does not work across nodes), so an agent is per host by nature:
 # one loaded on an HPC login node is not visible from a compute node. Use a
 # scoped deploy key or token for jobs that need to reach a private repo.
+
+# True if $1 is a directory we own with mode 0700, creating it if needed.
+# Whatever answers on SSH_AUTH_SOCK is trusted implicitly — ssh hands it the
+# decrypted key — so a predictable name straight in a world-writable /tmp is
+# not safe: any local user can pre-bind it first and collect the key, and the
+# sticky bit would stop us removing theirs. Refuse anything we do not own.
+_ssh_agent_dir_ok() {
+    local d=$1 uid info
+    uid=${UID:-$(id -u)}
+    mkdir -p "${d}" 2> /dev/null
+    # Checked before the chmod so we never follow a symlink into someone else's
+    # directory.
+    [[ -d ${d} && ! -L ${d} ]] || return 1
+    chmod 700 "${d}" 2> /dev/null
+    info=$(stat -c '%u %a' "${d}" 2> /dev/null) || info=$(stat -f '%u %Lp' "${d}" 2> /dev/null) || return 1
+    [[ ${info} == "${uid} 700" ]]
+}
+
 auto_ssh_agent() {
-    local dir sock rc
+    local dir sock candidate uid rc
 
     # An inherited agent that answers wins — forwarded (ForwardAgent), macOS
     # launchd, systemd. rc 0 (holds keys) and 1 (empty) both mean reachable;
@@ -113,25 +131,36 @@ auto_ssh_agent() {
     rc=$?
     [[ ${rc} -ne 2 ]] && return 0
 
-    # This host's own agent. XDG_RUNTIME_DIR is per-user and 0700 but logind
-    # removes it at last logout (so the agent dies with the session unless
-    # `loginctl enable-linger`); TMPDIR and /tmp persist. ssh-agent creates the
-    # socket 0600 regardless, so a world-writable directory is fine.
-    dir="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"
-    sock="${dir%/}/ssh-agent-${UID:-$(id -u)}.sock"
-    # sun_path caps a socket path at ~108 bytes; a long TMPDIR would overflow it
-    # and the bind would fail, so fall back to somewhere short.
-    [[ ${#sock} -gt 100 ]] && sock="/tmp/ssh-agent-${UID:-$(id -u)}.sock"
+    # This host's own agent, in the first private directory that works.
+    # XDG_RUNTIME_DIR is already per-user and 0700, but logind removes it at
+    # last logout (so the agent dies with the session unless `loginctl
+    # enable-linger`); the TMPDIR and /tmp fallbacks persist. /tmp is also the
+    # retry when a long TMPDIR would overflow sun_path (~108 bytes).
+    uid=${UID:-$(id -u)}
+    sock=
+    for dir in "${XDG_RUNTIME_DIR}" "${TMPDIR:-/tmp}/ssh-agent-${uid}" "/tmp/ssh-agent-${uid}"; do
+        [[ -n ${dir} ]] || continue
+        candidate="${dir%/}/ssh-agent.sock"
+        [[ ${#candidate} -gt 100 ]] && continue
+        if _ssh_agent_dir_ok "${dir%/}"; then
+            sock=${candidate}
+            break
+        fi
+    done
+    # Nowhere private to put it: leave ssh to prompt per connection rather than
+    # trust a socket anyone could have planted.
+    [[ -n ${sock} ]] || return 0
     export SSH_AUTH_SOCK="${sock}"
     ssh-add -l > /dev/null 2>&1
     rc=$?
     [[ ${rc} -ne 2 ]] && return 0
 
     # Nothing listening. ssh-agent removes its own socket on exit, so anything
-    # still here is stale and would only make the bind fail. SSH_AGENT_PID is
+    # still here is stale and would only make the bind fail; the directory is
+    # ours alone, so this cannot clobber another user's socket. SSH_AGENT_PID is
     # deliberately left unset: nothing needs it except `ssh-agent -k`, which
     # would kill an agent every other shell on this host is sharing.
-    rm -f "${sock}"
+    rm -f -- "${sock}"
     ssh-agent -s -a "${sock}" > /dev/null 2>&1
 }
 
