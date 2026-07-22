@@ -2,7 +2,8 @@
 # Shared interactive setup for bash + zsh.
 # Sourced by ~/.zshrc and (when interactive) ~/.bashrc. Loads the PATH/module
 # system, the per-shell interactive setup, the prompt/navigation tool hooks, and
-# the ssh-agent.
+# the ssh-agent (which only ensures an agent is reachable; ~/.ssh/config's
+# AddKeysToAgent loads the key on first use).
 
 # set title of prompt. c.f. https://tldp.org/HOWTO/Xterm-Title-3.html
 printf "\033]0;%s\007" "${HOSTNAME%%.*}"
@@ -90,45 +91,48 @@ conda-shell() {
     fi
 }
 
-# ssh: start an agent if none is reachable, then load the default identity.
-# Unifies the old auto_ssh_agent() (.bashrc) and the inline zsh block. `set +C`
-# inside the subshell makes the redirection noclobber-safe in both shells (zsh
-# sets NO_CLOBBER via interactive.zsh), replacing zsh's `>!` and bash's bare `>`.
-# modified from https://github.com/zimfw/ssh/blob/master/init.zsh
-_ssh_env_safe() {
-    local f=$1 uid
-    # Only source if it's a regular, non-symlink file owned by the current user.
-    [[ -f $f && ! -L $f ]] || return 1
-    uid=$(stat -c '%u' "$f" 2>/dev/null) || uid=$(stat -f '%u' "$f" 2>/dev/null) || return 1
-    [[ $uid -eq $(id -u) ]]
-}
-
+# ssh: make sure SSH_AUTH_SOCK points at a live agent. Keys are *not* loaded
+# here — ssh adds them on first use via `AddKeysToAgent yes` (~/.ssh/config) —
+# so this never prompts for a passphrase and is safe to run at every startup.
+#
+# The socket sits at a path every shell computes the same way, so there is no
+# state file to source, race on, or clobber. Two shells starting at once are
+# harmless: one binds the socket, the other finds it already listening.
+#
+# A UNIX socket is reachable only from the host that bound it (a socket file on
+# a shared home does not work across nodes), so an agent is per host by nature:
+# one loaded on an HPC login node is not visible from a compute node. Use a
+# scoped deploy key or token for jobs that need to reach a private repo.
 auto_ssh_agent() {
-    local ssh_env="${HOME}/.ssh-agent" rc
+    local dir sock rc
 
+    # An inherited agent that answers wins — forwarded (ForwardAgent), macOS
+    # launchd, systemd. rc 0 (holds keys) and 1 (empty) both mean reachable;
+    # only 2 means nothing is there. A missing ssh-add (127) also exits here.
     ssh-add -l > /dev/null 2>&1
     rc=$?
-    if [[ ${rc} -eq 2 ]]; then
-        # no reachable agent: try the stored connection info first
-        # shellcheck disable=SC1090
-        _ssh_env_safe "${ssh_env}" && . "${ssh_env}" > /dev/null
-        ssh-add -l > /dev/null 2>&1
-        rc=$?
-        if [[ ${rc} -eq 2 ]]; then
-            # stored agent is dead/absent: start a fresh one
-            (
-                umask 066
-                set +C
-                ssh-agent > "${ssh_env}"
-            )
-            # shellcheck disable=SC1090
-            _ssh_env_safe "${ssh_env}" && . "${ssh_env}" > /dev/null
-        fi
-    fi
-    # agent reachable but holds no identities: add the default key
+    [[ ${rc} -ne 2 ]] && return 0
+
+    # This host's own agent. XDG_RUNTIME_DIR is per-user and 0700 but logind
+    # removes it at last logout (so the agent dies with the session unless
+    # `loginctl enable-linger`); TMPDIR and /tmp persist. ssh-agent creates the
+    # socket 0600 regardless, so a world-writable directory is fine.
+    dir="${XDG_RUNTIME_DIR:-${TMPDIR:-/tmp}}"
+    sock="${dir%/}/ssh-agent-${UID:-$(id -u)}.sock"
+    # sun_path caps a socket path at ~108 bytes; a long TMPDIR would overflow it
+    # and the bind would fail, so fall back to somewhere short.
+    [[ ${#sock} -gt 100 ]] && sock="/tmp/ssh-agent-${UID:-$(id -u)}.sock"
+    export SSH_AUTH_SOCK="${sock}"
     ssh-add -l > /dev/null 2>&1
     rc=$?
-    [[ ${rc} -eq 1 ]] && { ssh-add "${HOME}/.ssh/id_ed25519" 2> /dev/null || ssh-add 2> /dev/null; }
+    [[ ${rc} -ne 2 ]] && return 0
+
+    # Nothing listening. ssh-agent removes its own socket on exit, so anything
+    # still here is stale and would only make the bind fail. SSH_AGENT_PID is
+    # deliberately left unset: nothing needs it except `ssh-agent -k`, which
+    # would kill an agent every other shell on this host is sharing.
+    rm -f "${sock}"
+    ssh-agent -s -a "${sock}" > /dev/null 2>&1
 }
 
 # PATH MANPATH INFOPATH CONDA_ENVS_PATH ########################################
@@ -221,4 +225,5 @@ if [[ -n ${ZSH_VERSION} ]]; then
 fi
 
 # ssh-agent (single unified call for both shells) ##############################
+# Idempotent and silent; keys load on demand via AddKeysToAgent, not here.
 command -v ssh-agent > /dev/null 2>&1 && auto_ssh_agent

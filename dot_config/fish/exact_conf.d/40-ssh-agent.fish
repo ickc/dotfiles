@@ -1,32 +1,36 @@
 # ssh-agent bootstrap — fish port of auto_ssh_agent() in ~/.config/sh/rc.sh.
-# Shares the same ~/.ssh-agent file as bash/zsh: ssh-agent writes Bourne syntax
-# (`-s`), which bash/zsh source directly and fish parses via sed, so all three
-# shells reuse a single agent.
+# All three shells compute the same socket path, so they converge on one agent
+# per host with no state file to share, parse, or race on. Keys load on first
+# use via `AddKeysToAgent yes` (~/.ssh/config), so nothing here prompts.
 
-function __ssh_agent_load --argument-names f --description 'load sh-syntax agent env into fish'
-    sed -nE 's/^(SSH_[A-Z_]+)=([^;]+);.*/set -gx \1 \2/p' $f | source
-end
+function __ssh_agent_start --description 'point SSH_AUTH_SOCK at a live agent'
+    # An inherited agent that answers wins — forwarded, launchd, systemd. Only
+    # status 2 means nothing is reachable.
+    ssh-add -l >/dev/null 2>&1
+    test $status -ne 2; and return 0
 
-function __ssh_agent_start --description 'start ssh-agent if none reachable, then load the key'
-    set -l ssh_env $HOME/.ssh-agent
+    # Keep in sync with auto_ssh_agent() in ~/.config/sh/rc.sh.
+    set -l dir /tmp
+    if test -n "$XDG_RUNTIME_DIR"
+        set dir $XDG_RUNTIME_DIR
+    else if test -n "$TMPDIR"
+        set dir $TMPDIR
+    end
+    set -l sock (string trim --right --chars=/ -- $dir)/ssh-agent-(id -u).sock
+    # sun_path caps a socket path at ~108 bytes; fall back if TMPDIR is long.
+    if test (string length -- $sock) -gt 100
+        set sock /tmp/ssh-agent-(id -u).sock
+    end
+    set -gx SSH_AUTH_SOCK $sock
 
     ssh-add -l >/dev/null 2>&1
-    if test $status -eq 2
-        # no reachable agent: try the stored connection info first
-        test -r $ssh_env; and __ssh_agent_load $ssh_env
-        ssh-add -l >/dev/null 2>&1
-        if test $status -eq 2
-            # stored agent is dead/absent: start a fresh one
-            ssh-agent -s >$ssh_env
-            chmod 600 $ssh_env
-            __ssh_agent_load $ssh_env
-        end
-    end
-    # agent reachable but holds no identities: add the default key
-    ssh-add -l >/dev/null 2>&1
-    if test $status -eq 1
-        ssh-add $HOME/.ssh/id_ed25519 2>/dev/null; or ssh-add 2>/dev/null
-    end
+    test $status -ne 2; and return 0
+
+    # Nothing listening: clear the stale socket (ssh-agent removes its own on
+    # exit) and start one. SSH_AGENT_PID is left unset on purpose — only
+    # `ssh-agent -k` reads it, and it would kill the host's shared agent.
+    rm -f $sock
+    ssh-agent -s -a $sock >/dev/null 2>&1
 end
 
 if status is-interactive; and type -q ssh-agent
