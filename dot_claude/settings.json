@@ -6,13 +6,14 @@
     "sessionUrl": false
   },
   "permissions": {
-    "defaultMode": "bypassPermissions"
+    "defaultMode": "auto"
   },
   "model": "opus",
+  "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "remoteControlAtStartup": true,
   "autoUploadSessions": true,
   "inputNeededNotifEnabled": true,
   "agentPushNotifEnabled": true,
-  "tui": "fullscreen"
+  "enableWorkflows": true
 }
