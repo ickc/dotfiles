@@ -34,13 +34,13 @@ function __path_append_all --argument-names root
     test -d $root/share/man; and not contains $root/share/man $MANPATH; and set -gx MANPATH $MANPATH $root/share/man
     test -d $root/share/info; and not contains $root/share/info $INFOPATH; and set -gx INFOPATH $INFOPATH $root/share/info
 end
+test -n "$PIXI_HOME"; and __path_append_all $PIXI_HOME
+test -n "$CARGO_HOME"; and __path_append_all $CARGO_HOME
 test -n "$__LOCAL_ROOT"; and __path_append_all $__LOCAL_ROOT
 if test -n "$__OPT_ROOT"
     __path_append_all $__OPT_ROOT
     __path_append_all $__OPT_ROOT/system
 end
-test -n "$PIXI_HOME"; and __path_append_all $PIXI_HOME
-test -n "$CARGO_HOME"; and __path_append_all $CARGO_HOME
 functions -e __path_append_all
 
 # conda/mamba env discovery (≈ the old conda modulefile). Prepended so __OPT_ROOT

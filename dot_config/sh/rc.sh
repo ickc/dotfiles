@@ -173,13 +173,13 @@ auto_ssh_agent() {
 
 # PATH MANPATH INFOPATH CONDA_ENVS_PATH ########################################
 
+[[ -n ${PIXI_HOME} ]] && path_append_all "${PIXI_HOME}"
+[[ -n ${CARGO_HOME} ]] && path_append_all "${CARGO_HOME}"
 [[ -n ${__LOCAL_ROOT} ]] && path_append_all "${__LOCAL_ROOT}"
 if [[ -n ${__OPT_ROOT} ]]; then
     path_append_all "${__OPT_ROOT}"
     path_append_all "${__OPT_ROOT}/system"
 fi
-[[ -n ${PIXI_HOME} ]] && path_append_all "${PIXI_HOME}"
-[[ -n ${CARGO_HOME} ]] && path_append_all "${CARGO_HOME}"
 export PATH MANPATH INFOPATH
 
 conda_envs_path_prepend "${XDG_DATA_HOME}/conda/envs"
