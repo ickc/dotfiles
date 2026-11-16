@@ -64,6 +64,7 @@ stopsudo() {
 }
 
 # create the XDG base directories (and astropy's, which ignores XDG)
+# shellcheck disable=SC2154  # the XDG_* dirs are exported by env.sh, sourced first
 mkdir_xdg() {
     mkdir -p \
         "${XDG_DATA_HOME}" \
@@ -138,7 +139,7 @@ auto_ssh_agent() {
     # retry when a long TMPDIR would overflow sun_path (~108 bytes).
     uid=${UID:-$(id -u)}
     sock=
-    for dir in "${XDG_RUNTIME_DIR}" "${TMPDIR:-/tmp}/ssh-agent-${uid}" "/tmp/ssh-agent-${uid}"; do
+    for dir in "${XDG_RUNTIME_DIR-}" "${TMPDIR:-/tmp}/ssh-agent-${uid}" "/tmp/ssh-agent-${uid}"; do
         [[ -n ${dir} ]] || continue
         candidate="${dir%/}/ssh-agent.sock"
         [[ ${#candidate} -gt 100 ]] && continue

@@ -7,10 +7,11 @@
 # PIXI_HOME, __LMOD_INIT) and the XDG base dirs. Prefer the live install; fall
 # back to the vendored copy (refresh with `make vendor-envoy`) so these dotfiles
 # work even when envoy is not installed.
-# shellcheck disable=SC1090,SC1091
 if [[ -f ~/.local/share/envoy/env.sh ]]; then
+    # shellcheck source=dot_config/envoy/env.sh
     . ~/.local/share/envoy/env.sh
 elif [[ -f "${XDG_CONFIG_HOME:-${HOME}/.config}/envoy/env.sh" ]]; then
+    # shellcheck source=dot_config/envoy/env.sh
     . "${XDG_CONFIG_HOME:-${HOME}/.config}/envoy/env.sh"
 fi
 

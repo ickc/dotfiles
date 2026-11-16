@@ -6,8 +6,8 @@ if status is-interactive
     printf '\033]0;%s\007' (string split -m1 . $HOSTNAME)[1]
 
     # limits / umask (mirror rc.sh)
-    ulimit -c 0                       # no core dumps
-    ulimit -s unlimited 2>/dev/null   # unlimited stack (ifort segfaults otherwise)
+    ulimit -c 0 # no core dumps
+    ulimit -s unlimited 2>/dev/null # unlimited stack (ifort segfaults otherwise)
     umask 022
 
     # prompt + navigation tools
