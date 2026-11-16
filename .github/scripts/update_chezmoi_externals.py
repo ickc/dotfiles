@@ -21,6 +21,8 @@ EXTERNALS = ROOT / ".chezmoiexternal.toml"
 TAG_ARCHIVE_RE = re.compile(
     r"^https://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/archive/refs/tags/(?P<tag>[^/]+)\.tar\.gz$"
 )
+# Plain dotted versions only (1.2.3, v1.2): a tag with a suffix is a pre-release.
+RELEASE_TAG_RE = re.compile(r"^v?\d+(?:\.\d+)*$")
 
 HEADER = """# Third-party zsh plugins, fetched by chezmoi into $XDG_DATA_HOME/zsh/plugins.
 # Pinned to release tags for reproducibility; \"archive\" + stripComponents fetches
@@ -42,10 +44,12 @@ def fetch_json(url: str) -> Any:
 
 
 def latest_tag(owner: str, repo: str) -> str:
-    tags = fetch_json(f"https://api.github.com/repos/{owner}/{repo}/tags?per_page=1")
-    if not tags:
-        raise RuntimeError(f"No tags found for {owner}/{repo}")
-    return tags[0]["name"]
+    """Return the highest release tag, ignoring pre-releases such as 0.8.0-alpha1."""
+    tags = fetch_json(f"https://api.github.com/repos/{owner}/{repo}/tags?per_page=100")
+    names = [tag["name"] for tag in tags if RELEASE_TAG_RE.match(tag["name"])]
+    if not names:
+        raise RuntimeError(f"No release tags found for {owner}/{repo}")
+    return max(names, key=lambda name: tuple(int(part) for part in name.lstrip("v").split(".")))
 
 
 def checksum_and_size(url: str) -> tuple[str, int]:
