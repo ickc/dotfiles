@@ -31,7 +31,7 @@ chezmoi update
 ## Dependencies
 
 - [chezmoi](https://chezmoi.io) — applies the source state
-- [envoy](https://github.com/ickc/envoy) — sets the software prefixes (`__OPT_ROOT`, `__LOCAL_ROOT`, `MAMBA_ROOT_PREFIX`, `PIXI_HOME`, `__LMOD_INIT`) and the XDG base dirs. `.zshenv` sources its `env.sh` from `~/.local/share/envoy`; when envoy is absent, a vendored copy at `~/.config/envoy/env.sh` (refreshed with `make vendor-envoy`) is sourced instead, so the repo stands alone.
+- [envoy](https://github.com/ickc/bootstrapping-os-environments) — sets the software prefixes (`__OPT_ROOT`, `__LOCAL_ROOT`, `MAMBA_ROOT_PREFIX`, `PIXI_HOME`, `__LMOD_INIT`) and the XDG base dirs. `.zshenv` sources its `env.sh` from `~/.local/share/envoy`; when envoy is absent, a vendored copy at `~/.config/envoy/env.sh` (refreshed with `make vendor-envoy`) is sourced instead, so the repo stands alone.
 
 ## PATH and toolchains
 
@@ -50,7 +50,7 @@ back to mamba then conda).
 
 [Lmod](https://lmod.readthedocs.io) is **optional**. When a `module` command is
 available — host-provided (HPC sites) or the no-sudo Lmod that
-[envoy](https://github.com/ickc/envoy) bootstraps via micromamba and points at
+[envoy](https://github.com/ickc/bootstrapping-os-environments) bootstraps via micromamba and points at
 through `__LMOD_INIT` — `sh/rc.sh` adds `~/.config/modulefiles/` and loads the few
 toolchains that still benefit from it (`brew`, `cuda`, `lms`, `mactex`).
 Each modulefile self-guards on directory existence, so loading one for an absent
