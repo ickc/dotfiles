@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# This repo has no pixi manifest, so the tools come from a throwaway
+# `pixi exec` environment: the same conda-forge packages envoy's `system` env
+# provides on a bootstrapped machine.
+
+jobs:
+  check:
+    name: lint, format, syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: prefix-dev/setup-pixi@9936258fee697aff89b3fed6ca1f80a382ef694e # v0.11.3
+        with:
+          run-install: false
+      - run: >-
+          pixi exec
+          --spec shellcheck --spec go-shfmt --spec fish --spec zsh --spec make --spec git
+          -- make check
+
+  test:
+    name: apply (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: prefix-dev/setup-pixi@9936258fee697aff89b3fed6ca1f80a382ef694e # v0.11.3
+        with:
+          run-install: false
+      - run: >-
+          pixi exec
+          --spec chezmoi --spec fish --spec zsh --spec make --spec git
+          -- make test
+
+  vendored-envoy:
+    name: vendored envoy env is current
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Compare dot_config/envoy with envoy's main
+        run: |
+          for f in env.sh env.fish; do
+            if ! curl -fsSL "https://raw.githubusercontent.com/ickc/bootstrapping-os-environments/main/${f}" |
+              diff -u "dot_config/envoy/${f}" -; then
+              echo "::error file=dot_config/envoy/${f}::differs from envoy's main; refresh it with 'make vendor-envoy'"
+              exit 1
+            fi
+          done
