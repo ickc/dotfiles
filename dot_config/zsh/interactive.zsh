@@ -41,6 +41,10 @@ if [[ ${TERM} != dumb ]]; then
         compinit -C -d "${_zcompdump}"
     else
         compinit -d "${_zcompdump}"
+        # compinit leaves an up-to-date dump untouched, so stamp it here;
+        # otherwise the full check would run on every start once the dump
+        # turned a day old.
+        touch "${_zcompdump}"
     fi
     # Compile the dump for faster subsequent loads.
     [[ ${_zcompdump}.zwc -nt ${_zcompdump} ]] || zcompile -R "${_zcompdump}" 2> /dev/null
