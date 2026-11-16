@@ -1,6 +1,6 @@
-# Aliases ≈ ml_lsd. `alias` defines a function, so this is safe for every session
-# (it only shadows ls/tree when lsd is actually installed).
-if type -q lsd
+# Aliases ≈ ml_lsd. Interactive shells only, as in ~/.config/sh/rc.sh: scripts
+# keep the real ls and tree.
+if status is-interactive; and type -q lsd
     alias ls lsd
     alias tree 'lsd --tree'
 end
