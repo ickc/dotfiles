@@ -15,7 +15,9 @@ elif [[ -f "${XDG_CONFIG_HOME:-${HOME}/.config}/envoy/env.sh" ]]; then
     . "${XDG_CONFIG_HOME:-${HOME}/.config}/envoy/env.sh"
 fi
 
-MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN 2> /dev/null || echo 1)"
+# nproc honours the CPU affinity mask (a Slurm allocation, taskset), where
+# getconf counts every core on the node; getconf is the fallback for macOS.
+MAKEFLAGS="-j$(nproc 2> /dev/null || getconf _NPROCESSORS_ONLN 2> /dev/null || echo 1)"
 export MAKEFLAGS
 
 # set HOSTNAME by hostname if undefined
@@ -60,11 +62,18 @@ if [[ -z ${HOMEBREW_PREFIX} ]]; then
     esac
 fi
 if command -v "${HOMEBREW_PREFIX}/bin/brew" > /dev/null 2>&1; then
+    # the repository is a Homebrew/ subdirectory of the prefix everywhere except
+    # Apple Silicon, where it is the prefix itself
+    if [[ -d ${HOMEBREW_PREFIX}/Homebrew ]]; then
+        HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+    else
+        HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
+    fi
     export \
         HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar" \
         HOMEBREW_NO_ANALYTICS=1 \
         HOMEBREW_PREFIX \
-        HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}/Homebrew"
+        HOMEBREW_REPOSITORY
 else
     unset HOMEBREW_PREFIX
 fi

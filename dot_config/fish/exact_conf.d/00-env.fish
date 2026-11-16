@@ -15,8 +15,10 @@ else
     test -f $_cfg/envoy/env.fish; and source $_cfg/envoy/env.fish
 end
 
-# parallel make across all logical CPUs
-set -gx MAKEFLAGS "-j"(getconf _NPROCESSORS_ONLN 2>/dev/null; or echo 1)
+# parallel make. nproc honours the CPU affinity mask (a Slurm allocation,
+# taskset), where getconf counts every core on the node; getconf is the fallback
+# for macOS.
+set -gx MAKEFLAGS "-j"(nproc 2>/dev/null; or getconf _NPROCESSORS_ONLN 2>/dev/null; or echo 1)
 
 # set HOSTNAME by hostname if undefined
 set -q HOSTNAME; or set -gx HOSTNAME (hostname -f 2>/dev/null; or hostname)
@@ -35,6 +37,36 @@ set -gx NUMBA_CACHE_DIR $XDG_CACHE_HOME/numba
 set -gx PARALLEL_HOME $XDG_CONFIG_HOME/parallel
 set -gx PIXI_CACHE_DIR $XDG_CACHE_HOME/$__OSTYPE-$__ARCH/pixi
 set -gx WGETRC $XDG_CONFIG_HOME/wgetrc
+
+# Homebrew (mirrors env.sh): detect the prefix and export what brew and the Lmod
+# `brew` module read. PATH itself is wired by that module in 10-path.fish.
+if not set -q HOMEBREW_PREFIX; or test -z "$HOMEBREW_PREFIX"
+    switch $__OSTYPE
+        case Linux
+            set -g HOMEBREW_PREFIX /home/linuxbrew/.linuxbrew
+        case Darwin
+            switch $__ARCH
+                case x86_64
+                    set -g HOMEBREW_PREFIX /usr/local
+                case arm64
+                    set -g HOMEBREW_PREFIX /opt/homebrew
+            end
+    end
+end
+if test -n "$HOMEBREW_PREFIX"; and test -x $HOMEBREW_PREFIX/bin/brew
+    set -gx HOMEBREW_PREFIX $HOMEBREW_PREFIX
+    set -gx HOMEBREW_CELLAR $HOMEBREW_PREFIX/Cellar
+    set -gx HOMEBREW_NO_ANALYTICS 1
+    # the repository is a Homebrew/ subdirectory of the prefix everywhere except
+    # Apple Silicon, where it is the prefix itself
+    if test -d $HOMEBREW_PREFIX/Homebrew
+        set -gx HOMEBREW_REPOSITORY $HOMEBREW_PREFIX/Homebrew
+    else
+        set -gx HOMEBREW_REPOSITORY $HOMEBREW_PREFIX
+    end
+else
+    set -e HOMEBREW_PREFIX
+end
 
 # misc exports
 set -gx EDITOR nano
