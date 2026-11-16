@@ -26,7 +26,7 @@ setopt HIST_FIND_NO_DUPS HIST_IGNORE_DUPS HIST_IGNORE_SPACE HIST_VERIFY SHARE_HI
 
 if [[ ${TERM} != dumb ]]; then
     # completion: fpath (envoy-generated completions + zsh-completions) then compinit
-    # shellcheck disable=SC2206
+    # shellcheck disable=SC2154,SC2206  # XDG_DATA_HOME is exported by env.sh
     fpath=(
         "${XDG_DATA_HOME}/zsh/functions"
         "${XDG_DATA_HOME}/zsh/plugins/zsh-completions/src"
@@ -87,11 +87,11 @@ if [[ ${TERM} != dumb ]]; then
     for _k in '^[[1;5C' '^[[5C' '^[Oc'; do bindkey "${_k}" forward-word; done
     for _k in '^[[1;5D' '^[[5D' '^[Od'; do bindkey "${_k}" backward-word; done
     unset _k
-    bindkey ' ' magic-space   # expand history references (e.g. !!) on space
+    bindkey ' ' magic-space # expand history references (e.g. !!) on space
     bindkey '^[.' insert-last-word
     bindkey '^[_' insert-last-word
     autoload -Uz edit-command-line && zle -N edit-command-line
-    bindkey '^X^E' edit-command-line   # edit the command line in $EDITOR
+    bindkey '^X^E' edit-command-line # edit the command line in $EDITOR
     # Smart URL pasting/escaping.
     autoload -Uz bracketed-paste-url-magic && zle -N bracketed-paste bracketed-paste-url-magic
     autoload -Uz url-quote-magic && zle -N self-insert url-quote-magic
@@ -108,6 +108,7 @@ if [[ ${TERM} != dumb ]]; then
     unalias run-help 2> /dev/null
     autoload -Uz run-help
     if [[ -z ${HELPDIR} ]]; then
+        # shellcheck disable=SC2154  # ZSH_VERSION is set by zsh itself
         for _d in /usr/local/share/zsh/help "/usr/share/zsh/${ZSH_VERSION}/help" /usr/share/zsh/help; do
             if [[ -d ${_d} ]]; then
                 HELPDIR="${_d}"
