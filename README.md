@@ -16,11 +16,8 @@ Public (no auth)
 BINDIR="${HOME}/.local/opt/$(uname -sm | tr ' ' -)/bin" sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply ickc/dotfiles
 ```
 
-Then add this to your rc files,
-
-```sh
-export PATH="$PATH:$HOME/.local/opt/$(uname -sm | tr ' ' -)/bin"
-```
+`BINDIR` is `$__OPT_ROOT/bin`, which the applied rc files put on `PATH`, so a new
+interactive shell finds `chezmoi` with nothing further to add.
 
 ## Update
 
@@ -56,6 +53,23 @@ toolchains that still benefit from it (`brew`, `cuda`, `lms`, `mactex`).
 Each modulefile self-guards on directory existence, so loading one for an absent
 tool or the wrong OS is a harmless no-op; if Lmod is missing, these simply do not
 load and nothing else breaks.
+
+## Development
+
+`make` lists the targets. The tools are the ones envoy's `system` env provides
+(`shellcheck`, `shfmt`, `fish`, `zsh`, `chezmoi`).
+
+- `make format` — shellcheck's autofixes and `shfmt` for the bash/zsh sources (the same recipe as envoy's `pixi run format-sh`), `fish_indent` for the fish ones.
+- `make check` — shellcheck, a formatting check, and a syntax check in zsh and fish.
+- `make test` — applies the source state into a throwaway destination and asserts on the result. It never touches the real home; `OFFLINE=1` skips the externals.
+- `make vendor-envoy` — refreshes the vendored `dot_config/envoy/env.{sh,fish}` from an envoy checkout.
+
+CI runs `make check`, `make test` (Linux and macOS) and a comparison of the
+vendored envoy files against envoy's `main` on every pull request.
+
+The zsh plugins in `.chezmoiexternal.toml` are pinned to release tags with
+checksums. A weekly workflow runs `.github/scripts/update_chezmoi_externals.py`
+and opens a pull request when a pin moves.
 
 ## Notes
 
