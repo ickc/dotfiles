@@ -24,6 +24,6 @@ dot_config/mpv/shaders/
 
 # parallel: only track will-cite
 dot_config/parallel/
-!dot_config/parallel/will-cite
+!dot_config/parallel/empty_will-cite
 
 # zed: only track settings.json (not runtime files)
