@@ -16,7 +16,7 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 EXTERNALS = ROOT / ".chezmoiexternal.toml"
 TAG_ARCHIVE_RE = re.compile(
     r"^https://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/archive/refs/tags/(?P<tag>[^/]+)\.tar\.gz$"
@@ -29,7 +29,7 @@ HEADER = """# Third-party zsh plugins, fetched by chezmoi into $XDG_DATA_HOME/zs
 # .zshrc sources these from \"$XDG_DATA_HOME/zsh/plugins/<name>\"; the target paths
 # below match the default XDG_DATA_HOME (~/.local/share).
 #
-# Run scripts/update_chezmoi_externals.py to update GitHub tag pins and refresh
+# Run .github/scripts/update_chezmoi_externals.py to update GitHub tag pins and refresh
 # checksum metadata.
 """
 

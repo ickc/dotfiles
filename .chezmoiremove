@@ -2,3 +2,5 @@
 .ssh-agent
 .git-credentials
 .zimrc
+# deployed by mistake while the updater lived in scripts/ (now .github/scripts/)
+scripts/update_chezmoi_externals.py
