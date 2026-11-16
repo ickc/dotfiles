@@ -5,9 +5,6 @@ on:
     # Sunday night in US time zones / early Monday UTC.
     - cron: "17 05 * * 1"
   workflow_dispatch:
-  push:
-    branches:
-      - update/chezmoi-externals
 
 permissions:
   contents: write
@@ -18,21 +15,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ github.event.repository.default_branch }}
 
       - name: Update chezmoi external pins and checksums
         run: python3 .github/scripts/update_chezmoi_externals.py
 
+      # A pull request opened with the default token does not trigger the CI
+      # workflow, so prove here that the new pins fetch, verify and apply.
+      - uses: prefix-dev/setup-pixi@9936258fee697aff89b3fed6ca1f80a382ef694e # v0.11.3
+        with:
+          run-install: false
+      - name: Apply with the updated externals
+        run: >-
+          pixi exec
+          --spec chezmoi --spec fish --spec zsh --spec make --spec git
+          -- make test
+
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@3ffccacd46053766916f087ce41d627c0b8cf2d1 # v8.1.3
         with:
           commit-message: Update chezmoi externals
           title: Update chezmoi externals
           body: |
             Automated update of `.chezmoiexternal.toml` pins and checksum metadata.
 
-            This PR is opened when the updater finds a diff, including the first run that adds checksum metadata.
+            This PR is opened when the updater finds a diff. `make test` passed against the updated pins before it was opened.
           branch: update/chezmoi-externals
           delete-branch: true
