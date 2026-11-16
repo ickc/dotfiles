@@ -236,10 +236,6 @@ ulimit -s unlimited 2> /dev/null # Limited stack size can cause segfaults with i
 # the parent directories should protect it already
 umask 022
 
-# git external diff ############################################################
-# PATH is only fully built after ml above
-command -v difft > /dev/null 2>&1 && export GIT_EXTERNAL_DIFF=difft
-
 # prompt / navigation tool hooks (unified across bash & zsh) ####################
 [[ -f "${XDG_DATA_HOME}/sman/sman.rc" ]] && {
     # shellcheck disable=SC1091

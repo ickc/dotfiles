@@ -19,9 +19,6 @@ if status is-interactive
     # sman (≈ ml_s)
     test -f $XDG_DATA_HOME/sman/sman.fish; and source $XDG_DATA_HOME/sman/sman.fish
 
-    # git external diff (set in rc.sh for bash/zsh)
-    type -q difft; and set -gx GIT_EXTERNAL_DIFF difft
-
     # greeting — show fastfetch instead of fish's default welcome
     function fish_greeting
         type -q fastfetch; and fastfetch
