@@ -35,14 +35,18 @@ mkdir -p "${dest}/scripts"
 exclude=()
 [[ ${OFFLINE:-0} == 1 ]] && exclude=(--exclude=externals)
 
+# every chezmoi call is pointed away from the real config, state and cache
+cz=(
+    --source "${src}"
+    --config "${tmp}/chezmoi.toml"
+    --persistent-state "${tmp}/state.boltdb"
+    --cache "${tmp}/cache"
+)
+
 # The ${a[@]+"${a[@]}"} form keeps an empty array from tripping `set -u` on the
 # bash 3.2 that macOS ships.
-chezmoi apply \
-    --source "${src}" \
+chezmoi apply "${cz[@]}" \
     --destination "${dest}" \
-    --config "${tmp}/chezmoi.toml" \
-    --persistent-state "${tmp}/state.boltdb" \
-    --cache "${tmp}/cache" \
     --no-tty --force \
     ${exclude[@]+"${exclude[@]}"}
 
@@ -73,6 +77,50 @@ else
 fi
 
 check "git config parses" git config --file .config/git/config --list
+
+# The git config is a template: zdiff3 needs git >= 2.35 and an older git dies
+# on it, so the style follows the git on PATH at apply time. Render it against
+# stand-in gits.
+# expect_style DESCRIPTION FAKE-GIT-BODY EXPECTED
+expect_style() {
+    local bin="${tmp}/fakegit" got
+    mkdir -p "${bin}"
+    printf '#!/bin/sh\n%s\n' "$2" > "${bin}/git"
+    chmod +x "${bin}/git"
+    if PATH="${bin}:${PATH}" chezmoi execute-template "${cz[@]}" \
+        < "${src}/dot_config/exact_git/config.tmpl" > "${tmp}/gitconfig"; then
+        got="$(git config --file "${tmp}/gitconfig" merge.conflictStyle)" || got="(unset)"
+    else
+        got="(render failed)"
+    fi
+    if [[ ${got} == "$3" ]]; then ok "$1"; else bad "$1: expected $3, got ${got}"; fi
+}
+expect_style "git 2.34.1 gets conflictStyle diff3" 'echo "git version 2.34.1"' diff3
+expect_style "git 2.35.0 gets conflictStyle zdiff3" 'echo "git version 2.35.0"' zdiff3
+expect_style "Apple git 2.39.5 gets conflictStyle zdiff3" 'echo "git version 2.39.5 (Apple Git-154)"' zdiff3
+expect_style "a broken git gets conflictStyle diff3" 'exit 1' diff3
+
+# core.pager and interactive.diffFilter pick delta when git runs them, and fall
+# back when it is missing. Run both the way git does (sh -c) on a PATH that holds
+# nothing but sh, cat and, for the second pass, a stand-in delta.
+sh_path="$(command -v sh)"
+cat_path="$(command -v cat)"
+mkdir -p "${tmp}/bare"
+ln -s "${sh_path}" "${tmp}/bare/sh"
+ln -s "${cat_path}" "${tmp}/bare/cat"
+# expect_run DESCRIPTION CONFIG-KEY EXPECTED-OUTPUT
+expect_run() {
+    local cmd got
+    cmd="$(git config --file .config/git/config "$2")" || cmd=false
+    got="$(printf 'diff\n' | env -i PATH="${tmp}/bare" PAGER=cat "${sh_path}" -c "${cmd}" 2>&1)" || true
+    if [[ ${got} == "$3" ]]; then ok "$1"; else bad "$1: expected '$3', got '${got}'"; fi
+}
+expect_run "core.pager falls back to PAGER without delta" core.pager diff
+expect_run "interactive.diffFilter passes through without delta" interactive.diffFilter diff
+printf '#!/bin/sh\necho "delta $*"\n' > "${tmp}/bare/delta"
+chmod +x "${tmp}/bare/delta"
+expect_run "core.pager runs delta when it is installed" core.pager "delta "
+expect_run "interactive.diffFilter runs delta --color-only when it is installed" interactive.diffFilter "delta --color-only"
 
 if [[ ${OFFLINE:-0} != 1 ]]; then
     plugins=.local/share/zsh/plugins

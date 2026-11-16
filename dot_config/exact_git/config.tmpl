@@ -1,0 +1,39 @@
+{{- /*
+  merge.conflictStyle = zdiff3 needs git >= 2.35; an older git dies on the
+  unknown style in every command that reads the merge config. Decide from the
+  git on PATH when chezmoi applies, falling back to diff3 (which every git
+  understands) when that git is older, missing or broken. The `sh -c ... ||
+  true` wrapper keeps a failing git from aborting the apply.
+*/ -}}
+{{- $conflictStyle := "diff3" -}}
+{{- $gitVersion := output "sh" "-c" "git version 2>/dev/null || true" | regexFind "[0-9]+\\.[0-9]+(\\.[0-9]+)?" -}}
+{{- if $gitVersion -}}
+{{-   if semverCompare ">=2.35.0" $gitVersion -}}
+{{-     $conflictStyle = "zdiff3" -}}
+{{-   end -}}
+{{- end -}}
+[user]
+	name = Kolen Cheung
+	email = 10970208+ickc@users.noreply.github.com
+[pull]
+	rebase = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[rerere]
+	enabled = true
+# delta renders every diff: as the pager for diff/log/show, and as the filter
+# for `add -p`. Both are resolved when git runs them rather than when chezmoi
+# applies, so a host without delta still has a working git (plain less, and an
+# unfiltered `add -p`) and picks delta up as soon as it is installed.
+[core]
+	pager = "command -v delta >/dev/null 2>&1 && exec delta || exec ${PAGER:-less}"
+[interactive]
+	diffFilter = "command -v delta >/dev/null 2>&1 && exec delta --color-only || exec cat"
+[delta]
+	navigate = true
+	line-numbers = true
+[merge]
+	conflictStyle = {{ $conflictStyle }}
