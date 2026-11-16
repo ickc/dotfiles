@@ -5,7 +5,7 @@
 # .zshrc sources these from "$XDG_DATA_HOME/zsh/plugins/<name>"; the target paths
 # below match the default XDG_DATA_HOME (~/.local/share).
 #
-# Run scripts/update_chezmoi_externals.py to update GitHub tag pins and refresh
+# Run .github/scripts/update_chezmoi_externals.py to update GitHub tag pins and refresh
 # checksum metadata.
 
 [".local/share/zsh/plugins/zsh-autosuggestions"]
